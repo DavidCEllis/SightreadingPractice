@@ -1,0 +1,31 @@
+Useful Modules:
+
+Minimum Product requirements:
+  * Read and understand midi inputs (convert to useful data)
+  * Generate random monophonic pitches based on requirements
+    * Bar count
+    * Pitch Range
+    * Accidentals
+    * Note durations - List of 1/N style values eg ['2', '4', '8', '4T', '4D'] (D for dotted, T for triplet)
+    * Bar Length
+  * Display and update pitches as they are played
+
+First additional goals:
+  * Alternate and combined clefs
+
+Eventual Goals:
+  * Rhythm recognition / Metronome
+  * Pitch detection (Tuner! & Transpositions)
+
+
+Libraries that may be useful:
+
+Drawing Music
+* Vexflow - https://github.com/0xfe/vexflow (MIT Licensed)
+* WebMidi.js - https://github.com/djipco/webmidi (MIT Licensed)
+
+
+Immediate goals
+
+* RNG Generator
+* Generate random music and render with vexflow.
