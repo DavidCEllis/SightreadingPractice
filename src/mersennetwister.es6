@@ -26,7 +26,10 @@ const mtL = 18 // Tempering bitshift
 const mtF = 1812433253 // Seeding multiplicative factor
 
 class MersenneTwister {
-  // MT19937
+  /**
+   * Mersenne twister implemented in ES6
+   * @param seed integer seed value for the PRNG (required)
+   */
 
   constructor (seed) {
     // Some error checking
@@ -44,7 +47,10 @@ class MersenneTwister {
   }
 
   seedMT (seed) {
-    // Initial seed code - should also work for reseeding
+    /**
+     * Seed the PRNG
+     * @param {integer} seed - PRNG initial seed value (required)
+     */
     // Clean seed value to 32 bit unsigned range
     seed >>>= 0
 
@@ -81,7 +87,9 @@ class MersenneTwister {
   }
 
   randomInt () {
-    /* Return next value from PRNG */
+    /**
+     * Return next value from PRNG
+     */
 
     // Checks for value
     if (this.index > mtN) {
@@ -102,14 +110,37 @@ class MersenneTwister {
   }
 
   randReal () {
-    // Return a value in [0, 1)
+    /**
+     * Return a value in [0, 1)
+     * @returns random float between 0 and 1 (does not include 1)
+     */
     return this.randomInt() * (1.0 / (2.0 ** 32))
   }
 
   randomBetween (low, high) {
-    // Produce a random integer value between low and high
-    let result = (this.randReal() * (high - low)) + low
+    /**
+     * Produce a random integer value between low and high.
+     * @param {integer} low - lowest value in random range.
+     * @param {integer} high - highest value in random range.
+     * @returns random integer between low and high
+     */
+    let result
+    if (low === high) {
+      result = low // if low and high are the same just return the value
+    } else {
+      result = Math.floor((this.randReal() * (high - low)) + low)
+    }
     return result
+  }
+
+  randomFrom (options) {
+    /**
+       * Select a random item from an array
+       * @param {Array} options - A list of options for random selection.
+       * @returns random object from options.
+       */
+    let resultIndex = this.randomBetween(0, options.length - 1)
+    return options[resultIndex]
   }
 }
 

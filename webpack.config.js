@@ -4,7 +4,15 @@ module.exports = {
   entry: './src/index.js',
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }
+      {
+        test: /\.js$/,
+        use: [
+          // 'style-loader',
+          // 'css-loader',
+          'babel-loader'
+        ],
+        exclude: /node_modules/
+      }
     ]
   },
   mode: 'development',

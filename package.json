@@ -1,19 +1,23 @@
 {
-  "name": "jsmusictools",
+  "name": "sightreadingtrainer",
   "version": "0.0.1",
-  "description": "Music training tool",
+  "description": "Sight reading training tool",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "makedocs": "jsdoc",
     "build": "webpack"
   },
   "author": "David C Ellis",
-  "license": "AGPL-3.0-or-later",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "jsdoc": "^3.5.5",
+    "style-loader": "^0.23.1",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.0"
   },
