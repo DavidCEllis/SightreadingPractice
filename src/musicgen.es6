@@ -6,7 +6,7 @@ class MusicGenerator {
   constructor (seed) {
     this.prng = MersenneTwister(seed)
   }
-  musicGen (barCount, lowestNote, highestNote, maxInterval) {
+  musicGen (barCount, lowestNote, highestNote, maxInterval, durations) {
     /*
       Generate barCount bars of 4/4 quarter notes
       Between lowestNote and highestNote with the largest jump of maxInterval
@@ -25,6 +25,8 @@ class MusicGenerator {
       throw ValidationError('Highest Note ' + highestNote + ' is out of range. Should be a number between 0 and 127.')
     } else if (lowestNote >= highestNote) {
       throw ValidationError('Lowest note must be strictly lower than highest note')
+    } else if (!Array.isArray(durations) || !Number.isInteger(durations[0])) {
+      throw ValidationError('Durations must be an array of positive integers')
     }
 
     let noteCount = barCount * 4
