@@ -58,6 +58,9 @@ class MusicNote {
     }
     return vexOut
   }
+  isEqualTo (midiNote) {
+    return this.pitch === midiNote
+  }
 }
 
 export { MusicNote }

@@ -28,7 +28,7 @@ const mtF = 1812433253 // Seeding multiplicative factor
 class MersenneTwister {
   /**
    * Mersenne twister implemented in ES6
-   * @param seed integer seed value for the PRNG (required)
+   * @param seed integer seed value for the PRNG (required).
    */
 
   constructor (seed) {
