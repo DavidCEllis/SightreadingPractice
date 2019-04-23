@@ -19,10 +19,11 @@
     "jsdoc": "^3.5.5",
     "style-loader": "^0.23.1",
     "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.0"
+    "webpack-cli": "^3.3.1"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.3",
-    "vexflow": "^1.2.89"
+    "vexflow": "^1.2.89",
+    "webmidi": "^2.3.3"
   }
 }

@@ -1,15 +1,32 @@
 import MainApp from './main.es6'
+import WebMidi from 'webmidi'
 
 // Create an SVG renderer and attach it to the DIV element named "boo".
 var div = document.getElementById('vexflow')
+// var midiList = document.getElementById('midi-input-list')
 
 var app = new MainApp(div)
-
 app.generateNotes()
 app.draw()
 
-// Cheating functions for testing rendering
+WebMidi.enable(function (err) {
+  if (err) {
+    console.log('WebMidi could not be enabled.', err)
+  } else {
+    console.log('WebMidi enabled!')
+    console.log('List of Inputs')
+    WebMidi.inputs.forEach(input => console.log(input.name))
+    console.log('Listening for events from all devices')
+    WebMidi.inputs.forEach(input => input.addListener('noteon', 'all',
+      function (e) {
+        app.compareNote(e.note.number)
+      }
+    ))
+  }
+})
 
+// CHEATS
+// Cheating functions for testing rendering
 function cheatNote (correct = true) {
   let currentNote = app.notes[app.currentIndex]
   var currentPitch = currentNote.pitch
