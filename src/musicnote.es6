@@ -24,6 +24,12 @@ const noteMap = [ // Map midi index to notes, kind of arbitrary ordering more/le
   ['B', 'Cb', 'A##']
 ]
 
+const correctNoteColor = 'green'
+const incorrectNoteColor = 'tomato'
+
+const correctStyle = { fillStyle: correctNoteColor, strokeStyle: correctNoteColor }
+const incorrectStyle = { fillStyle: incorrectNoteColor, strokeStyle: incorrectNoteColor }
+
 class MusicNote {
   /**
    *
@@ -34,6 +40,11 @@ class MusicNote {
     this.pitch = pitch
     this.duration = duration
     this.clef = clef
+
+    this.vexElement = null
+    this.divID = null
+    this.played = false
+    this.correct = null
   }
   keypitch () {
     /**
@@ -56,10 +67,26 @@ class MusicNote {
     } else if (keyName.includes('b')) {
       vexOut = vexOut.addAccidental(0, new VF.Accidental('b'))
     }
+
+    // Side effect - store element data in class
+    this.vexElement = vexOut // Don't know if I'll need this yet
+    this.divID = vexOut.attrs.id
+
     return vexOut
   }
   isEqualTo (midiNote) {
     return this.pitch === midiNote
+  }
+  playNote (notePitch) {
+    if (this.vexElement) {
+      this.correct = this.isEqualTo(notePitch)
+      if (this.correct) {
+        this.vexElement.setStyle(correctStyle)
+      } else {
+        this.vexElement.setStyle(incorrectStyle)
+      }
+      this.played = true
+    }
   }
 }
 

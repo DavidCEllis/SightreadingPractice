@@ -1,5 +1,6 @@
 import { Flow } from 'vexflow'
 import { MusicGenerator } from './musicgen.es6'
+import { InitializationError } from './errors.es6'
 
 var VF = Flow
 
@@ -17,6 +18,11 @@ class MainApp {
     this.svgTag = this.div.getElementsByTagName('svg')[0]
 
     this.staves = []
+    this.bars = null
+    this.notes = null
+    this.vexNotes = null
+
+    this.currentIndex = 0 // Index of currently played note
 
     this.barsPerLine = 4
     this.hstart = 10
@@ -27,14 +33,34 @@ class MainApp {
 
     this.clef = 'treble'
     this.signature = '4/4'
-
-    this.group = null
   }
-  draw (bars = 16, minPitch = 57, maxPitch = 88, maxInterval = 12) {
+  generateNotes (bars = 16, minPitch = 57, maxPitch = 88, maxInterval = 12) {
+    /**
+     * Generate the music for this application
+     * @param bars - Number of bars of music to generate (default: 16)
+     * @param minPitch - Midi integer value of lowest pitch to generate (default: 57)
+     * @param maxPitch - Midi integer value of highest pitch to generate (default: 88)
+     * @param maxInterval - Largest possible interval jump to generate in semitones (default: 12)
+     */
+    this.bars = bars
+    var mg = new MusicGenerator(Date.now())
+    this.notes = mg.musicGen(bars, minPitch, maxPitch, maxInterval, ['q'])
+    this.vexNotes = this.notes.map(note => note.flow())
+    this.beams = VF.Beam.generateBeams(this.vexNotes)
+  }
+  draw () {
+    /**
+     * Draw the current music stored in this.notes
+     */
+
+    if (this.notes === null) {
+      throw new InitializationError('Attempted to draw staves before generating notes.')
+    }
+
     // Clear div
     this.svgTag.innerHTML = ''
 
-    for (let i = 0; i < bars; i++) {
+    for (let i = 0; i < this.bars; i++) {
       let hpos = this.hstart + (i % this.barsPerLine) * this.hoffset
       let vpos = this.vstart + Math.floor(i / this.barsPerLine) * this.voffset
       let stave = new VF.Stave(hpos, vpos, this.hoffset)
@@ -47,18 +73,20 @@ class MainApp {
     }
     // Create a stave at position 10, 40 of width 400 on the canvas.
 
-    var mg = new MusicGenerator(Date.now())
-
-    this.notes = mg.musicGen(bars, minPitch, maxPitch, maxInterval, ['q'])
-
-    this.vexNotes = this.notes.map(note => note.flow())
-
-    var beams = VF.Beam.generateBeams(this.vexNotes)
-
     for (let i = 0; i < this.staves.length; i++) {
       VF.Formatter.FormatAndDraw(this.context, this.staves[i], this.vexNotes.slice(i * 4, i * 4 + 4))
     }
-    beams.forEach(beam => beam.setContext(this.context).draw())
+    this.beams.forEach(beam => beam.setContext(this.context).draw())
+  }
+  compareNote (inputVal) {
+    if (this.currentIndex < this.notes.length) {
+      let currentNote = this.notes[this.currentIndex]
+      currentNote.playNote(inputVal)
+      this.currentIndex++
+    }
+    if (this.currentIndex % 4 === 0) { // Compare if we have finished a bar, redraw (basic version)
+      this.draw()
+    }
   }
 }
 
