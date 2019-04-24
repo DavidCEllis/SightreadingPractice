@@ -1,5 +1,5 @@
 import { Flow } from 'vexflow'
-import { MusicGenerator } from './musicgen.es6'
+import { MusicGenerator } from './music_generator/musicgen.es6'
 import { InitializationError } from './errors.es6'
 
 var VF = Flow
@@ -32,7 +32,7 @@ class MainApp {
     this.voffset = 125
 
     this.clef = 'treble'
-    this.signature = '4/4'
+    this.timeSignature = '4/4'
   }
   generateNotes (bars = 16, minPitch = 57, maxPitch = 88, maxInterval = 12) {
     /**
@@ -66,7 +66,7 @@ class MainApp {
       let stave = new VF.Stave(hpos, vpos, this.hoffset)
       if ((i % this.barsPerLine) === 0) {
         stave.addClef(this.clef)
-        if (i === 0) { stave.addTimeSignature(this.signature) }
+        if (i === 0) { stave.addTimeSignature(this.timeSignature) }
       }
       stave.setContext(this.context).draw()
       this.staves.push(stave)

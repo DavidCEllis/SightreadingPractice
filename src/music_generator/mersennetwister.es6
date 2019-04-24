@@ -1,11 +1,14 @@
-// Mersenne twister algorithm implemented in ES6 JavaScript
-// Code here is longer for additional clarity
-// Should match values from https://github.com/boo1ean/mersenne-twister
-// No array generator - out of scope for what I needed
+/*
+  Mersenne twister algorithm implemented in ES6 JavaScript
 
-import { InitializationError, ValidationError } from './errors.es6'
+  Code here is longer for additional clarity
+  Should match values from https://github.com/boo1ean/mersenne-twister
+  No array generator - out of scope for what I needed
+*/
 
-// MT Constants - preceeded with mt
+import { InitializationError, ValidationError } from '../errors.es6'
+
+/* MT Constants - preceeded with mt */
 const mtW = 32 // This MT uses 32 bit word length
 const mtN = 624 // degree of recurrence (# elements in array)
 const mtM = 397 // Middle offset
@@ -15,7 +18,7 @@ const mtA = 0x9908b0df // twist matrix coefficients
 const mtLowerMask = ((1 << mtR) >>> 0) - 1 // >>> 0 because javascript returns signed integers for bitshifts ¯\_(ツ)_/¯
 const mtUpperMask = (0xffffffff ^ mtLowerMask) >>> 0
 
-// MT Tempering masks and shifts (shift that would be d is a noop)
+/* MT Tempering masks and shifts (shift that would be d is a noop) */
 const mtB = 0x9d2c5680 // Tempering bitmask
 const mtC = 0xefc60000 // Tempering bitmask
 const mtS = 7 // Tempering bitshift
@@ -88,7 +91,7 @@ class MersenneTwister {
 
   randomInt () {
     /**
-     * Return next value from PRNG
+     * Return next integer value from PRNG
      */
 
     // Checks for value
