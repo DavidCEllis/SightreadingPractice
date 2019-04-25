@@ -1,15 +1,16 @@
 // Generate random musical data based on given rules
 import { MersenneTwister } from './mersennetwister.es6'
 import { ValidationError } from '../errors.es6'
-import { MusicNote } from '../musicnote.es6'
-import keyList from '../music_theory/keys.es6'
+import { MusicBar } from '../MusicBar.es6'
 
 class MusicGenerator {
-  constructor (seed, key = 'C') {
+  constructor (seed, key = 'C', clef = 'treble', timeSignature = '4/4') {
     this.prng = new MersenneTwister(seed)
-    this.key = keyList[key]
+    this.key = key
+    this.clef = clef
+    this.timeSignature = timeSignature
   }
-  musicGen (barCount, lowestNote, highestNote, maxInterval, durations, accidentals = false) {
+  musicGen (barCount, lowestNote, highestNote, maxInterval, durations, accidentalRate = 0) {
     /*
       Generate barCount bars of 4/4 quarter notes
       Between lowestNote and highestNote with the largest jump of maxInterval
@@ -32,32 +33,15 @@ class MusicGenerator {
       throw new ValidationError('Durations must be an array of possible durations.')
     }
 
-    let noteCount = barCount * 4
+    let bars = []
 
-    let noteList = []
-    let note = null
-    let notePitch = null
-    let noteDuration = null
-
-    for (let i = 0; i < noteCount; i++) {
-      let minVal, maxVal
-      // Get range for next note
-      if (notePitch === null) {
-        minVal = lowestNote
-        maxVal = highestNote
-      } else {
-        minVal = Math.max(lowestNote, notePitch - maxInterval)
-        maxVal = Math.min(highestNote, notePitch + maxInterval)
-      }
-      // Create a new note value and add it to the list
-      noteDuration = durations[this.prng.randomBetween(0, durations.length - 1)]
-
-      notePitch = this.prng.randomBetween(minVal, maxVal)
-      note = new MusicNote(notePitch, noteDuration)
-
-      noteList.push(note)
+    for (let i = 0; i < barCount; i++) {
+      let currentBar = new MusicBar(this.clef, this.key, this.timeSignature)
+      currentBar.generateNotes(this.prng, lowestNote, highestNote, maxInterval, durations, accidentalRate)
+      bars.push(currentBar)
     }
-    return noteList
+
+    return bars
   }
 }
 

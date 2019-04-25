@@ -16,4 +16,12 @@ class InitializationError extends Error {
   }
 }
 
-export { InitializationError, ValidationError }
+class CodingError extends Error {
+  constructor (message) {
+    super(message)
+    this.name = 'CodingError'
+    this.message = message
+  }
+}
+
+export { CodingError, InitializationError, ValidationError }

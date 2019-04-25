@@ -1,14 +1,83 @@
+import { CodingError } from '../errors.es6'
+
+const MIDIMIN = 0 // Minimum value of a midi note number
+const MIDIMAX = 128 // Maximum value of a midi note number
+
+const NOTEMAP = [ // Map midi index to notes, kind of arbitrary ordering more/less common names
+  ['C', 'B#', 'Dbb'],
+  ['C#', 'Db', 'B##'],
+  ['D', 'C##', 'Ebb'],
+  ['Eb', 'D#', 'Fbb'],
+  ['E', 'Fb', 'D##'],
+  ['F', 'E#', 'Gbb'],
+  ['F#', 'Gb', 'E##'],
+  ['G', 'F##', 'Abb'],
+  ['Ab', 'G#'],
+  ['A', 'G##', 'Bbb'],
+  ['Bb', 'A#', 'Cbb'],
+  ['B', 'Cb', 'A##']
+]
+
 class MusicKey {
   constructor (name, notes, accidentals) {
     this.name = name
     this.notes = notes
     this.accidentals = accidentals
+    this.midiValues = this.getMidiValues()
   }
-  inKey (note) {
-    return this.notes.includes(note)
+  getRepresentation (midiNote) {
+    /**
+     * Get the most likely name for a note based on the key it is from
+     * (For example you are more likely to get D# than Eb in A major)
+     *
+     * @param midiNote - midi integer value of note
+     * @returns - {
+     *   name: <Name of Note in Key>,
+     *   inKey: true if note in key, false if accidental
+     *   noteLetter: <Letter of note without accidental>
+     *   accidental: <type of accidental to apply>
+     * }
+     */
+    let name = null
+    let inKey = null
+    let noteNames = NOTEMAP[midiNote % 12]
+    for (const noteName of noteNames) {
+      if (this.notes.includes(noteName)) {
+        name = noteName
+        inKey = true
+        break
+      } else if (this.accidentals.includes(noteName)) {
+        name = noteName
+        inKey = false
+        break
+      }
+    }
+    if (name === null) {
+      throw new CodingError('Could not find any of ' + noteNames + ' in key ' + this.name)
+    }
+    let noteLetter = name.charAt(0)
+    let accidental = (name.substr(1) || 'n') // If there is no substring use 'n' for natural
+    return { 'name': name, 'inKey': inKey, 'noteLetter': noteLetter, 'accidental': accidental }
   }
-  inAccidentals (note) {
-    return this.accidentals.includes(note)
+  getMidiValues () {
+    /**
+     * Obtain the midi note values for all accidentals and 'naturals' for a key.
+     */
+    let midiNaturals = []
+    let midiAccidentals = []
+    for (let i = MIDIMIN; i < MIDIMAX; i++) {
+      let noteNames = NOTEMAP[i % 12]
+      for (const noteName of noteNames) {
+        if (this.notes.includes(noteName)) {
+          midiNaturals.push(i)
+          break
+        } else if (this.accidentals.includes(noteName)) {
+          midiAccidentals.push(i)
+          break
+        }
+      }
+    }
+    return { 'naturals': midiNaturals, 'accidentals': midiAccidentals }
   }
 }
 
@@ -104,4 +173,4 @@ keyList['A#m'] = new MusicKey('A#m', keyList['C#'].notes, keyList['C#'].accident
 keyList['Bbm'] = new MusicKey('Bbm', keyList['Db'].notes, keyList['Db'].accidentals)
 keyList['Bm'] = new MusicKey('Bm', keyList['D'].notes, keyList['D'].accidentals)
 
-export default keyList
+export { keyList, MusicKey }
