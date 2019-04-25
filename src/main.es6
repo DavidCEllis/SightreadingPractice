@@ -12,7 +12,7 @@ class MainApp {
     this.renderer = new VF.Renderer(this.div, VF.Renderer.Backends.SVG)
 
     // Handle elements for SVG generation/regeneration
-    this.renderer.resize(1400, 800)
+    this.renderer.resize(1400, 600)
     this.context = this.renderer.getContext()
     this.svgTag = this.div.getElementsByTagName('svg')[0]
 
