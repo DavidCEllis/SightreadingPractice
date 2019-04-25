@@ -50,7 +50,7 @@ class MainApp {
      * @param maxInterval - Largest possible interval jump to generate in semitones (default: 12)
      */
     this.barCount = barCount
-    this.bars = this.generator.musicGen(barCount, minPitch, maxPitch, maxInterval, ['q'], 0.1)
+    this.bars = this.generator.musicGen(barCount, minPitch, maxPitch, maxInterval, ['q'], 0.2)
   }
   draw () {
     /**
@@ -74,7 +74,7 @@ class MainApp {
 
       // Display clef on each new line, time signature on first line
       if ((i % this.barsPerLine) === 0) {
-        this.bars[i].stave.addClef(this.clef)
+        this.bars[i].stave.addClef(this.clef).addKeySignature(this.key)
         if (i === 0) { this.bars[i].stave.addTimeSignature(this.timeSignature) }
       }
       this.bars[i].stave.setContext(this.context).draw()
@@ -85,9 +85,8 @@ class MainApp {
       let stave = this.bars[i].stave
       let vexNotes = this.bars[i].notes.map(note => note.vexElement)
       VF.Formatter.FormatAndDraw(this.context, stave, vexNotes)
+      this.bars[i].beams.forEach(beam => beam.setContext(this.context).draw())
     }
-    let beams = this.bars.map(bar => bar.beams)
-    beams.forEach(beam => beam.setContext(this.context).draw())
   }
   compareNote (inputVal) {
     if (this.currentBarIndex < this.barCount) {

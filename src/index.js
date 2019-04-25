@@ -9,7 +9,7 @@ var div = document.getElementById('vexflow')
 var seed = Date.now() // Use timestamp as basic RNG seed
 
 var app = new MainApp(div, seed)
-app.generateNotes()
+app.generateMusic()
 app.draw()
 
 WebMidi.enable(function (err) {
@@ -31,7 +31,7 @@ WebMidi.enable(function (err) {
 // CHEATS
 // Cheating functions for testing rendering
 function cheatNote (correct = true) {
-  let currentNote = app.notes[app.currentIndex]
+  let currentNote = app.bars[app.currentBarIndex].notes[app.currentNoteIndex]
   var currentPitch = currentNote.pitch
   if (!correct) {
     currentPitch++

@@ -23,16 +23,17 @@ class MusicBar {
     let activeAccidentals = {} // 'base note name: n/#/b/##/bb (natural/sharp/flat)'
     let minVal, maxVal
 
-    if (lastNote === null) {
-      minVal = lowestNote
-      maxVal = highestNote
-    } else {
-      minVal = Math.max(lowestNote, lastNote - maxInterval)
-      maxVal = Math.min(highestNote, lastNote + maxInterval)
-    }
     for (let i = 0; i < 4; i++) { // 4 quarter notes for now
       let note, notePitch, noteDuration
       let validNotes
+
+      if (lastNote === null) {
+        minVal = lowestNote
+        maxVal = highestNote
+      } else {
+        minVal = Math.max(lowestNote, lastNote - maxInterval)
+        maxVal = Math.min(highestNote, lastNote + maxInterval)
+      }
 
       let chooseAccidental = prng.randReal()
       if (chooseAccidental >= accidentalRate) {
@@ -41,8 +42,8 @@ class MusicBar {
       } else {
         validNotes = this.key.midiValues.accidentals.filter(val => (val >= minVal && val <= maxVal))
       }
-      notePitch = this.prng.randomFrom(validNotes)
-      noteDuration = this.prng.randomFrom(durations)
+      notePitch = prng.randomFrom(validNotes)
+      noteDuration = prng.randomFrom(durations)
       note = new MusicNote(notePitch, this.key, noteDuration, this.clef)
 
       // Handle conditions under which to render accidentals
@@ -58,7 +59,9 @@ class MusicBar {
         }
       }
       this.notes.push(note)
+      lastNote = notePitch
     }
+    return lastNote
   }
   makeStave (hpos, vpos, hoffset) {
     // Make Beams

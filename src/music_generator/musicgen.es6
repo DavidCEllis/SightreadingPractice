@@ -34,10 +34,13 @@ class MusicGenerator {
     }
 
     let bars = []
+    let lastNote = null
 
     for (let i = 0; i < barCount; i++) {
       let currentBar = new MusicBar(this.clef, this.key, this.timeSignature)
-      currentBar.generateNotes(this.prng, lowestNote, highestNote, maxInterval, durations, accidentalRate)
+      lastNote = currentBar.generateNotes(
+        this.prng, lowestNote, highestNote, maxInterval, durations, accidentalRate, lastNote
+      )
       bars.push(currentBar)
     }
 

@@ -10,7 +10,7 @@ import { keyList } from './music_theory/keys.es6'
 var VF = Flow
 
 // These colors are bad and should be changed!
-const correctNoteColor = 'green'
+const correctNoteColor = 'blue'
 const incorrectNoteColor = 'tomato'
 
 const correctStyle = { fillStyle: correctNoteColor, strokeStyle: correctNoteColor }
@@ -26,7 +26,7 @@ class MusicNote {
     this.pitch = pitch
     this.duration = duration
     this.clef = clef
-    this.key = keyList(key)
+    this.key = keyList[key]
 
     let noteRepr = key.getRepresentation(pitch)
 
