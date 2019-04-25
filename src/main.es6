@@ -5,25 +5,28 @@ import { InitializationError } from './errors.es6'
 var VF = Flow
 
 class MainApp {
-  constructor (div) {
+  constructor (div, seed = Date.now()) {
     this.div = div
+    this.seed = seed
+
     this.renderer = new VF.Renderer(this.div, VF.Renderer.Backends.SVG)
 
-    // Size our svg:
+    // Handle elements for SVG generation/regeneration
     this.renderer.resize(1400, 800)
-
-    // And get a drawing context:
     this.context = this.renderer.getContext()
-
     this.svgTag = this.div.getElementsByTagName('svg')[0]
 
+    // Get our PRNG for the app
+    this.generator = new MusicGenerator(this.seed)
+
+    // Details for the current state/notes
     this.staves = []
     this.bars = null
     this.notes = null
     this.vexNotes = null
-
     this.currentIndex = 0 // Index of currently played note
 
+    // Drawing values
     this.barsPerLine = 4
     this.hstart = 10
     this.vstart = 40
@@ -31,6 +34,7 @@ class MainApp {
     this.hoffset = 300
     this.voffset = 125
 
+    // Currently fixed to treble clef and 4/4 - will eventually need to be more flexible
     this.clef = 'treble'
     this.timeSignature = '4/4'
   }
@@ -43,8 +47,7 @@ class MainApp {
      * @param maxInterval - Largest possible interval jump to generate in semitones (default: 12)
      */
     this.bars = bars
-    var mg = new MusicGenerator(Date.now())
-    this.notes = mg.musicGen(bars, minPitch, maxPitch, maxInterval, ['q'])
+    this.notes = this.generator.musicGen(bars, minPitch, maxPitch, maxInterval, ['q'])
     this.vexNotes = this.notes.map(note => note.flow())
     this.beams = VF.Beam.generateBeams(this.vexNotes)
   }

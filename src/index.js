@@ -3,9 +3,12 @@ import WebMidi from 'webmidi'
 
 // Create an SVG renderer and attach it to the DIV element named "boo".
 var div = document.getElementById('vexflow')
+
 // var midiList = document.getElementById('midi-input-list')
 
-var app = new MainApp(div)
+var seed = Date.now() // Use timestamp as basic RNG seed
+
+var app = new MainApp(div, seed)
 app.generateNotes()
 app.draw()
 
