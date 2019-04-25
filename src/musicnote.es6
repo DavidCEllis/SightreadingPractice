@@ -19,8 +19,10 @@ const incorrectStyle = { fillStyle: incorrectNoteColor, strokeStyle: incorrectNo
 class MusicNote {
   /**
    *
-   * @param pitch note pitch as an integer
-   * @param duration note duration
+   * @param pitch - note pitch as an integer
+   * @param key - Musical key for the pitch (changes representation)
+   * @param duration - note duration
+   * @param clef - Musical Clef to display the pitch
    */
   constructor (pitch, key = 'C', duration = 'q', clef = 'treble') {
     this.pitch = pitch
