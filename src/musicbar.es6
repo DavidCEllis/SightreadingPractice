@@ -51,7 +51,7 @@ class MusicBar {
       // Case 2: Note not in key and accidental not used earlier
       if (activeAccidentals[note.noteLetter + note.noteRange] && note.inKey) {
         note.renderAccidental()
-        delete activeAccidentals[note.noteLetter + note.noterange]
+        delete activeAccidentals[note.noteLetter + note.noteRange]
       } else if (!note.inKey) {
         if (activeAccidentals[note.noteLetter + note.noteRange] !== note.accidental) {
           note.renderAccidental()
