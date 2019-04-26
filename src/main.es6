@@ -52,7 +52,7 @@ class MainApp {
     // Key should really only be kept in one place - will figure this out later though
     this.key = key
     this.accidentalFreq = accidentalFreq
-    this.generator = new MusicGenerator(this.seed, this.key, this.clef, this.timeSignature)
+    this.generator.key = key
   }
   configureGenerator (barCount = 16, minPitch = 57, maxPitch = 81, maxInterval = 12) {
     /**
@@ -73,6 +73,9 @@ class MainApp {
     this.bars = this.generator.musicGen(
       this.barCount, this.minPitch, this.maxPitch, this.maxInterval, this.durations, this.accidentalFreq
     )
+    // Reset indices
+    this.currentBarIndex = 0
+    this.currentNoteIndex = 0
   }
   draw () {
     /**
@@ -124,8 +127,6 @@ class MainApp {
     } else {
       // We have played all bars and 1 extra note, time to reset
       this.generateMusic()
-      this.currentNoteIndex = 0
-      this.currentBarIndex = 0
       this.draw()
     }
   }
