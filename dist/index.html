@@ -5,10 +5,19 @@
         <title>Sight reading trainer</title>
     </head>
     <body>
-        <div id='midiinputs'>
-            <!--<select id='midi-input-list'></select>-->
-        </div>
-        <div id='vexflow'></div>
+        <h1>Sight reading trainer</h1>
+        <p>
+            A basic tool to help practice simple sight reading. 
+            Reads input from a midi controller and updates each bar as it has been played.
+        </p>
+        <form>
+            Key:
+            <select id='srt-key-list'></select>
+            Accidental Frequency:
+            <input id='srt-accidentals' type='number' name='accidentals' min='0' max='1' value='0.1' step='0.01'>
+            <input id='srt-regenerate' type='button' value='Regenerate Music'>
+        </form>
+        <div id='srt-render'></div>
         <div id='controls'>
             <button id='correct-note'>correct</button>
             <button id='wrong-note'>incorrect</button>

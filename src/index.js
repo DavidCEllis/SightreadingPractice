@@ -1,14 +1,30 @@
 import MainApp from './main.es6'
 import WebMidi from 'webmidi'
 
-// Create an SVG renderer and attach it to the DIV element named "boo".
-var div = document.getElementById('vexflow')
-
-// var midiList = document.getElementById('midi-input-list')
+// Get the element ID for the div to render the score
+var div = document.getElementById('srt-render')
 
 var seed = Date.now() // Use timestamp as basic RNG seed
-
 var app = new MainApp(div, seed)
+
+var keySelect = document.getElementById('srt-key-list')
+var keyOptions = app.keyNames.map(key => document.createElement('option'))
+
+for (let i = 0; i < keyOptions.length; i++) {
+  keyOptions[i].text = app.keyNames[i]
+  keySelect.add(keyOptions[i])
+}
+
+// Handle settings
+var accidentalField = document.getElementById('srt-accidentals')
+var regenButton = document.getElementById('srt-regenerate')
+
+regenButton.onclick = function () {
+  app.updateSettings(keySelect.value, accidentalField.value)
+  app.generateMusic()
+  app.draw()
+}
+
 app.generateMusic()
 app.draw()
 

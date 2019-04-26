@@ -18,6 +18,7 @@ const incorrectStyle = { fillStyle: incorrectNoteColor, strokeStyle: incorrectNo
 
 class MusicNote {
   /**
+   * Handle the details of a single note
    *
    * @param pitch - note pitch as an integer
    * @param key - Musical key for the pitch (changes representation)

@@ -1,5 +1,6 @@
 import { Flow } from 'vexflow'
 import { MusicGenerator } from './music_generator/musicgen.es6'
+import { keyList } from './music_theory/keys.es6'
 import { InitializationError } from './errors.es6'
 
 var VF = Flow
@@ -8,6 +9,9 @@ class MainApp {
   constructor (div, seed = Date.now(), key = 'C', clef = 'treble', timeSignature = '4/4') {
     this.div = div
     this.seed = seed
+
+    // Store keynames for use
+    this.keyNames = Object.keys(keyList)
 
     this.renderer = new VF.Renderer(this.div, VF.Renderer.Backends.SVG)
 
@@ -37,20 +41,38 @@ class MainApp {
     this.key = key
     this.clef = clef
     this.timeSignature = timeSignature
+    this.durations = ['q']
+    this.accidentalFreq = 0.1
 
     // Get our PRNG for the app
     this.generator = new MusicGenerator(this.seed, this.key, this.clef, this.timeSignature)
+    this.configureGenerator()
   }
-  generateMusic (barCount = 16, minPitch = 57, maxPitch = 88, maxInterval = 12) {
+  updateSettings (key, accidentalFreq) {
+    // Key should really only be kept in one place - will figure this out later though
+    this.key = key
+    this.accidentalFreq = accidentalFreq
+    this.generator = new MusicGenerator(this.seed, this.key, this.clef, this.timeSignature)
+  }
+  configureGenerator (barCount = 16, minPitch = 57, maxPitch = 81, maxInterval = 12) {
+    /**
+    * @param barCount - Number of bars of music to generate (default: 16)
+    * @param minPitch - Midi integer value of lowest pitch to generate (default: 57)
+    * @param maxPitch - Midi integer value of highest pitch to generate (default: 81)
+    * @param maxInterval - Largest possible interval jump to generate in semitones (default: 12)
+    */
+    this.barCount = barCount
+    this.minPitch = minPitch
+    this.maxPitch = maxPitch
+    this.maxInterval = maxInterval
+  }
+  generateMusic () {
     /**
      * Generate the music for this application
-     * @param barCount - Number of bars of music to generate (default: 16)
-     * @param minPitch - Midi integer value of lowest pitch to generate (default: 57)
-     * @param maxPitch - Midi integer value of highest pitch to generate (default: 88)
-     * @param maxInterval - Largest possible interval jump to generate in semitones (default: 12)
      */
-    this.barCount = barCount
-    this.bars = this.generator.musicGen(barCount, minPitch, maxPitch, maxInterval, ['q'], 0.2)
+    this.bars = this.generator.musicGen(
+      this.barCount, this.minPitch, this.maxPitch, this.maxInterval, this.durations, this.accidentalFreq
+    )
   }
   draw () {
     /**
@@ -93,11 +115,17 @@ class MainApp {
       let currentNote = this.bars[this.currentBarIndex].notes[this.currentNoteIndex]
       currentNote.playNote(inputVal)
       this.currentNoteIndex++
-    }
-    if (this.currentNoteIndex >= this.bars[this.currentBarIndex].notes.length) {
-      // Finished a bar, move to the next and draw the next bar
-      this.currentBarIndex++
+      if (this.currentNoteIndex >= this.bars[this.currentBarIndex].notes.length) {
+        // Finished a bar, move to the next and draw the next bar
+        this.currentBarIndex++
+        this.currentNoteIndex = 0
+        this.draw()
+      }
+    } else {
+      // We have played all bars and 1 extra note, time to reset
+      this.generateMusic()
       this.currentNoteIndex = 0
+      this.currentBarIndex = 0
       this.draw()
     }
   }
