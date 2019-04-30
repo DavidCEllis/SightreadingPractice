@@ -37,12 +37,14 @@ class MusicNote {
     this.noteLetter = noteRepr.noteLetter // base letter (eg 'C' for 'C#')
     this.noteRange = Math.floor(this.pitch / 12) - 1 // Octave range (eg: 4 for C4)
 
-    /* Cb is a special case
-     * It's treated as having the same octave number as the C above rather than the B below.
-     * So it needs to have an increased octave number.
+    /* B# and Cb are special cases
+     * eg: B#4 is C5, B3 is Cb4
+     * As the numbers come from the absolute pitch these notes need to be adjusted
      */
     if (this.noteName === 'Cb') {
       this.noteRange++
+    } else if (this.noteName === 'B#') {
+      this.noteRange--
     }
     this.accidental = noteRepr.accidental // '#'/'b'/'n' etc accidental representation
     this.inKey = noteRepr.inKey // true / false is note in key
