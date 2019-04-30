@@ -21,7 +21,7 @@ module.exports = {
       }
     ]
   },
-  mode: 'development',
+  mode: 'production',
   output: {
     filename: 'main.bundle.js',
     path: path.resolve(__dirname, 'dist/static')

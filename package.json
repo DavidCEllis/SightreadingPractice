@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "makedocs": "jsdoc",
-    "build": "webpack"
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development"
   },
   "author": "David C Ellis",
   "license": "MIT",
