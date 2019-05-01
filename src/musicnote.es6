@@ -1,8 +1,8 @@
-/*
-  Class to define a musical note
-
-  Used to handle and store information about a single note
-*/
+/**
+ * Class to define a musical note
+ *
+ * Used to handle and store information about a single note
+ */
 
 import { Flow } from 'vexflow'
 import { keyList } from './music_theory/keys.es6'
@@ -57,6 +57,9 @@ class MusicNote {
 
     this.flow()
   }
+  /**
+   * Generate the vexFlow element for this note
+   */
   flow () {
     let vexOut = new VF.StaveNote({
       keys: [this.keyPitch],
@@ -68,17 +71,28 @@ class MusicNote {
     this.vexElement = vexOut
     this.divID = vexOut.attrs.id
   }
+  /**
+   * Instruct vexFlow to render the accidental of this note
+   */
   renderAccidental () {
-    /**
-     * Instruct vexFlow to render the accidental of this note
-     */
     if (this.vexElement) {
       this.vexElement = this.vexElement.addAccidental(0, new VF.Accidental(this.accidental))
     }
   }
+  /**
+   * Compare a given numerical midi note value to the value of this note
+   * (Not used to compare two instances of the class)
+   *
+   * @param midiNote {integer} - midi value of note to compare
+   */
   isEqualTo (midiNote) {
     return this.pitch === midiNote
   }
+  /**
+   * 'Play' this note in a score - determine if it has been played correctly and style appropriately
+   *
+   * @param notePitch - midi note value of note that has been 'played'
+   */
   playNote (notePitch) {
     if (this.vexElement) {
       this.correct = this.isEqualTo(notePitch)
