@@ -8,46 +8,18 @@ import { Flow } from 'vexflow'
 
 var VF = Flow
 
-// These colors are bad and should be changed!
-const correctNoteColor = 'blue'
-const incorrectNoteColor = 'tomato'
-
-const correctStyle = { fillStyle: correctNoteColor, strokeStyle: correctNoteColor }
-const incorrectStyle = { fillStyle: incorrectNoteColor, strokeStyle: incorrectNoteColor }
-
 class MusicNote {
   /**
    * Handle the details of a single note
    *
    * @param pitch - note pitch as an integer
    * @param duration - note duration
-   * @param key - Instance of key (changes representation)
-   * @param clef - Musical Clef to display the pitch
+   * @param config - Application configuration
    */
-  constructor (pitch, duration, key, clef = 'treble') {
+  constructor (pitch, duration, config) {
     this.pitch = pitch
     this.duration = duration
-    this.key = key
-    this.clef = clef
-
-    let noteRepr = key.getRepresentation(pitch)
-
-    this.noteName = noteRepr.name // Basic note name (eg: 'C#')
-    this.noteLetter = noteRepr.noteLetter // base letter (eg 'C' for 'C#')
-    this.noteRange = Math.floor(this.pitch / 12) - 1 // Octave range (eg: 4 for C4)
-
-    /* B# and Cb are special cases
-     * eg: B#4 is C5, B3 is Cb4
-     * As the numbers come from the absolute pitch these notes need to be adjusted
-     */
-    if (this.noteName === 'Cb') {
-      this.noteRange++
-    } else if (this.noteName === 'B#') {
-      this.noteRange--
-    }
-    this.accidental = noteRepr.accidental // '#'/'b'/'n' etc accidental representation
-    this.inKey = noteRepr.inKey // true / false is note in key
-    this.keyPitch = this.noteName + '/' + this.noteRange
+    this.config = config
 
     this.vexElement = null
     this.divID = null
@@ -55,6 +27,54 @@ class MusicNote {
     this.correct = null
 
     this.flow()
+  }
+  /**
+   * Detailed note representation object with name/key/keyletter/accidental
+   */
+  get noteRepr () {
+    return this.config.key.getRepresentation(this.pitch)
+  }
+  /**
+   * Shortcut for note name
+   */
+  get noteName () {
+    return this.noteRepr.name
+  }
+  /**
+   * Shortcut for note letter (EG: C for C#)
+   */
+  get noteLetter () {
+    return this.noteRepr.noteLetter
+  }
+  /**
+   * Octave number for note (EG 4 for C4)
+   */
+  get noteRange () {
+    let noteRange = Math.floor(this.pitch / 12) - 1
+    if (this.noteName === 'Cb') {
+      noteRange++
+    } else if (this.noteName === 'B#') {
+      noteRange--
+    }
+    return noteRange
+  }
+  /**
+   * Accidental for note (EG: '#' for 'C#')
+   */
+  get accidental () {
+    return this.noteRepr.accidental
+  }
+  /**
+   * Boolean true/false if the note is in the current key
+   */
+  get inKey () {
+    return this.noteRepr.inKey
+  }
+  /**
+   * Key with pitch representation for Vexflow output generation
+   */
+  get keyPitch () {
+    return this.noteName + '/' + this.noteRange
   }
   /**
    * Generate the vexFlow element for this note
@@ -96,9 +116,9 @@ class MusicNote {
     if (this.vexElement) {
       this.correct = this.isEqualTo(notePitch)
       if (this.correct) {
-        this.vexElement.setStyle(correctStyle)
+        this.vexElement.setStyle(this.config.correctStyle)
       } else {
-        this.vexElement.setStyle(incorrectStyle)
+        this.vexElement.setStyle(this.config.incorrectStyle)
       }
       this.played = true
     }

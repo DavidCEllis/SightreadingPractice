@@ -42,7 +42,7 @@ class MusicBar {
       notePitch = prng.randomFrom(validNotes)
       noteDuration = prng.randomFrom(this.config.durations)
 
-      note = new MusicNote(notePitch, noteDuration, this.config.key, this.config.clef)
+      note = new MusicNote(notePitch, noteDuration, this.config)
 
       // Handle conditions under which to render accidentals
       // Case 1: Note in key but accidental used earlier

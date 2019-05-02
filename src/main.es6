@@ -78,7 +78,7 @@ class MainApp {
     }
   }
   compareNote (inputVal) {
-    if (this.currentBarIndex < this.barCount) {
+    if (this.currentBarIndex < this.config.barCount) {
       let currentNote = this.bars[this.currentBarIndex].notes[this.currentNoteIndex]
       currentNote.playNote(inputVal)
       this.currentNoteIndex++

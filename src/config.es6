@@ -24,6 +24,9 @@ class AppConfig {
     this.vstart = 40
     this.hoffset = 300
     this.voffset = 125
+
+    this.correctColor = 'blue'
+    this.incorrectColor = 'tomato'
   }
   /**
    * @param key {string} - musical key (EG: 'C' or 'Em')
@@ -129,6 +132,12 @@ class AppConfig {
    */
   get keyNames () {
     return Object.keys(keyList)
+  }
+  get correctStyle () {
+    return { fillStyle: this.correctColor, strokeStyle: this.correctColor }
+  }
+  get incorrectStyle () {
+    return { fillStyle: this.incorrectColor, strokeStyle: this.incorrectColor }
   }
 }
 
