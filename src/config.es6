@@ -25,8 +25,8 @@ class AppConfig {
     this.hoffset = 300
     this.voffset = 125
 
-    this.correctColor = 'blue'
-    this.incorrectColor = 'tomato'
+    this.correctColor = 'blue' // Colour for correctly played notes
+    this.incorrectColor = 'tomato' // Colour for incorrectly played notes
   }
   /**
    * @param key {string} - musical key (EG: 'C' or 'Em')
