@@ -5,7 +5,6 @@
  */
 
 import { Flow } from 'vexflow'
-import { keyList } from './music_theory/keys.es6'
 
 var VF = Flow
 
@@ -21,15 +20,15 @@ class MusicNote {
    * Handle the details of a single note
    *
    * @param pitch - note pitch as an integer
-   * @param key - Musical key for the pitch (changes representation)
    * @param duration - note duration
+   * @param key - Instance of key (changes representation)
    * @param clef - Musical Clef to display the pitch
    */
-  constructor (pitch, key = 'C', duration = 'q', clef = 'treble') {
+  constructor (pitch, duration, key, clef = 'treble') {
     this.pitch = pitch
     this.duration = duration
+    this.key = key
     this.clef = clef
-    this.key = keyList[key]
 
     let noteRepr = key.getRepresentation(pitch)
 

@@ -1,24 +1,21 @@
 import { Flow } from 'vexflow'
-import { keyList } from './music_theory/keys.es6'
+
 import { MusicNote } from './musicnote.es6'
 
 var VF = Flow
 
 class MusicBar {
-  constructor (clef, key, timeSignature = '4/4') {
+  constructor (config) {
     /**
-     * @param clef - name of clef for rendering
-     * @param key - name of key
-     * @param timeSignature - time signature of bar (will be used to work out how to 'fill' a bar)
+     * @param config - global config
      */
-    this.clef = clef
-    this.key = keyList[key]
-    this.timeSignature = timeSignature
+    this.config = config
+
     this.notes = []
     this.beams = null
     this.stave = null
   }
-  generateNotes (prng, lowestNote, highestNote, maxInterval, durations, accidentalRate = 0, lastNote = null) {
+  generateNotes (prng, lastNote = null) {
     // DURATIONS OTHER THAN QUARTER NOTES NOT CURRENTLY SUPPORTED
     let activeAccidentals = {} // 'base note name: n/#/b/##/bb (natural/sharp/flat)'
     let minVal, maxVal
@@ -28,23 +25,24 @@ class MusicBar {
       let validNotes
 
       if (lastNote === null) {
-        minVal = lowestNote
-        maxVal = highestNote
+        minVal = this.config.lowestNote
+        maxVal = this.config.highestNote
       } else {
-        minVal = Math.max(lowestNote, lastNote - maxInterval)
-        maxVal = Math.min(highestNote, lastNote + maxInterval)
+        minVal = Math.max(this.config.lowestNote, lastNote - this.config.maxInterval)
+        maxVal = Math.min(this.config.highestNote, lastNote + this.config.maxInterval)
       }
 
       let chooseAccidental = prng.randReal()
-      if (chooseAccidental >= accidentalRate) {
+      if (chooseAccidental >= this.config.accidentalFreq) {
         // Choose a natural note - filtered by the range given
-        validNotes = this.key.midiValues.naturals.filter(val => (val >= minVal && val <= maxVal))
+        validNotes = this.config.key.midiValues.naturals.filter(val => (val >= minVal && val <= maxVal))
       } else {
-        validNotes = this.key.midiValues.accidentals.filter(val => (val >= minVal && val <= maxVal))
+        validNotes = this.config.key.midiValues.accidentals.filter(val => (val >= minVal && val <= maxVal))
       }
       notePitch = prng.randomFrom(validNotes)
-      noteDuration = prng.randomFrom(durations)
-      note = new MusicNote(notePitch, this.key, noteDuration, this.clef)
+      noteDuration = prng.randomFrom(this.config.durations)
+
+      note = new MusicNote(notePitch, noteDuration, this.config.key, this.config.clef)
 
       // Handle conditions under which to render accidentals
       // Case 1: Note in key but accidental used earlier

@@ -8,10 +8,10 @@ var seed = Date.now() // Use timestamp as basic RNG seed
 var app = new MainApp(div, seed)
 
 var keySelect = document.getElementById('srt-key-list')
-var keyOptions = app.keyNames.map(key => document.createElement('option'))
+var keyOptions = app.config.keyNames.map(() => document.createElement('option'))
 
 for (let i = 0; i < keyOptions.length; i++) {
-  keyOptions[i].text = app.keyNames[i]
+  keyOptions[i].text = app.config.keyNames[i]
   keySelect.add(keyOptions[i])
 }
 
@@ -20,7 +20,8 @@ var accidentalField = document.getElementById('srt-accidentals')
 var regenButton = document.getElementById('srt-regenerate')
 
 regenButton.onclick = function () {
-  app.updateSettings(keySelect.value, accidentalField.value)
+  app.config.key = keySelect.value
+  app.config.accidentalFreq = accidentalField.value
   app.generateMusic()
   app.draw()
 }
