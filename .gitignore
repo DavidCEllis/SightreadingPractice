@@ -1,4 +1,3 @@
 node_modules
-dist/static
-dist/styles
+dist
 reading

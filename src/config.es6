@@ -13,6 +13,8 @@ class AppConfig {
     this.maxInterval = 12
     this.accidentalFreq = 0.1
 
+    this.transposition = 0 // transposition up from actual pitch
+
     // General settings config
     this.barCount = 16
 
