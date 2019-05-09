@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "ml5": "^0.2.3",
     "vexflow": "^1.2.89",
     "webmidi": "^2.3.3"
   }
