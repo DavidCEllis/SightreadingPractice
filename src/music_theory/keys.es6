@@ -3,18 +3,18 @@ import { CodingError } from '../errors.es6'
 const MIDIMIN = 0 // Minimum value of a midi note number
 const MIDIMAX = 128 // Maximum value of a midi note number
 
-const NOTEMAP = [ // Map midi index to notes, kind of arbitrary ordering more/less common names
+const NOTEMAP = [ // Map midi index to notes, # first, b second, double sharps or flats after
   ['C', 'B#', 'Dbb'],
   ['C#', 'Db', 'B##'],
   ['D', 'C##', 'Ebb'],
-  ['Eb', 'D#', 'Fbb'],
+  ['D#', 'Eb', 'Fbb'],
   ['E', 'Fb', 'D##'],
   ['F', 'E#', 'Gbb'],
   ['F#', 'Gb', 'E##'],
   ['G', 'F##', 'Abb'],
-  ['Ab', 'G#'],
+  ['G#', 'Ab'],
   ['A', 'G##', 'Bbb'],
-  ['Bb', 'A#', 'Cbb'],
+  ['A#', 'Bb', 'Cbb'],
   ['B', 'Cb', 'A##']
 ]
 
@@ -88,7 +88,7 @@ const keyList = {
   'C': new MusicKey(
     'C',
     ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
-    ['Db', 'D#', 'Eb', 'F#', 'Gb', 'G#', 'Ab', 'A#', 'Bb']
+    ['C#', 'Db', 'D#', 'Eb', 'F#', 'Gb', 'G#', 'Ab', 'A#', 'Bb']
   ),
   'C#': new MusicKey(
     'C#',
@@ -168,7 +168,7 @@ keyList['Fm'] = new MusicKey('Fm', keyList['Ab'].notes, keyList['Ab'].accidental
 keyList['F#m'] = new MusicKey('F#m', keyList['A'].notes, keyList['A'].accidentals)
 keyList['Gm'] = new MusicKey('Gm', keyList['Bb'].notes, keyList['Bb'].accidentals)
 keyList['G#m'] = new MusicKey('G#m', keyList['B'].notes, keyList['B'].accidentals)
-keyList['Am'] = new MusicKey('Am', keyList['C'].notes, ['C#', 'Db', 'D#', 'Eb', 'F#', 'Gb', 'G#', 'Bb'])
+keyList['Am'] = new MusicKey('Am', keyList['C'].notes, keyList['C'].accidentals)
 keyList['A#m'] = new MusicKey('A#m', keyList['C#'].notes, keyList['C#'].accidentals)
 keyList['Bbm'] = new MusicKey('Bbm', keyList['Db'].notes, keyList['Db'].accidentals)
 keyList['Bm'] = new MusicKey('Bm', keyList['D'].notes, keyList['D'].accidentals)

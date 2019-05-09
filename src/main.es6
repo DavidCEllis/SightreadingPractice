@@ -78,9 +78,12 @@ class MainApp {
     }
   }
   compareNote (inputVal) {
+    // Apply Transposition
+    let noteVal = inputVal + this.config.transposition
+
     if (this.currentBarIndex < this.config.barCount) {
       let currentNote = this.bars[this.currentBarIndex].notes[this.currentNoteIndex]
-      currentNote.playNote(inputVal)
+      currentNote.playNote(noteVal)
       this.currentNoteIndex++
       if (this.currentNoteIndex >= this.bars[this.currentBarIndex].notes.length) {
         // Finished a bar, move to the next and draw the next bar

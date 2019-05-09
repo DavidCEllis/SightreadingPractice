@@ -83,7 +83,7 @@ class MusicNote {
     let vexOut = new VF.StaveNote({
       keys: [this.keyPitch],
       duration: this.duration,
-      clef: this.clef
+      clef: this.config.clef
     })
 
     // Side effect - store element data in class
