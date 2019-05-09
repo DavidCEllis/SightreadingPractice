@@ -24,14 +24,14 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      filename: 'dist/index.html',
+      filename: 'index.html',
       template: 'src/index.html',
       inject: 'body'
     })
   ],
   mode: 'production',
   output: {
-    filename: 'main.bundle.js',
-    path: path.resolve(__dirname, 'dist/static')
+    filename: 'static/main.bundle.js',
+    path: path.resolve(__dirname, 'dist')
   }
 }
