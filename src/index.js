@@ -4,16 +4,20 @@ No music generation or recognition logic should appear here.
 */
 
 import MainApp from './main.es6'
-import { midiStart } from './note_detection/midi_notes.es6'
+import { MIDIListener } from './note_detection/midi_input.es6'
+import { AUDIOListener } from './note_detection/audio_input.es6'
 import { keyList } from './music_theory/keys.es6'
 
-import css from './styles/style.css'
+import './styles/style.css'
 
 // Get the element ID for the div to render the score
 var div = document.getElementById('srt-render')
 
 var seed = Date.now() // Use timestamp as basic RNG seed
 var app = new MainApp(div, seed)
+
+var midiListener = new MIDIListener()
+var audioListener = new AUDIOListener()
 
 // Generation settings IDs
 var clefSelect = document.getElementById('srt-clef')
@@ -67,7 +71,7 @@ var noteTransposition = document.getElementById('srt-transposition')
   highestNoteSelect.value = app.config.highestNote
 }
 
-// Handle settings
+// Handle music generation settings
 var regenButton = document.getElementById('srt-regenerate')
 
 regenButton.onclick = function () {
@@ -83,8 +87,26 @@ regenButton.onclick = function () {
   app.draw()
 }
 
+// Handle note detection settings
 var noteDetectionApply = document.getElementById('srt-applydetection')
 noteDetectionApply.onclick = function () {
+  let useMidi = detectMidi.checked
+  let useAudio = detectAudio.checked
+  if (useMidi) {
+    if (audioListener.isActive) {
+      audioListener.disable()
+    }
+    if (!midiListener.isActive) {
+      midiListener.enable(app)
+    }
+  } else if (useAudio) {
+    if (midiListener.isActive) {
+      midiListener.disable()
+    }
+    if (!audioListener.isActive) {
+      audioListener.enable(app)
+    }
+  }
   app.config.transposition = parseInt(noteTransposition.value)
 }
 
@@ -92,7 +114,7 @@ app.generateMusic()
 app.draw()
 
 // Initially we want to start in midi mode
-midiStart(app)
+midiListener.enable(app)
 
 // CHEATS
 // Cheating functions for testing rendering

@@ -89,8 +89,9 @@ class MainApp {
         // Finished a bar, move to the next and draw the next bar
         this.currentBarIndex++
         this.currentNoteIndex = 0
-        this.draw()
+        // this.draw()
       }
+      this.draw() // draw every note
     } else {
       // We have played all bars and 1 extra note, time to reset
       this.generateMusic()

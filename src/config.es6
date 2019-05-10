@@ -29,6 +29,9 @@ class AppConfig {
 
     this.correctColor = 'blue' // Colour for correctly played notes
     this.incorrectColor = 'tomato' // Colour for incorrectly played notes
+
+    // Audio Settings
+    this.audioThreshold = 0.002
   }
   /**
    * @param key {string} - musical key (EG: 'C' or 'Em')
