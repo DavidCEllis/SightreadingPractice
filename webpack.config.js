@@ -1,5 +1,7 @@
+const extendedModuleToCdn = require('./src/util.es6').extendedModuleToCdn
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin')
 
 module.exports = {
   entry: './src/index.js',
@@ -27,7 +29,8 @@ module.exports = {
       filename: 'index.html',
       template: 'src/index.html',
       inject: 'body'
-    })
+    }),
+    new DynamicCdnWebpackPlugin({ resolver: extendedModuleToCdn })
   ],
   mode: 'production',
   output: {

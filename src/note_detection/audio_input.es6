@@ -38,7 +38,7 @@ class AUDIOListener {
   enable (app) {
     this.app = app
     this.refresh = true
-    this.p5 = new p5(this.p5s)
+    this.p5 = new p5(this.p5s) // eslint-disable-line
     this.context = this.p5.getAudioContext()
     this.context.resume()
     this.mic = new p5.AudioIn()
