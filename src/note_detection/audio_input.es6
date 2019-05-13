@@ -2,6 +2,8 @@ import p5 from 'p5'
 import 'p5/lib/addons/p5.sound'
 import ml5 from 'ml5'
 
+import { keyList } from '../music_theory/keys.es6'
+
 /**
  * Convert an input frequency to a valid pitch based on 12TET A440
  * return -1 for an invalid/no pitch
@@ -101,9 +103,11 @@ class AUDIOListener {
         let confidentInPitch = Boolean(confidence > appConfig.minConfidence)
 
         if (validPitch && newNote && confidentInPitch) {
-          console.log('New Note: ' + pitch)
-          console.log('Amplitude: ' + micLevel)
-          console.log('Confidence: ' + this.pitch.results.confidence)
+          let pitchDetails = keyList['C'].getRepresentation(pitch)
+          let pitchName = pitchDetails.name + Math.floor(pitch / 12) - 1
+          console.log('New Note: ' + pitchName)
+          console.log('Amplitude: ' + micLevel * 10000)
+          console.log('Confidence: ' + this.pitch.results.confidence * 100)
           this.app.compareNote(pitch)
           this.currentPitch = pitch
           this.pitchConsumed = true
