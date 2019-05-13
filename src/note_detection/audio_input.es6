@@ -104,7 +104,7 @@ class AUDIOListener {
 
         if (validPitch && newNote && confidentInPitch) {
           let pitchDetails = keyList['C'].getRepresentation(pitch)
-          let pitchName = pitchDetails.name + Math.floor(pitch / 12) - 1
+          let pitchName = pitchDetails.name + (Math.floor(pitch / 12) - 1)
           console.log('New Note: ' + pitchName)
           console.log('Amplitude: ' + micLevel * 10000)
           console.log('Confidence: ' + this.pitch.results.confidence * 100)
