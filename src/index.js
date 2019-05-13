@@ -11,25 +11,28 @@ import { keyList } from './music_theory/keys.es6'
 import './styles/style.css'
 
 // Get the element ID for the div to render the score
-var div = document.getElementById('srt-render')
+const div = document.getElementById('srt-render')
 
-var seed = Date.now() // Use timestamp as basic RNG seed
-var app = new MainApp(div, seed)
+let seed = Date.now() // Use timestamp as basic RNG seed
+const app = new MainApp(div, seed)
 
-var midiListener = new MIDIListener()
-var audioListener = new AUDIOListener()
+const midiListener = new MIDIListener()
+const audioListener = new AUDIOListener()
 
 // Generation settings IDs
-var clefSelect = document.getElementById('srt-clef')
-var keySelect = document.getElementById('srt-key-list')
-var accidentalField = document.getElementById('srt-accidentals')
-var lowestNoteSelect = document.getElementById('srt-lowestnote')
-var highestNoteSelect = document.getElementById('srt-highestnote')
+const clefSelect = document.getElementById('srt-clef')
+const keySelect = document.getElementById('srt-key-list')
+const accidentalField = document.getElementById('srt-accidentals')
+const lowestNoteSelect = document.getElementById('srt-lowestnote')
+const highestNoteSelect = document.getElementById('srt-highestnote')
 
 // Detection Settings IDs
-var detectMidi = document.getElementById('srt-input-midi')
-var detectAudio = document.getElementById('srt-input-audio')
-var noteTransposition = document.getElementById('srt-transposition')
+const detectMidi = document.getElementById('srt-input-midi')
+const detectAudio = document.getElementById('srt-input-audio')
+const noteTransposition = document.getElementById('srt-transposition')
+const noiseFloor = document.getElementById('srt-noisefloor')
+const minAmplitude = document.getElementById('srt-minamplitude')
+const confidenceLevel = document.getElementById('srt-confidencelevel')
 
 // Add clef options to dropdown
 {
@@ -52,6 +55,12 @@ var noteTransposition = document.getElementById('srt-transposition')
   }
 }
 
+// Set default values from config
+noteTransposition.value = app.config.transposition
+noiseFloor.value = app.config.audioNoiseFloor * 10000
+minAmplitude.value = app.config.audioMinAmplitude * 10000
+confidenceLevel.value = app.config.minConfidence * 100
+
 // Add complete note range to min/max pitches
 {
   let key = keyList['C']
@@ -63,7 +72,7 @@ var noteTransposition = document.getElementById('srt-transposition')
     let newPitch = document.createElement('option')
 
     newPitch.text = noteRepr
-    newPitch.value = i
+    newPitch.value = i.toString()
     lowestNoteSelect.add(newPitch)
     highestNoteSelect.add(newPitch.cloneNode(true))
   }
@@ -72,7 +81,7 @@ var noteTransposition = document.getElementById('srt-transposition')
 }
 
 // Handle music generation settings
-var regenButton = document.getElementById('srt-regenerate')
+const regenButton = document.getElementById('srt-regenerate')
 
 regenButton.onclick = function () {
   app.config.clef = clefSelect.value
@@ -88,7 +97,8 @@ regenButton.onclick = function () {
 }
 
 // Handle note detection settings
-var noteDetectionApply = document.getElementById('srt-applydetection')
+const noteDetectionApply = document.getElementById('srt-applydetection')
+
 noteDetectionApply.onclick = function () {
   let useMidi = detectMidi.checked
   let useAudio = detectAudio.checked
@@ -108,6 +118,9 @@ noteDetectionApply.onclick = function () {
     }
   }
   app.config.transposition = parseInt(noteTransposition.value)
+  app.config.audioNoiseFloor = parseInt(noiseFloor.value) / 10000
+  app.config.audioMinAmplitude = parseInt(minAmplitude.value) / 10000
+  app.config.minConfidence = parseInt(confidenceLevel.value) / 100
 }
 
 app.generateMusic()
@@ -120,7 +133,7 @@ midiListener.enable(app)
 // Cheating functions for testing rendering
 function cheatNote (correct = true) {
   let currentNote = app.bars[app.currentBarIndex].notes[app.currentNoteIndex]
-  var currentPitch = currentNote.pitch - app.config.transposition
+  let currentPitch = currentNote.pitch - app.config.transposition
   if (!correct) {
     currentPitch++
   }
@@ -130,8 +143,8 @@ function cheatNote (correct = true) {
 function cheatTrue () { cheatNote(true) }
 function cheatFalse () { cheatNote(false) }
 
-var correctButton = document.getElementById('correct-note')
-var incorrectButton = document.getElementById('wrong-note')
+const correctButton = document.getElementById('correct-note')
+const incorrectButton = document.getElementById('wrong-note')
 
 correctButton.onclick = cheatTrue
 incorrectButton.onclick = cheatFalse

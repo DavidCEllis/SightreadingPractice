@@ -31,7 +31,12 @@ class AppConfig {
     this.incorrectColor = 'tomato' // Colour for incorrectly played notes
 
     // Audio Settings
-    this.audioThreshold = 0.002
+    this.audioNoiseFloor = 0.001 // Noise floor (used to reset detection for repeated notes)
+    this.audioMinAmplitude = 0.004 // Minimum amplitude of a note to trigger detection
+    this.amplitudeSmoothing = 0.8 // Smoothing applied to amplitude detection
+    this.pitchDetune = 15
+    this.sleepInterval = 5
+    this.minConfidence = 0.75
   }
   /**
    * @param key {string} - musical key (EG: 'C' or 'Em')
@@ -132,6 +137,7 @@ class AppConfig {
   get durations () {
     return this._durations
   }
+  // noinspection JSMethodCanBeStatic
   /**
    * Shortcut for names of keys
    */

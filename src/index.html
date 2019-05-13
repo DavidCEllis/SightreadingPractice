@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <title>Sight Reading Practice</title>
@@ -32,8 +32,19 @@
                     </p>
                     <p>
                         <label for='srt-transposition'>Transposition (semitones):</label>
-                        <input id='srt-transposition' type='number' name='transpose' min='-36' max=36 value='0' step='1'></input>
+                        <input id='srt-transposition' type='number' name='transpose' min='-36' max=36 value='0' step='1'>
                     </p>
+                    <p>
+                        <label for='srt-noisefloor'>Noise Floor:</label>
+                        <input id='srt-noisefloor' type='number' name='noisefloor' min='0' max='10000' step="1">
+                    </p>
+                    <p>
+                        <label for='srt-minamplitude'>Detection Threshold:</label>
+                        <input id='srt-minamplitude' type='number' name='minamplitude' min='0' max='10000' step="1">
+                    </p>
+                    <p>
+                        <label for='srt-confidencelevel'>Model Confidence:</label>
+                        <input id='srt-confidencelevel' type='number' name='confidence' min='0' max='100' step="0.5"></p>
                     <p>
                         <input id='srt-applydetection' type='button' value='Apply'>
                     </p>

@@ -34,50 +34,95 @@ class AUDIOListener {
     this.mic = null
 
     this.refresh = null
+
+    // Bind things in constructor
+    this.beginDetection = this.beginDetection.bind(this)
+    this.getPitch = this.getPitch.bind(this)
+    this.updatePitch = this.updatePitch.bind(this)
   }
   enable (app) {
     this.app = app
     this.refresh = true
-    this.p5 = new p5(this.p5s) // eslint-disable-line
+    // noinspection JSPotentiallyInvalidConstructorUsage
+    this.p5 = new p5(function (sketch) { sketch.noCanvas() }) // eslint-disable-line
+
     this.context = this.p5.getAudioContext()
-    this.context.resume()
-    this.mic = new p5.AudioIn()
-    this.mic.start(this.beginDetection.bind(this))
+    this.context.resume().then(
+      function() {
+        console.log('Audio context resumed')
+        this.mic = new p5.AudioIn()
+        // noinspection JSPotentiallyInvalidUsageOfClassThis
+        this.mic.start(this.beginDetection)
+      }.bind(this),
+      function(err) {
+        console.log('Audio context failed to resume: ' + err)
+      }.bind(this)
+    )
   }
   disable () {
     console.log('Audio Detection Disabled')
     this.refresh = false
     this.mic.stop()
-    this.context.suspend()
-    this.app = null
-  }
-  p5s (sketch) {
-    sketch.noCanvas()
+    this.context.suspend().then(
+      function() {
+        console.log('Audio context suspended')
+        this.app = null
+      }.bind(this),
+      function(error) {
+        console.log('Failed to suspend audio context: ' + error)
+      }
+    )
   }
   get isActive () {
     return Boolean(this.context && this.context.state === 'running')
   }
+
+  /**
+   * Callback function to update the pitch detection in the app provided
+   * @param err - Callback error
+   * @param freq {number} - Frequency detected by model in Hz
+   */
   updatePitch (err, freq) {
-    let audioThreshold = this.app.config.audioThreshold
     if (err) {
       console.log('Error: ' + err)
       this.disable()
-    } else if (freq && this.mic.getLevel() > audioThreshold) {
-      let pitch = freqToMidi(freq)
-      // If pitch is not out of tune and is different or this pitch has not been consumed
-      if (pitch > 0 && (this.currentPitch !== pitch || !this.pitchConsumed)) {
-        this.app.compareNote(pitch)
-        this.currentPitch = pitch
-        this.pitchConsumed = true
+    } else if (this.app) {
+      let appConfig = this.app.config
+      let audioNoiseFloor = appConfig.audioNoiseFloor
+      let audioMinAmplitude = appConfig.audioMinAmplitude
+      let micLevel = this.mic.getLevel(appConfig.amplitudeSmoothing)
+
+      if (freq && micLevel > audioMinAmplitude) {
+        let pitch = freqToMidi(freq, appConfig.pitchDetune)
+        let confidence = this.pitch.results.confidence
+        // If pitch is not out of tune and is different or this pitch has not been consumed
+        let validPitch = Boolean(pitch > 0)
+        let newNote = Boolean(this.currentPitch !== pitch || !this.pitchConsumed)
+        let confidentInPitch = Boolean(confidence > appConfig.minConfidence)
+
+        if (validPitch && newNote && confidentInPitch) {
+          console.log('New Note: ' + pitch)
+          console.log('Amplitude: ' + micLevel)
+          console.log('Confidence: ' + this.pitch.results.confidence)
+          this.app.compareNote(pitch)
+          this.currentPitch = pitch
+          this.pitchConsumed = true
+        }
+      } else if (micLevel < audioNoiseFloor) {
+        this.pitchConsumed = false // If the input is lower than the minimum threshold, reset
       }
-    } else {
-      this.pitchConsumed = false // If the input is null also reset note
     }
   }
+
+  /**
+   * getPitch
+   *
+   * the 'loop' to get the pitch from the model
+   */
   getPitch () {
     if (this.refresh) {
-      this.pitch.getPitch(this.updatePitch.bind(this))
-      setTimeout(this.getPitch.bind(this), 10)
+      this.pitch.getPitch(this.updatePitch)
+      setTimeout(this.getPitch, this.app.config.sleepInterval)
     }
   }
   beginDetection () {
@@ -85,12 +130,9 @@ class AUDIOListener {
       './static/model',
       this.context,
       this.mic.stream,
-      this.detectionStarted.bind(this)
+      function () { console.log('Audio Detection Started.')}
     )
     this.getPitch()
-  }
-  detectionStarted () {
-    console.log('Audio detection started.')
   }
 }
 

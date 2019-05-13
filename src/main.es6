@@ -1,10 +1,10 @@
-import { Flow } from 'vexflow'
+import Vex from 'vexflow'
 
 import { AppConfig } from './config.es6'
 import { MusicGenerator } from './music_generator/musicgen.es6'
 import { InitializationError } from './errors.es6'
 
-var VF = Flow
+const VF = Vex.Flow
 
 class MainApp {
   constructor (div, seed = Date.now()) {
@@ -21,10 +21,10 @@ class MainApp {
     this.svgTag = this.div.getElementsByTagName('svg')[0]
 
     // Details for the current state/notes
-    this.staves = []
+    // this.staves = []
     this.barCount = null
     this.bars = null
-    this.vexNotes = null
+    // this.vexNotes = null
 
     this.currentBarIndex = 0 // Index of currently played bar
     this.currentNoteIndex = 0 // Index of currently played note in bar

@@ -5,6 +5,9 @@ class ValidationError extends Error {
     super(message)
     this.name = 'ValidationError'
     this.message = message
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, ValidationError)
+    }
   }
 }
 
@@ -13,6 +16,9 @@ class InitializationError extends Error {
     super(message)
     this.name = 'InitializationError'
     this.message = message
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, InitializationError)
+    }
   }
 }
 
@@ -21,6 +27,9 @@ class CodingError extends Error {
     super(message)
     this.name = 'CodingError'
     this.message = message
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, CodingError)
+    }
   }
 }
 
