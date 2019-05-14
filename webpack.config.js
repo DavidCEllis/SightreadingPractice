@@ -1,7 +1,9 @@
 const extendedModuleToCdn = require('./src/util.es6').extendedModuleToCdn
+
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
   entry: './src/index.js',
@@ -17,7 +19,12 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          'style-loader',
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              hmr: process.env.NOTE_ENV === 'development'
+            }
+          },
           'css-loader'
         ],
         exclude: /node_modules/
@@ -30,7 +37,8 @@ module.exports = {
       template: 'src/index.html',
       inject: 'body'
     }),
-    new DynamicCdnWebpackPlugin({ resolver: extendedModuleToCdn })
+    new DynamicCdnWebpackPlugin({ resolver: extendedModuleToCdn }),
+    new MiniCssExtractPlugin()
   ],
   mode: 'production',
   output: {

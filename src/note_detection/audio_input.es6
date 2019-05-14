@@ -182,8 +182,8 @@ class AUDIOStats {
   constructor (div) {
     this.div = div
     this.lastValidNote = 'N/A'
-    this.lastConfidence = NaN
-    this.lastLevel = NaN
+    this.lastConfidence = -1
+    this.lastLevel = -1
     this.quietestLevel = 1.0 // 1 is the maximum
     this.loudestLevel = 0.0 // 0 is the minimum
   }
@@ -193,6 +193,7 @@ class AUDIOStats {
    */
   setup () {
     this.div.hidden = false
+    this.div.style = 'border: 2px solid black; width: 300px;'
     this.render()
   }
 
@@ -206,8 +207,8 @@ class AUDIOStats {
 
   reset () {
     this.lastValidNote = 'N/A'
-    this.lastConfidence = NaN
-    this.lastLevel = NaN
+    this.lastConfidence = -1
+    this.lastLevel = -1
     this.quietestLevel = 1.0
     this.loudestLevel = 0.0
   }
@@ -220,11 +221,11 @@ class AUDIOStats {
     this.div.innerHTML = `
     <pre>
     Last Note: ${this.lastValidNote}
-    Last Note Confidence: ${this.lastConfidence * 100}%
-    Last Note Level: ${this.lastLevel * 10000}
+    Last Note Confidence: ${(this.lastConfidence * 100).toFixed(2)}%
+    Last Note Level: ${(this.lastLevel * 10000).toFixed(2)}
     
-    Quietest Level: ${this.quietestLevel * 10000}
-    Loudest Level: ${this.loudestLevel * 10000}
+    Quietest Level: ${(this.quietestLevel * 10000).toFixed(2)}
+    Loudest Level: ${(this.loudestLevel * 10000).toFixed(2)}
     </pre>
     `.trim()
   }

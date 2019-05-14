@@ -6,6 +6,7 @@
     </head>
     <body>
         <h1>Sight Reading Practice</h1>
+        <p><a href="https://github.com/DavidCEllis/SightreadingPractice">Source code available on GitHub</a></p>
         <p>
             A basic tool to help practice simple sight reading of pitches. 
             Reads input from a midi controller and updates each bar as it has been played.
@@ -18,6 +19,9 @@
             Early testing of using <a href="http://p5js.org/">p5.js</a> and <a href="https://ml5js.org/">ml5</a>
             with the <a href="https://github.com/marl/crepe">Crepe pitch tracker</a> for pitch detection and audio comparison.
         </p>
+        <p>
+            Transposition in pitch detection indicates how many semitones an input pitch needs to be shifted by to match the score (eg: for guitar this should be +12).
+        </p>
         <div class="flex-container">
             <form id="srt-notedetect">
                 <fieldset>
@@ -28,7 +32,7 @@
                     </p>
                     <p>
                         <input type="radio" name="input-mode" id="srt-input-audio" value="audio">
-                        <label for="srt-input-audio">Audio input (Pre-Pre-Alpha)</label>
+                        <label for="srt-input-audio">Audio input (early testing)</label>
                     </p>
                     <p>
                         <label for="srt-transposition">Transposition (semitones):</label>
