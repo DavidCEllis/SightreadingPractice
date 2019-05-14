@@ -19,6 +19,8 @@ const app = new MainApp(div, seed)
 const midiListener = new MIDIListener()
 const audioListener = new AUDIOListener()
 
+const audioStats = document.getElementById('srt-audiostats')
+
 // Generation settings IDs
 const clefSelect = document.getElementById('srt-clef')
 const keySelect = document.getElementById('srt-key-list')
@@ -114,7 +116,9 @@ noteDetectionApply.onclick = function () {
       midiListener.disable()
     }
     if (!audioListener.isActive) {
-      audioListener.enable(app)
+      audioListener.enable(app, audioStats)
+    } else {
+      audioListener.stats.reset()
     }
   }
   app.config.transposition = parseInt(noteTransposition.value)

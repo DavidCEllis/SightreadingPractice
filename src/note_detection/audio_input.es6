@@ -1,8 +1,18 @@
+/**
+ * Module for handling audio input and passing note values to the application provided.
+ *
+ * This current version makes use of the ML5 and P5 libraries to use the crepe pitch detection model.
+ * I think this is a bit heavyweight and would ideally rewrite it to just make use of the model directly
+ * and remove the dependencies on p5 and ml5.
+ */
+
 import p5 from 'p5'
 import 'p5/lib/addons/p5.sound'
 import ml5 from 'ml5'
 
 import { keyList } from '../music_theory/keys.es6'
+
+const modelFolder = './static/model'
 
 /**
  * Convert an input frequency to a valid pitch based on 12TET A440
@@ -31,6 +41,7 @@ class AUDIOListener {
     this.pitchConsumed = false
 
     this.app = null
+    this.stats = null
     this.p5 = null
     this.context = null
     this.mic = null
@@ -42,8 +53,13 @@ class AUDIOListener {
     this.getPitch = this.getPitch.bind(this)
     this.updatePitch = this.updatePitch.bind(this)
   }
-  enable (app) {
+  enable (app, statsdiv = null) {
     this.app = app
+    if (statsdiv) {
+      this.stats = new AUDIOStats(statsdiv)
+      this.stats.setup()
+    }
+
     this.refresh = true
     // noinspection JSPotentiallyInvalidConstructorUsage
     this.p5 = new p5(function (sketch) { sketch.noCanvas() }) // eslint-disable-line
@@ -68,6 +84,10 @@ class AUDIOListener {
     this.context.suspend().then(
       function() {
         console.log('Audio context suspended')
+        if (this.stats) {
+          this.stats.teardown()
+          this.stats = null
+        }
         this.app = null
       }.bind(this),
       function(error) {
@@ -94,6 +114,12 @@ class AUDIOListener {
       let audioMinAmplitude = appConfig.audioMinAmplitude
       let micLevel = this.mic.getLevel(appConfig.amplitudeSmoothing)
 
+      // Update statistics for level
+      if (this.stats !== null) {
+        this.stats.loudestLevel = Math.max(this.stats.loudestLevel, micLevel)
+        this.stats.quietestLevel = Math.min(this.stats.quietestLevel, micLevel)
+      }
+
       if (freq && micLevel > audioMinAmplitude) {
         let pitch = freqToMidi(freq, appConfig.pitchDetune)
         let confidence = this.pitch.results.confidence
@@ -105,15 +131,25 @@ class AUDIOListener {
         if (validPitch && newNote && confidentInPitch) {
           let pitchDetails = keyList['C'].getRepresentation(pitch)
           let pitchName = pitchDetails.name + (Math.floor(pitch / 12) - 1)
-          console.log('New Note: ' + pitchName)
-          console.log('Amplitude: ' + micLevel * 10000)
-          console.log('Confidence: ' + this.pitch.results.confidence * 100)
+          // console.log('New Note: ' + pitchName)
+          // console.log('Amplitude: ' + micLevel * 10000)
+          // console.log('Confidence: ' + confidence * 100)
           this.app.compareNote(pitch)
           this.currentPitch = pitch
           this.pitchConsumed = true
+
+          // Update statistics for valid notes
+          if (this.stats !== null) {
+            this.stats.lastValidNote = pitchName
+            this.stats.lastConfidence = confidence
+            this.stats.lastLevel = micLevel
+          }
         }
       } else if (micLevel < audioNoiseFloor) {
         this.pitchConsumed = false // If the input is lower than the minimum threshold, reset
+      }
+      if (this.stats !== null) {
+        this.stats.render()
       }
     }
   }
@@ -124,6 +160,7 @@ class AUDIOListener {
    * the 'loop' to get the pitch from the model
    */
   getPitch () {
+    // I don't think this is the proper way to do this but it 'works'
     if (this.refresh) {
       this.pitch.getPitch(this.updatePitch)
       setTimeout(this.getPitch, this.app.config.sleepInterval)
@@ -131,12 +168,65 @@ class AUDIOListener {
   }
   beginDetection () {
     this.pitch = ml5.pitchDetection(
-      './static/model',
+      modelFolder,
       this.context,
       this.mic.stream,
       function () { console.log('Audio Detection Started.')}
     )
     this.getPitch()
+  }
+}
+
+
+class AUDIOStats {
+  constructor (div) {
+    this.div = div
+    this.lastValidNote = 'N/A'
+    this.lastConfidence = NaN
+    this.lastLevel = NaN
+    this.quietestLevel = 1.0 // 1 is the maximum
+    this.loudestLevel = 0.0 // 0 is the minimum
+  }
+
+  /**
+   * Create statistics layout in div and reveal div
+   */
+  setup () {
+    this.div.hidden = false
+    this.render()
+  }
+
+  /**
+   * Clear statistics from div and hide div
+   */
+  teardown () {
+    this.div.hidden = true
+    this.div.innerHTML = ''
+  }
+
+  reset () {
+    this.lastValidNote = 'N/A'
+    this.lastConfidence = NaN
+    this.lastLevel = NaN
+    this.quietestLevel = 1.0
+    this.loudestLevel = 0.0
+  }
+
+  /**
+   * update statistics in div
+   */
+  render () {
+    // language=HTML
+    this.div.innerHTML = `
+    <pre>
+    Last Note: ${this.lastValidNote}
+    Last Note Confidence: ${this.lastConfidence * 100}%
+    Last Note Level: ${this.lastLevel * 10000}
+    
+    Quietest Level: ${this.quietestLevel * 10000}
+    Loudest Level: ${this.loudestLevel * 10000}
+    </pre>
+    `.trim()
   }
 }
 

@@ -38,7 +38,7 @@ class MusicKey {
      *   accidental: <type of accidental to apply>
      * }
      */
-    let name = null
+    let name = ''
     let inKey = null
     let noteNames = NOTEMAP[midiNote % 12]
     for (const noteName of noteNames) {
@@ -52,7 +52,7 @@ class MusicKey {
         break
       }
     }
-    if (name === null) {
+    if (name === '') {
       throw new CodingError('Could not find any of ' + noteNames + ' in key ' + this.name)
     }
     let noteLetter = name.charAt(0)
