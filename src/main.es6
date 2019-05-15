@@ -7,11 +7,11 @@ import { InitializationError } from './errors.es6'
 const VF = Vex.Flow
 
 class MainApp {
-  constructor (div, seed = Date.now()) {
+  constructor (div, seed = Date.now(), settings = {}) {
     this.div = div
     this.seed = seed
 
-    this.config = new AppConfig()
+    this.config = new AppConfig(settings)
 
     this.renderer = new VF.Renderer(this.div, VF.Renderer.Backends.SVG)
 
@@ -63,7 +63,7 @@ class MainApp {
 
       // Display clef on each new line, time signature on first line
       if ((i % this.config.barsPerLine) === 0) {
-        this.bars[i].stave.addClef(this.config.clef).addKeySignature(this.config.key.name)
+        this.bars[i].stave.addClef(this.config.clef).addKeySignature(this.config.keyName)
         if (i === 0) { this.bars[i].stave.addTimeSignature(this.config.timeSignature) }
       }
       this.bars[i].stave.setContext(this.context).draw()
