@@ -35,7 +35,6 @@ class AppConfig {
     this.audioMinAmplitude = 0.004 // Minimum amplitude of a note to trigger detection
     this.amplitudeSmoothing = 0.8 // Smoothing applied to amplitude detection
     this.pitchDetune = 15
-    this.sleepInterval = 50
     this.minConfidence = 0.75
   }
   /**

@@ -123,6 +123,7 @@ class AUDIOListener {
       if (freq && micLevel > audioMinAmplitude) {
         let pitch = freqToMidi(freq, appConfig.pitchDetune)
         let confidence = this.pitch.results.confidence
+
         // If pitch is not out of tune and is different or this pitch has not been consumed
         let validPitch = Boolean(pitch > 0)
         let newNote = Boolean(this.currentPitch !== pitch || !this.pitchConsumed)
@@ -131,19 +132,14 @@ class AUDIOListener {
         if (validPitch && newNote && confidentInPitch) {
           let pitchDetails = keyList['C'].getRepresentation(pitch)
           let pitchName = pitchDetails.name + (Math.floor(pitch / 12) - 1)
-          // console.log('New Note: ' + pitchName)
-          // console.log('Amplitude: ' + micLevel * 10000)
-          // console.log('Confidence: ' + confidence * 100)
           this.app.compareNote(pitch)
           this.currentPitch = pitch
           this.pitchConsumed = true
 
           // Update statistics for valid notes
-          if (this.stats !== null) {
-            this.stats.lastValidNote = pitchName
-            this.stats.lastConfidence = confidence
-            this.stats.lastLevel = micLevel
-          }
+          this.stats.lastValidNote = pitchName
+          this.stats.lastConfidence = confidence
+          this.stats.lastLevel = micLevel
         }
       } else if (micLevel < audioNoiseFloor) {
         this.pitchConsumed = false // If the input is lower than the minimum threshold, reset
@@ -151,19 +147,18 @@ class AUDIOListener {
       if (this.stats !== null) {
         this.stats.render()
       }
+      this.getPitch()
     }
   }
 
   /**
    * getPitch
    *
-   * the 'loop' to get the pitch from the model
+   * Kick off the pitch detection and get called again in the callback
    */
   getPitch () {
-    // I don't think this is the proper way to do this but it 'works'
     if (this.refresh) {
       this.pitch.getPitch(this.updatePitch)
-      setTimeout(this.getPitch, this.app.config.sleepInterval)
     }
   }
   beginDetection () {
