@@ -1,17 +1,17 @@
-import { Flow } from 'vexflow'
+import Vex from 'vexflow'
 
 import { AppConfig } from './config.es6'
 import { MusicGenerator } from './music_generator/musicgen.es6'
 import { InitializationError } from './errors.es6'
 
-var VF = Flow
+const VF = Vex.Flow
 
 class MainApp {
-  constructor (div, seed = Date.now()) {
+  constructor (div, seed = Date.now(), settings = {}) {
     this.div = div
     this.seed = seed
 
-    this.config = new AppConfig()
+    this.config = new AppConfig(settings)
 
     this.renderer = new VF.Renderer(this.div, VF.Renderer.Backends.SVG)
 
@@ -21,10 +21,10 @@ class MainApp {
     this.svgTag = this.div.getElementsByTagName('svg')[0]
 
     // Details for the current state/notes
-    this.staves = []
+    // this.staves = []
     this.barCount = null
     this.bars = null
-    this.vexNotes = null
+    // this.vexNotes = null
 
     this.currentBarIndex = 0 // Index of currently played bar
     this.currentNoteIndex = 0 // Index of currently played note in bar
@@ -63,7 +63,7 @@ class MainApp {
 
       // Display clef on each new line, time signature on first line
       if ((i % this.config.barsPerLine) === 0) {
-        this.bars[i].stave.addClef(this.config.clef).addKeySignature(this.config.key.name)
+        this.bars[i].stave.addClef(this.config.clef).addKeySignature(this.config.keyName)
         if (i === 0) { this.bars[i].stave.addTimeSignature(this.config.timeSignature) }
       }
       this.bars[i].stave.setContext(this.context).draw()
@@ -78,16 +78,20 @@ class MainApp {
     }
   }
   compareNote (inputVal) {
-    if (this.currentBarIndex < this.config.barCount) {
+    // Apply Transposition
+    let noteVal = inputVal + this.config.transposition
+
+    if (this.currentBarIndex < this.bars.length) {
       let currentNote = this.bars[this.currentBarIndex].notes[this.currentNoteIndex]
-      currentNote.playNote(inputVal)
+      currentNote.playNote(noteVal)
       this.currentNoteIndex++
       if (this.currentNoteIndex >= this.bars[this.currentBarIndex].notes.length) {
         // Finished a bar, move to the next and draw the next bar
         this.currentBarIndex++
         this.currentNoteIndex = 0
-        this.draw()
+        // this.draw()
       }
+      this.draw() // draw every note
     } else {
       // We have played all bars and 1 extra note, time to reset
       this.generateMusic()

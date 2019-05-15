@@ -1,17 +1,20 @@
 import { keyList } from './music_theory/keys.es6'
-import { ValidationError } from './errors.es6'
+import { CodingError, ValidationError } from './errors.es6'
 
 class AppConfig {
-  constructor () {
+  constructor (settings = {}) { // {} evaluated at call time - this is not python!
+    // Default Config Settings
     // Musical settings config
-    this.key = 'C'
-    this.clef = 'treble'
-    this.timeSignature = '4/4'
-    this.durations = ['q']
-    this.highestNote = 81
-    this.lowestNote = 57
-    this.maxInterval = 12
-    this.accidentalFreq = 0.1
+    this.keyName = settings.keyName || 'C'
+    this.clef = settings.clef || 'treble'
+    this.timeSignature = settings.timeSignature || '4/4'
+    this.durations = settings.durations || ['q']
+    this.highestNote = settings.highestNote || 81
+    this.lowestNote = typeof settings.lowestNote !== 'undefined' ? settings.lowestNote : 57 // Can be 0
+    this.maxInterval = settings.maxInterval || 12
+    this.accidentalFreq = typeof settings.accidentalFreq !== 'undefined' ? settings.accidentalFreq : 0.1
+
+    this.transposition = settings.transposition || 0 // transposition up from actual pitch
 
     // General settings config
     this.barCount = 16
@@ -25,18 +28,58 @@ class AppConfig {
     this.hoffset = 300
     this.voffset = 125
 
-    this.correctColor = 'blue' // Colour for correctly played notes
-    this.incorrectColor = 'tomato' // Colour for incorrectly played notes
+    this.correctColor = settings.correctColor || 'blue' // Colour for correctly played notes
+    this.incorrectColor = settings.incorrectColor || 'tomato' // Colour for incorrectly played notes
+
+    //
+    this.detectionMode = 'MIDI' // settings.detectionMode || 'MIDI'
+
+    // Audio Settings
+    this.audioNoiseFloor = settings.audioNoiseFloor || 0.005 // Noise floor (used to reset detection)
+    this.audioMinAmplitude = settings.audioMinAmplitude || 0.010 // Minimum amplitude of a note to trigger detection
+    this.amplitudeSmoothing = typeof settings.amplitudeSmoothing !== 'undefined' ? settings.amplitudeSmoothing : .8
+    this.pitchDetune = settings.pitchDetune || 20 // Detune +/- in cents detected as a pitch
+    this.minConfidence = settings.minConfidence || 0.75 // Actually has to be > 0.5 anyway
+  }
+  get settings () {
+    return {
+      'keyName': this.keyName,
+      'clef': this.clef,
+      // 'timeSignature': this.timeSignature,
+      // 'durations': this.durations,
+      'highestNote': this.highestNote,
+      'lowestNote': this.lowestNote,
+      // 'maxInterval': this.maxInterval,
+      'accidentalFreq': this.accidentalFreq,
+      'transposition': this.transposition,
+      'correctColor': this.correctColor,
+      'incorrectColor': this.incorrectColor,
+      'detectionMode': this.detectionMode,
+      'audioNoiseFloor': this.audioNoiseFloor,
+      'audioMinAmplitude': this.audioMinAmplitude,
+      // 'amplitudeSmoothing': this.amplitudeSmoothing,
+      // 'pitchDetune': this.pitchDetune,
+      'minConfidence': this.minConfidence
+    }
   }
   /**
-   * @param key {string} - musical key (EG: 'C' or 'Em')
+   * @param keyName {string} - musical key (EG: 'C' or 'Em')
    */
-  set key (key) {
-    if (key in keyList) {
-      this._key = keyList[key]
+  set keyName (keyName) {
+    if (keyName in keyList) {
+      this._keyName = keyName
+      this._key = keyList[keyName]
     } else {
-      throw new ValidationError('Key ' + key + ' does not have a definition in the keylist')
+      throw new ValidationError('Key ' + keyName + ' does not have a definition in the keylist')
     }
+  }
+  get keyName () {
+    return this._keyName
+  }
+
+  // noinspection JSMethodCanBeStatic,JSUnusedLocalSymbols
+  set key (unused) {
+    throw new CodingError('Key should be set by using "keyName = ..." and not set directly')
   }
   get key () {
     return this._key
@@ -127,6 +170,7 @@ class AppConfig {
   get durations () {
     return this._durations
   }
+  // noinspection JSMethodCanBeStatic
   /**
    * Shortcut for names of keys
    */

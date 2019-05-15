@@ -142,7 +142,7 @@ class MersenneTwister {
        * @param {Array} options - A list of options for random selection.
        * @returns random object from options.
        */
-    let resultIndex = this.randomBetween(0, options.length - 1)
+    let resultIndex = this.randomBetween(0, options.length)
     return options[resultIndex]
   }
 }
