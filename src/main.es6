@@ -81,7 +81,7 @@ class MainApp {
     // Apply Transposition
     let noteVal = inputVal + this.config.transposition
 
-    if (this.currentBarIndex < this.config.barCount) {
+    if (this.currentBarIndex < this.bars.length) {
       let currentNote = this.bars[this.currentBarIndex].notes[this.currentNoteIndex]
       currentNote.playNote(noteVal)
       this.currentNoteIndex++

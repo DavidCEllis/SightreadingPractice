@@ -58,10 +58,12 @@ const confidenceLevel = document.getElementById('srt-confidencelevel')
 }
 
 // Set default values from config
-noteTransposition.value = app.config.transposition
-noiseFloor.value = app.config.audioNoiseFloor * 10000
-minAmplitude.value = app.config.audioMinAmplitude * 10000
-confidenceLevel.value = app.config.minConfidence * 100
+{
+  noteTransposition.value = app.config.transposition
+  noiseFloor.value = app.config.audioNoiseFloor * 10000
+  minAmplitude.value = app.config.audioMinAmplitude * 10000
+  confidenceLevel.value = app.config.minConfidence * 100
+}
 
 // Add complete note range to min/max pitches
 {
@@ -80,6 +82,38 @@ confidenceLevel.value = app.config.minConfidence * 100
   }
   lowestNoteSelect.value = app.config.lowestNote
   highestNoteSelect.value = app.config.highestNote
+}
+
+
+// Functions to enable and disable audio or midi pitch detection
+function enableDetection () {
+  let useMidi = detectMidi.checked
+  let useAudio = detectAudio.checked
+  if (useMidi) {
+    if (audioListener.isActive) {
+      audioListener.disable()
+    }
+    if (!midiListener.isActive) {
+      midiListener.enable(app)
+    }
+  } else if (useAudio) {
+    if (midiListener.isActive) {
+      midiListener.disable()
+    }
+    if (!audioListener.isActive) {
+      audioListener.enable(app, audioStats)
+    } else {
+      audioListener.stats.reset()
+    }
+  }
+}
+
+function disableDetection () {
+  if (midiListener.isActive) {
+    midiListener.disable()
+  } else if (audioListener.isActive) {
+    audioListener.disable()
+  }
 }
 
 // Handle music generation settings
@@ -102,46 +136,48 @@ regenButton.onclick = function () {
 const noteDetectionApply = document.getElementById('srt-applydetection')
 
 noteDetectionApply.onclick = function () {
-  let useMidi = detectMidi.checked
-  let useAudio = detectAudio.checked
-  if (useMidi) {
-    if (audioListener.isActive) {
-      audioListener.disable()
-    }
-    if (!midiListener.isActive) {
-      midiListener.enable(app)
-    }
-  } else if (useAudio) {
-    if (midiListener.isActive) {
-      midiListener.disable()
-    }
-    if (!audioListener.isActive) {
-      audioListener.enable(app, audioStats)
-    } else {
-      audioListener.stats.reset()
-    }
-  }
+  enableDetection()
   app.config.transposition = parseInt(noteTransposition.value)
   app.config.audioNoiseFloor = parseInt(noiseFloor.value) / 10000
   app.config.audioMinAmplitude = parseInt(minAmplitude.value) / 10000
   app.config.minConfidence = parseInt(confidenceLevel.value) / 100
 }
 
+// Enable detection and let user settings define the mode
+enableDetection()
+
 app.generateMusic()
 app.draw()
 
-// Initially we want to start in midi mode
-midiListener.enable(app)
+// Handle active/inactive window
+/**
+ * Disable the audio/midi input if the page is not visible (you're not looking at the music then!)
+ * Re-enable when you tab back
+ */
+function handleVisibilityChange () {
+  if (document.hidden) {
+    disableDetection()
+  } else {
+    enableDetection()
+  }
+}
+
+document.addEventListener('visibilitychange', handleVisibilityChange)
 
 // CHEATS
 // Cheating functions for testing rendering
 function cheatNote (correct = true) {
-  let currentNote = app.bars[app.currentBarIndex].notes[app.currentNoteIndex]
-  let currentPitch = currentNote.pitch - app.config.transposition
-  if (!correct) {
-    currentPitch++
+  if (app.currentBarIndex < app.bars.length) {
+    let currentNote = app.bars[app.currentBarIndex].notes[app.currentNoteIndex]
+    let currentPitch = currentNote.pitch - app.config.transposition
+    if (!correct) {
+      currentPitch++
+    }
+    app.compareNote(currentPitch)
+  } else {
+    app.generateMusic()
+    app.draw()
   }
-  app.compareNote(currentPitch)
 }
 
 function cheatTrue () { cheatNote(true) }
