@@ -32,7 +32,7 @@ class AppConfig {
     this.incorrectColor = settings.incorrectColor || 'tomato' // Colour for incorrectly played notes
 
     //
-    this.detectionMode = settings.detectionMode || 'MIDI'
+    this.detectionMode = 'MIDI' // settings.detectionMode || 'MIDI'
 
     // Audio Settings
     this.audioNoiseFloor = settings.audioNoiseFloor || 0.005 // Noise floor (used to reset detection)
