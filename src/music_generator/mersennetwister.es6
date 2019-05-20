@@ -52,7 +52,7 @@ class MersenneTwister {
   seedMT (seed) {
     /**
      * Seed the PRNG
-     * @param {integer} seed - PRNG initial seed value (required)
+     * @param seed - PRNG Integer initial seed value (required)
      */
     // Clean seed value to 32 bit unsigned range
     seed >>>= 0
@@ -112,7 +112,7 @@ class MersenneTwister {
     return output
   }
 
-  randReal () {
+  randomReal () {
     /**
      * Return a value in [0, 1)
      * @returns random float between 0 and 1 (does not include 1)
@@ -123,15 +123,15 @@ class MersenneTwister {
   randomBetween (low, high) {
     /**
      * Produce a random integer value between low and high.
-     * @param {integer} low - lowest value in random range.
-     * @param {integer} high - highest value in random range.
+     * @param low - lowest integer value in random range.
+     * @param high - highest integer value in random range.
      * @returns random integer between low and high
      */
     let result
     if (low === high) {
       result = low // if low and high are the same just return the value
     } else {
-      result = Math.floor((this.randReal() * (high - low)) + low)
+      result = Math.floor((this.randomReal() * (high - low)) + low)
     }
     return result
   }

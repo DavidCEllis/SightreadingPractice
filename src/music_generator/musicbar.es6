@@ -32,7 +32,7 @@ class MusicBar {
         maxVal = Math.min(this.config.highestNote, lastNote + this.config.maxInterval)
       }
 
-      let chooseAccidental = prng.randReal()
+      let chooseAccidental = prng.randomReal()
       if (chooseAccidental >= this.config.accidentalFreq) {
         // Choose a natural note - filtered by the range given
         validNotes = this.config.key.midiValues.naturals.filter(val => (val >= minVal && val <= maxVal))
