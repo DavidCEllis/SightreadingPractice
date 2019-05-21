@@ -32,6 +32,8 @@ class MIDIListener {
       }
     })
   }
+
+  // noinspection JSMethodCanBeStatic
   /**
    * Disable listening for inputs via MIDI
    */
@@ -42,6 +44,8 @@ class MIDIListener {
     WebMidi.disable()
     console.log('WebMidi disabled')
   }
+
+  // noinspection JSMethodCanBeStatic
   get isActive () {
     return WebMidi.interface != null
   }

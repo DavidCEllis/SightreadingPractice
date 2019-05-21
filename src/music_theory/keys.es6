@@ -25,6 +25,7 @@ class MusicKey {
     this.accidentals = accidentals
     this.midiValues = this.getMidiValues()
   }
+
   getRepresentation (midiNote) {
     /**
      * Get the most likely name for a note based on the key it is from
@@ -59,6 +60,7 @@ class MusicKey {
     let accidental = (name.substr(1) || 'n') // If there is no substring use 'n' for natural
     return { 'name': name, 'inKey': inKey, 'noteLetter': noteLetter, 'accidental': accidental }
   }
+
   getMidiValues () {
     /**
      * Obtain the midi note values for all accidentals and 'naturals' for a key.

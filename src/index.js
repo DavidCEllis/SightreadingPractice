@@ -203,6 +203,7 @@ function cheatNote (correct = true) {
 }
 
 function cheatTrue () { cheatNote(true) }
+
 function cheatFalse () { cheatNote(false) }
 
 const correctButton = document.getElementById('correct-note')

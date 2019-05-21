@@ -41,6 +41,7 @@ class AppConfig {
     this.pitchDetune = settings.pitchDetune || 20 // Detune +/- in cents detected as a pitch
     this.minConfidence = settings.minConfidence || 0.75 // Actually has to be > 0.5 anyway
   }
+
   get settings () {
     return {
       'keyName': this.keyName,
@@ -62,6 +63,7 @@ class AppConfig {
       'minConfidence': this.minConfidence
     }
   }
+
   /**
    * @param keyName {string} - musical key (EG: 'C' or 'Em')
    */
@@ -73,6 +75,7 @@ class AppConfig {
       throw new ValidationError('Key ' + keyName + ' does not have a definition in the keylist')
     }
   }
+
   get keyName () {
     return this._keyName
   }
@@ -81,9 +84,11 @@ class AppConfig {
   set key (unused) {
     throw new CodingError('Key should be set by using "keyName = ..." and not set directly')
   }
+
   get key () {
     return this._key
   }
+
   /**
    * @param barCount {number} - number of bars of music to generate
    */
@@ -94,9 +99,11 @@ class AppConfig {
       this._barCount = barCount
     }
   }
+
   get barCount () {
     return this._barCount
   }
+
   /**
    * @param lowestNote {number} - midi value of the lowest possible note to generate
    */
@@ -111,9 +118,11 @@ class AppConfig {
       this._lowestNote = lowestNote
     }
   }
+
   get lowestNote () {
     return this._lowestNote
   }
+
   /**
    * @param highestNote {number} - midi value of the highest possible note to generate
    */
@@ -128,9 +137,11 @@ class AppConfig {
       this._highestNote = highestNote
     }
   }
+
   get highestNote () {
     return this._highestNote
   }
+
   /**
    * @param maxInterval {number} - Largest interval between two consecutive notes in semitones
    */
@@ -141,9 +152,11 @@ class AppConfig {
       this._maxInterval = maxInterval
     }
   }
+
   get maxInterval () {
     return this._maxInterval
   }
+
   /**
    * @param accidentalFreq {number} - floating point probability that a note should be an accidental
    */
@@ -154,9 +167,11 @@ class AppConfig {
       this._accidentalFreq = accidentalFreq
     }
   }
+
   get accidentalFreq () {
     return this._accidentalFreq
   }
+
   /**
    * @param durations {Array} - array of strings representing note durations
    */
@@ -167,9 +182,11 @@ class AppConfig {
       this._durations = durations
     }
   }
+
   get durations () {
     return this._durations
   }
+
   // noinspection JSMethodCanBeStatic
   /**
    * Shortcut for names of keys
@@ -177,9 +194,11 @@ class AppConfig {
   get keyNames () {
     return Object.keys(keyList)
   }
+
   get correctStyle () {
     return { fillStyle: this.correctColor, strokeStyle: this.correctColor }
   }
+
   get incorrectStyle () {
     return { fillStyle: this.incorrectColor, strokeStyle: this.incorrectColor }
   }

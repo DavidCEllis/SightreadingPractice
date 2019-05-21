@@ -32,6 +32,7 @@ class MainApp {
     // Get our PRNG for the app
     this.generator = new MusicGenerator(this.seed, this.config)
   }
+
   generateMusic () {
     /**
      * Generate the music for this application
@@ -41,6 +42,7 @@ class MainApp {
     this.currentBarIndex = 0
     this.currentNoteIndex = 0
   }
+
   draw () {
     /**
      * Draw the current music stored in this.notes
@@ -77,6 +79,7 @@ class MainApp {
       this.bars[i].beams.forEach(beam => beam.setContext(this.context).draw())
     }
   }
+
   compareNote (inputVal) {
     // Apply Transposition
     let noteVal = inputVal + this.config.transposition
