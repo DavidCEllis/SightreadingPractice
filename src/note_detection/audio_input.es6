@@ -53,6 +53,7 @@ class AUDIOListener {
     this.getPitch = this.getPitch.bind(this)
     this.updatePitch = this.updatePitch.bind(this)
   }
+
   enable (app, statsdiv = null) {
     this.app = app
     if (statsdiv) {
@@ -66,23 +67,24 @@ class AUDIOListener {
 
     this.context = this.p5.getAudioContext()
     this.context.resume().then(
-      function() {
+      function () {
         console.log('Audio context resumed')
         this.mic = new p5.AudioIn()
         // noinspection JSPotentiallyInvalidUsageOfClassThis
         this.mic.start(this.beginDetection)
       }.bind(this),
-      function(err) {
+      function (err) {
         console.log('Audio context failed to resume: ' + err)
-      }.bind(this)
+      }
     )
   }
+
   disable () {
     console.log('Audio Detection Disabled')
     this.refresh = false
     this.mic.stop()
     this.context.suspend().then(
-      function() {
+      function () {
         console.log('Audio context suspended')
         if (this.stats) {
           this.stats.teardown()
@@ -90,11 +92,12 @@ class AUDIOListener {
         }
         this.app = null
       }.bind(this),
-      function(error) {
+      function (error) {
         console.log('Failed to suspend audio context: ' + error)
       }
     )
   }
+
   get isActive () {
     return Boolean(this.context && this.context.state === 'running')
   }
@@ -161,17 +164,17 @@ class AUDIOListener {
       this.pitch.getPitch(this.updatePitch)
     }
   }
+
   beginDetection () {
     this.pitch = ml5.pitchDetection(
       modelFolder,
       this.context,
       this.mic.stream,
-      function () { console.log('Audio Detection Started.')}
+      function () { console.log('Audio Detection Started.') }
     )
     this.getPitch()
   }
 }
-
 
 class AUDIOStats {
   constructor (div) {
