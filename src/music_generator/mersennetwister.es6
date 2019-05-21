@@ -138,10 +138,10 @@ class MersenneTwister {
 
   randomFrom (options) {
     /**
-       * Select a random item from an array
-       * @param {Array} options - A list of options for random selection.
-       * @returns random object from options.
-       */
+     * Select a random item from an array
+     * @param {Array} options - A list of options for random selection.
+     * @returns random object from options.
+     */
     let resultIndex = this.randomBetween(0, options.length)
     return options[resultIndex]
   }

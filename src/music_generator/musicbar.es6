@@ -2,7 +2,7 @@ import { Flow } from 'vexflow'
 
 import { MusicNote } from './musicnote.es6'
 
-var VF = Flow
+const VF = Flow
 
 class MusicBar {
   constructor (config) {
@@ -15,6 +15,7 @@ class MusicBar {
     this.beams = null
     this.stave = null
   }
+
   generateNotes (prng, lastNote = null) {
     // DURATIONS OTHER THAN QUARTER NOTES NOT CURRENTLY SUPPORTED
     let activeAccidentals = {} // 'base note name: n/#/b/##/bb (natural/sharp/flat)'
@@ -61,6 +62,7 @@ class MusicBar {
     }
     return lastNote
   }
+
   makeStave (hpos, vpos, hoffset) {
     // Make Beams
     let vexNotes = this.notes.map(note => note.vexElement)

@@ -6,7 +6,7 @@
 
 import { Flow } from 'vexflow'
 
-var VF = Flow
+const VF = Flow
 
 class MusicNote {
   /**
@@ -28,26 +28,30 @@ class MusicNote {
 
     this.flow()
   }
+
   /**
    * Detailed note representation object with name/key/keyletter/accidental
    */
   get noteRepr () {
     return this.config.key.getRepresentation(this.pitch)
   }
+
   /**
-   * Shortcut for note name
+   * Shortcut for note name (EG: 'C#' for 'C#4')
    */
   get noteName () {
     return this.noteRepr.name
   }
+
   /**
-   * Shortcut for note letter (EG: C for C#)
+   * Shortcut for note letter (EG: 'C' for 'C#4')
    */
   get noteLetter () {
     return this.noteRepr.noteLetter
   }
+
   /**
-   * Octave number for note (EG 4 for C4)
+   * Octave number for note (EG 4 for 'C4')
    */
   get noteRange () {
     let noteRange = Math.floor(this.pitch / 12) - 1
@@ -58,24 +62,29 @@ class MusicNote {
     }
     return noteRange
   }
+
   /**
-   * Accidental for note (EG: '#' for 'C#')
+   * Accidental for note (EG: '#' for 'C#4')
    */
   get accidental () {
     return this.noteRepr.accidental
   }
+
   /**
    * Boolean true/false if the note is in the current key
    */
   get inKey () {
     return this.noteRepr.inKey
   }
+
   /**
    * Key with pitch representation for Vexflow output generation
+   * EG ('C#/4' for 'C#4')
    */
   get keyPitch () {
     return this.noteName + '/' + this.noteRange
   }
+
   /**
    * Generate the vexFlow element for this note
    */
@@ -90,6 +99,7 @@ class MusicNote {
     this.vexElement = vexOut
     this.divID = vexOut.attrs.id
   }
+
   /**
    * Instruct vexFlow to render the accidental of this note
    */
@@ -98,15 +108,17 @@ class MusicNote {
       this.vexElement = this.vexElement.addAccidental(0, new VF.Accidental(this.accidental))
     }
   }
+
   /**
    * Compare a given numerical midi note value to the value of this note
    * (Not used to compare two instances of the class)
    *
-   * @param midiNote {integer} - midi value of note to compare
+   * @param midiNote - midi value of note to compare
    */
   isEqualTo (midiNote) {
     return this.pitch === midiNote
   }
+
   /**
    * 'Play' this note in a score - determine if it has been played correctly and style appropriately
    *

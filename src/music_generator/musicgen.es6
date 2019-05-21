@@ -3,17 +3,25 @@ import { MersenneTwister } from './mersennetwister.es6'
 import { MusicBar } from './musicbar.es6'
 
 class MusicGenerator {
+  /**
+   * Create a music generator for a given seed and configuration
+   *
+   * @param seed - initial PRNG seed for MT
+   * @param config - Application configuration (shared object)
+   */
   constructor (seed, config) {
     this.prng = new MersenneTwister(seed)
     this.config = config
   }
-  musicGen () {
-    /*
-      Generate barCount bars of 4/4 quarter notes
-      Between lowestNote and highestNote with the largest jump of maxInterval
 
-      Initial naive version
-    */
+  /**
+   * Generate barCount bars of 4/4 quarter notes
+   *
+   * Between lowestNote and highestNote with the largest jump of maxInterval
+   * Initial naive version
+   * @returns {Array}
+   */
+  musicGen () {
     let bars = []
     let lastNote = null
 
