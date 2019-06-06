@@ -89,10 +89,9 @@ class MainApp {
       currentNote.playNote(noteVal)
       this.currentNoteIndex++
       if (this.currentNoteIndex >= this.bars[this.currentBarIndex].notes.length) {
-        // Finished a bar, move to the next and draw the next bar
+        // Finished a bar, move to the next
         this.currentBarIndex++
         this.currentNoteIndex = 0
-        // this.draw()
       }
       this.draw() // draw every note
     } else {
