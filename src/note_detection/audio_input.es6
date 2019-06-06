@@ -2,8 +2,6 @@
  * Module for handling audio input and passing note values to the application provided.
  *
  * This current version makes use of the ML5 and P5 libraries to use the crepe pitch detection model.
- * I think this is a bit heavyweight and would ideally rewrite it to just make use of the model directly
- * and remove the dependencies on p5 and ml5.
  */
 
 import p5 from 'p5'
