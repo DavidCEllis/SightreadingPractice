@@ -1,3 +1,4 @@
+/* global localStorage */
 /*
 This should deal with all the form elements and setting up and anything related to the DOM
 No music generation or recognition logic should appear here.
@@ -41,65 +42,62 @@ const minAmplitude = document.getElementById('srt-minamplitude')
 const confidenceLevel = document.getElementById('srt-confidencelevel')
 
 // Note Detection Settings Box
-{
-  if (app.config.detectionMode === 'MIDI') {
-    detectMidi.checked = true
-    detectAudio.checked = false
-  } else {
-    detectMidi.checked = false
-    detectAudio.checked = true
-  }
-  noteTransposition.value = app.config.transposition
-  noiseFloor.value = app.config.audioNoiseFloor * 10000
-  minAmplitude.value = app.config.audioMinAmplitude * 10000
-  confidenceLevel.value = app.config.minConfidence * 100
+if (app.config.detectionMode === 'MIDI') {
+  detectMidi.checked = true
+  detectAudio.checked = false
+} else {
+  detectMidi.checked = false
+  detectAudio.checked = true
 }
+noteTransposition.value = app.config.transposition
+noiseFloor.value = app.config.audioNoiseFloor * 10000
+minAmplitude.value = app.config.audioMinAmplitude * 10000
+confidenceLevel.value = app.config.minConfidence * 100
 
 // Music Generator Settings Box
+
+// Add clef options to dropdown
 {
-  // Add clef options to dropdown
-  {
-    let clefOptions = ['treble', 'bass', 'alto', 'tenor']
-    for (let clef of clefOptions) {
-      let clefElement = document.createElement('option')
-      clefElement.text = clef.charAt(0).toUpperCase() + clef.slice(1)
-      clefElement.value = clef
-      clefSelect.add(clefElement)
-    }
-    clefSelect.value = app.config.clef
+  let clefOptions = ['treble', 'bass', 'alto', 'tenor']
+  for (let clef of clefOptions) {
+    let clefElement = document.createElement('option')
+    clefElement.text = clef.charAt(0).toUpperCase() + clef.slice(1)
+    clefElement.value = clef
+    clefSelect.add(clefElement)
   }
+  clefSelect.value = app.config.clef
+}
 
 // Add key options to dropdown
-  {
-    let keyOptions = app.config.keyNames.map(() => document.createElement('option'))
-    for (let i = 0; i < keyOptions.length; i++) {
-      keyOptions[i].text = app.config.keyNames[i]
-      keyOptions[i].value = app.config.keyNames[i]
-      keySelect.add(keyOptions[i])
-    }
-    keySelect.value = app.config.keyName
+{
+  let keyOptions = app.config.keyNames.map(() => document.createElement('option'))
+  for (let i = 0; i < keyOptions.length; i++) {
+    keyOptions[i].text = app.config.keyNames[i]
+    keyOptions[i].value = app.config.keyNames[i]
+    keySelect.add(keyOptions[i])
   }
+  keySelect.value = app.config.keyName
+}
 
-  accidentalField.value = app.config.accidentalFreq
+accidentalField.value = app.config.accidentalFreq
 
 // Handle note lists
-  {
-    let key = keyList['C']
-    for (let i = 127; i >= 0; i--) {
-      let noteName = key.getRepresentation(i).name
-      let noteRange = Math.floor(i / 12) - 1 // Don't need to worry about B#/Cb here
-      let noteRepr = noteName + noteRange
+{
+  let key = keyList['C']
+  for (let i = 127; i >= 0; i--) {
+    let noteName = key.getRepresentation(i).name
+    let noteRange = Math.floor(i / 12) - 1 // Don't need to worry about B#/Cb here
+    let noteRepr = noteName + noteRange
 
-      let newPitch = document.createElement('option')
+    let newPitch = document.createElement('option')
 
-      newPitch.text = noteRepr
-      newPitch.value = i.toString()
-      lowestNoteSelect.add(newPitch)
-      highestNoteSelect.add(newPitch.cloneNode(true))
-    }
-    lowestNoteSelect.value = app.config.lowestNote
-    highestNoteSelect.value = app.config.highestNote
+    newPitch.text = noteRepr
+    newPitch.value = i.toString()
+    lowestNoteSelect.add(newPitch)
+    highestNoteSelect.add(newPitch.cloneNode(true))
   }
+  lowestNoteSelect.value = app.config.lowestNote
+  highestNoteSelect.value = app.config.highestNote
 }
 
 // Functions to enable and disable audio or midi pitch detection
