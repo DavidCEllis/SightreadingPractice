@@ -2,3 +2,5 @@ node_modules
 dist
 reading
 .idea
+.nyc_output
+coverage
