@@ -4,10 +4,33 @@
   "description": "Sight reading training tool",
   "private": true,
   "scripts": {
-    "test": "mocha --require @babel/register ./test/**/*.js",
+    "test": "cross-env NODE_ENV=test nyc mocha --require @babel/register ./test/**/*.js",
     "makedocs": "jsdoc",
     "build": "webpack --mode production",
     "dev": "webpack --mode development"
+  },
+  "nyc": {
+    "require": [
+      "@babel/register"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "extension": [
+      ".js",
+      ".es6"
+    ],
+    "sourceMap": false,
+    "instrument": false,
+    "exclude": [
+      "**/*.test.js"
+    ],
+    "include": [
+      "src/**/*.es6",
+      "src/**/*.js"
+    ],
+    "all": true
   },
   "author": "David C Ellis",
   "license": "MIT",
@@ -19,7 +42,9 @@
     "@babel/runtime": "^7.4.4",
     "@types/chai": "^4.1.7",
     "babel-loader": "^8.0.6",
+    "babel-plugin-istanbul": "^5.1.4",
     "chai": "*",
+    "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
     "dynamic-cdn-webpack-plugin": "^4.0.0",
     "html-webpack-plugin": "^3.2.0",
@@ -29,6 +54,7 @@
     "mini-css-extract-plugin": "^0.6.0",
     "mocha": "*",
     "module-to-cdn": "^3.1.2",
+    "nyc": "^14.1.1",
     "sinon": "^7.3.2",
     "style-loader": "^0.23.1",
     "webpack": "^4.31.0",

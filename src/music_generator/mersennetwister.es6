@@ -6,7 +6,7 @@
   No array generator - out of scope for what I needed
 */
 
-import { InitializationError, ValidationError } from '../errors.es6'
+import { InitializationError, ValidationError, ValueError } from '../errors.es6'
 
 /* MT Constants - preceeded with mt */
 const mtW = 32 // This MT uses 32 bit word length
@@ -95,6 +95,7 @@ class MersenneTwister {
      */
 
     // Checks for value
+    /* istanbul ignore if */
     if (this.index > mtN) {
       throw InitializationError('Twister has not been initialized with a seed value (how!?).')
     } else if (this.index === mtN) {
@@ -122,14 +123,18 @@ class MersenneTwister {
 
   randomBetween (low, high) {
     /**
-     * Produce a random integer value between low and high.
+     * Produce a random integer value between low and high
+     *
+     * Excluding the high value.
      * @param low - lowest integer value in random range.
      * @param high - highest integer value in random range.
      * @returns random integer between low and high
      */
     let result
     if (low === high) {
-      result = low // if low and high are the same just return the value
+      throw new ValueError(
+        'Highest value is not strictly higher than lowest: (low: ' + low + ', high: ' + high + ')'
+      )
     } else {
       result = Math.floor((this.randomReal() * (high - low)) + low)
     }
@@ -142,6 +147,9 @@ class MersenneTwister {
      * @param {Array} options - A list of options for random selection.
      * @returns random object from options.
      */
+    if (options.length === 0) {
+      throw new ValueError('Array provided must have at least one item.')
+    }
     let resultIndex = this.randomBetween(0, options.length)
     return options[resultIndex]
   }
