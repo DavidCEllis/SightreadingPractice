@@ -55,7 +55,7 @@ describe('MersenneTwister', function () {
     })
   })
   describe('randomInt()', function () {
-    it('Should construct the same sequence with the same seec.', function () {
+    it('Should construct the same sequence with the same seed.', function () {
       let prng = new MersenneTwister(42)
       let expected = [
         0.37454011430963874,
