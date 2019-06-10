@@ -2,18 +2,20 @@ import { expect } from 'chai'
 import { describe } from 'mocha'
 
 import { MersenneTwister } from '../src/music_generator/mersennetwister.es6'
-import { InitializationError, ValidationError, ValueError } from '../src/errors.es6'
+import { InitializationError, ValueError } from '../src/errors.es6'
+
+const mtN = 624 // degree of recurrence (# elements in array)
 
 describe('MersenneTwister', function () {
   describe('constructor', function () {
-    it('Should throw a ValidationError if not given a value', function () {
-      expect(() => { new MersenneTwister() }).to.throw(ValidationError, 'User must provide a seed value.')
+    it('Should throw a ValueError if not given a value', function () {
+      expect(() => { new MersenneTwister() }).to.throw(ValueError, 'User must provide a seed value.')
     })
-    it('Should throw a ValidationError if the input is not a number', function () {
-      expect(() => { new MersenneTwister('pie')}).to.throw(ValidationError, 'Seed value must be a number.')
+    it('Should throw a ValueError if the input is not a number', function () {
+      expect(() => { new MersenneTwister('pie')}).to.throw(ValueError, 'Seed value must be a number.')
     })
-    it('Should throw a ValidationError if the input is not an integer', function() {
-      expect(() => { new MersenneTwister(3.14)}).to.throw(ValidationError, 'Seed value must be an integer.')
+    it('Should throw a ValueError if the input is not an integer', function() {
+      expect(() => { new MersenneTwister(3.14)}).to.throw(ValueError, 'Seed value must be an integer.')
     })
   })
   describe('randomInt()', function () {
@@ -55,6 +57,11 @@ describe('MersenneTwister', function () {
     })
   })
   describe('randomInt()', function () {
+    it('Should throw an InitializationError if it is somehow not initialized', function () {
+      let prng = new MersenneTwister(42)
+      prng.index = mtN + 1 // change the index so it appears uninitialized
+      expect(() => { prng.randomInt() }).to.throw(InitializationError)
+    })
     it('Should construct the same sequence with the same seed.', function () {
       let prng = new MersenneTwister(42)
       let expected = [
