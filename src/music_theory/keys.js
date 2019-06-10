@@ -1,4 +1,4 @@
-import { CodingError } from '../errors.es6'
+import { CodingError } from '../errors.js'
 
 const MIDIMIN = 0 // Minimum value of a midi note number
 const MIDIMAX = 128 // Maximum value of a midi note number

@@ -1,5 +1,5 @@
-import { keyList } from './music_theory/keys.es6'
-import { CodingError, ValidationError } from './errors.es6'
+import { keyList } from './music_theory/keys.js'
+import { CodingError, ValidationError } from './errors.js'
 
 class AppConfig {
   constructor (settings = {}) { // {} evaluated at call time - this is not python!

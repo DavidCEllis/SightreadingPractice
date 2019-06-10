@@ -3,8 +3,8 @@ import 'jsdom-global/register'  // Not testing vexflow functions but need a wind
 import { expect } from 'chai'
 import { describe } from 'mocha'
 
-import { AppConfig } from '../../src/config.es6'
-import { MusicGenerator } from '../../src/music_generator/musicgen.es6'
+import { AppConfig } from '../../src/config.js'
+import { MusicGenerator } from '../../src/music_generator/music_gen.js'
 
 // I'd like to test seeding with more random options - will have to look at jsverify
 describe('MusicGenerator', function () {

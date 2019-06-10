@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 import sinon from 'sinon'
 
-import MainApp from '../src/main.es6'
+import MainApp from '../src/main.js'
 
 import jsdom from 'jsdom'
 const { JSDOM } = jsdom

@@ -8,7 +8,7 @@ import p5 from 'p5'
 import 'p5/lib/addons/p5.sound'
 import ml5 from 'ml5'
 
-import { keyList } from '../music_theory/keys.es6'
+import { keyList } from '../music_theory/keys.js'
 
 const modelFolder = './static/model'
 

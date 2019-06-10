@@ -1,4 +1,4 @@
-const extendedModuleToCdn = require('./src/util.es6').extendedModuleToCdn
+const extendedModuleToCdn = require('./src/util.js').extendedModuleToCdn
 
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')

@@ -1,6 +1,6 @@
 import { Flow } from 'vexflow'
 
-import { MusicNote } from './musicnote.es6'
+import { MusicNote } from './music_note.js'
 
 const VF = Flow
 

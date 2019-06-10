@@ -4,10 +4,10 @@ This should deal with all the form elements and setting up and anything related 
 No music generation or recognition logic should appear here.
 */
 
-import MainApp from './main.es6'
-import { MIDIListener } from './note_detection/midi_input.es6'
-import { AUDIOListener } from './note_detection/audio_input.es6'
-import { keyList } from './music_theory/keys.es6'
+import MainApp from './main.js'
+import { MIDIListener } from './note_detection/midi_input.js'
+import { AUDIOListener } from './note_detection/audio_input.js'
+import { keyList } from './music_theory/keys.js'
 
 import './styles/style.css'
 
