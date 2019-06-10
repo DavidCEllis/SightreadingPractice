@@ -6,7 +6,7 @@
   No array generator - out of scope for what I needed
 */
 
-import { InitializationError, ValueError } from '../errors.js'
+import { InitializationError, ValueError } from '../errors'
 
 /* MT Constants - preceeded with mt */
 const mtW = 32 // This MT uses 32 bit word length

@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import { describe } from 'mocha'
 
-import { MersenneTwister } from '../../src/music_generator/mersenne_twister.js'
-import { InitializationError, ValueError } from '../../src/errors.js'
+import { MersenneTwister } from '../../src/music_generator/mersenne_twister'
+import { InitializationError, ValueError } from '../../src/errors'
 
 const mtN = 624 // degree of recurrence (# elements in array)
 

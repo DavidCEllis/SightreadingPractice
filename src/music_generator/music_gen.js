@@ -1,6 +1,6 @@
 // Generate random musical data based on given rules
-import { MersenneTwister } from './mersenne_twister.js'
-import { MusicBar } from './music_bar.js'
+import { MersenneTwister } from './mersenne_twister'
+import { MusicBar } from './music_bar'
 
 class MusicGenerator {
   /**

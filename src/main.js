@@ -1,8 +1,8 @@
 import Vex from 'vexflow'
 
-import { AppConfig } from './config.js'
-import { MusicGenerator } from './music_generator/music_gen.js'
-import { InitializationError } from './errors.js'
+import { AppConfig } from './config'
+import { MusicGenerator } from './music_generator/music_gen'
+import { InitializationError } from './errors'
 
 const VF = Vex.Flow
 
