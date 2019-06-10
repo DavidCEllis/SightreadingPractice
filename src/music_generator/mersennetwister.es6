@@ -6,7 +6,7 @@
   No array generator - out of scope for what I needed
 */
 
-import { InitializationError, ValidationError, ValueError } from '../errors.es6'
+import { InitializationError, ValueError } from '../errors.es6'
 
 /* MT Constants - preceeded with mt */
 const mtW = 32 // This MT uses 32 bit word length
@@ -37,11 +37,11 @@ class MersenneTwister {
   constructor (seed) {
     // Some error checking
     if (seed === undefined) {
-      throw new ValidationError('User must provide a seed value.')
+      throw new ValueError('User must provide a seed value.')
     } else if (typeof seed !== 'number') {
-      throw new ValidationError('Seed value must be a number.')
+      throw new ValueError('Seed value must be a number.')
     } else if (!Number.isInteger(seed)) {
-      throw new ValidationError('Seed value must be an integer.')
+      throw new ValueError('Seed value must be an integer.')
     }
     // State
     this.arr = [] // MT array
@@ -97,7 +97,7 @@ class MersenneTwister {
     // Checks for value
     /* istanbul ignore if */
     if (this.index > mtN) {
-      throw InitializationError('Twister has not been initialized with a seed value (how!?).')
+      throw new InitializationError('Twister has not been initialized with a seed value (how!?).')
     } else if (this.index === mtN) {
       this.twist()
     }
