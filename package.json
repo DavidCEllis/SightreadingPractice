@@ -43,6 +43,7 @@
     "@types/chai": "^4.1.7",
     "babel-loader": "^8.0.6",
     "babel-plugin-istanbul": "^5.1.4",
+    "babel-runtime": "^6.26.0",
     "chai": "*",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
