@@ -121,11 +121,18 @@ class MainApp {
     let noteElement = this.svgTag.getElementById(note.divID)
     let noteStyle = note.correct ? this.config.correctStyle : this.config.incorrectStyle
 
-    let stem = noteElement.getElementsByTagName('path')[0]
-    let noteHead = noteElement.getElementsByTagName('path')[1]
+    let noteSegments = noteElement.getElementsByTagName('path')
+
+    let stem = noteSegments[0]
+    let noteHead = noteSegments[1]
+    let accidental = noteSegments[2]
 
     stem.setAttribute('stroke', noteStyle.strokeStyle)
     noteHead.setAttribute('fill', noteStyle.fillStyle)
+
+    if (accidental) {
+      accidental.setAttribute('fill', noteStyle.fillStyle)
+    }
   }
 }
 
