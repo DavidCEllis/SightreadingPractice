@@ -103,6 +103,7 @@ describe('MainApp', function () {
     beforeEach(() => {
       app = new MainApp(testdiv, seed)
       app.generateMusic()
+      app.draw()
     })
     it('Calls playNote against the first note with the given input', function () {
       let testVal = 64
@@ -113,10 +114,38 @@ describe('MainApp', function () {
 
       expect(compareSpy.calledWith(testVal)).to.be.true
     })
-    it('Attempts to redraw the canvas once and only once after a note is played', function () {
+    it('Should modify the colour of a note directly (correct note)', function () {
+      let note = app.bars[0].notes[0]
+      let correctColor = app.config.correctColor
+
+      app.compareNote(note.pitch)
+
+      let notePaths = app.svgTag.getElementById(note.divID).getElementsByTagName('path')
+
+      expect(notePaths[0].getAttribute('stroke')).to.equal(correctColor)
+      expect(notePaths[1].getAttribute('fill')).to.equal(correctColor)
+    })
+    it('Should modify the colour of a note directly (incorrect note)', function () {
+      let note = app.bars[0].notes[0]
+      let incorrectColor = app.config.incorrectColor
+
+      app.compareNote(note.pitch + 1)
+
+      let notePaths = app.svgTag.getElementById(note.divID).getElementsByTagName('path')
+
+      expect(notePaths[0].getAttribute('stroke')).to.equal(incorrectColor)
+      expect(notePaths[1].getAttribute('fill')).to.equal(incorrectColor)
+    })
+    it('Should redraw the entire element only after all notes have been played', function () {
       let drawStub = sinon.stub(app, 'draw')
-      app.compareNote(66)
-      expect(drawStub.calledOnce).to.be.true
+      let barCount = app.config.barCount
+
+      while (app.currentBarIndex < barCount) {
+        app.compareNote(42)
+        expect(drawStub.called).to.be.false
+      }
+      app.compareNote(42)
+      expect(drawStub.called).to.be.true
     })
   })
 })
