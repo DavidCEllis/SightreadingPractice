@@ -5,7 +5,7 @@ import { AppConfig } from '../../src/config'
 import { MusicNote } from '../../src/music_generator/music_note'
 
 describe('MusicNote', function () {
-  describe('constructor', function () {
+  describe('constructor()', function () {
     it('Should store the inputs in the instance', function () {
       let config = new AppConfig()
       let pitch = 60
@@ -30,7 +30,7 @@ describe('MusicNote', function () {
       expect(note.divID).to.include('auto')
     })
   })
-  describe('noteName', function () {
+  describe('keyPitch', function () {
     it('Should return C4 for C4 in the key of C', function () {
       let config = new AppConfig({ keyName: 'C' })
       let pitch = 60
