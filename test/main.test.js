@@ -20,7 +20,7 @@ describe('MainApp', function () {
     document = dom.window.document
     testdiv = document.getElementById('apptest')
   })
-  describe('constructor', function () {
+  describe('constructor()', function () {
     it('Has default config settings', function () {
       let default_settings = {
         'keyName': 'C',
@@ -80,7 +80,7 @@ describe('MainApp', function () {
       expect(app.generator.config.settings).to.eql(demo_settings)
     })
   })
-  describe('generateMusic', function () {
+  describe('generateMusic()', function () {
     let app
     beforeEach(() => {
       app = new MainApp(testdiv, seed)
@@ -98,7 +98,7 @@ describe('MainApp', function () {
       expect(app.currentNoteIndex).to.equal(0)
     })
   })
-  describe('compareNote', function () {
+  describe('compareNote()', function () {
     let app
     beforeEach(() => {
       app = new MainApp(testdiv, seed)

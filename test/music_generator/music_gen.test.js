@@ -8,7 +8,7 @@ import { MusicGenerator } from '../../src/music_generator/music_gen'
 
 // I'd like to test seeding with more random options - will have to look at jsverify
 describe('MusicGenerator', function () {
-  describe('musicGen', function () {
+  describe('musicGen()', function () {
     it('Should generate only notes in a key if p(accidental) = 0', function () {
       let config = new AppConfig({'accidentalFreq': 0, 'keyName': 'C'})
       let mg = new MusicGenerator(1, config)
