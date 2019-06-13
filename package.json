@@ -4,7 +4,7 @@
   "description": "Sight reading training tool",
   "private": true,
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc mocha --require @babel/register ./test/**/*.js",
+    "test": "cross-env NODE_ENV=test nyc mocha --require @babel/register --recursive ./test/",
     "makedocs": "jsdoc",
     "build": "webpack --mode production",
     "dev": "webpack --mode development"
