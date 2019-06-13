@@ -22,7 +22,6 @@ class MainApp {
 
     // Details for the current state/notes
     // this.staves = []
-    this.barCount = null
     this.bars = null
     // this.vexNotes = null
 
@@ -43,11 +42,10 @@ class MainApp {
     this.currentNoteIndex = 0
   }
 
+  /**
+   * Clear and redraw the complete score in the SVG element
+   */
   draw () {
-    /**
-     * Draw the current music stored in this.notes
-     */
-
     if (this.bars === null) {
       throw new InitializationError('Attempted to draw staves before generating notes.')
     }
@@ -57,6 +55,7 @@ class MainApp {
 
     // Generate the staves and their positions
     for (let i = 0; i < this.bars.length; i++) {
+      // Work out horizontal and vertical positioning for bars
       let hpos = this.config.hstart + (i % this.config.barsPerLine) * this.config.hoffset
       let vpos = this.config.vstart + Math.floor(i / this.config.barsPerLine) * this.config.voffset
 
@@ -66,7 +65,9 @@ class MainApp {
       // Display clef on each new line, time signature on first line
       if ((i % this.config.barsPerLine) === 0) {
         this.bars[i].stave.addClef(this.config.clef).addKeySignature(this.config.keyName)
-        if (i === 0) { this.bars[i].stave.addTimeSignature(this.config.timeSignature) }
+        if (i === 0) {
+          this.bars[i].stave.addTimeSignature(this.config.timeSignature)
+        }
       }
       this.bars[i].stave.setContext(this.context).draw()
     }
@@ -80,6 +81,15 @@ class MainApp {
     }
   }
 
+  /**
+   * Compare an input midi value to the current note in the score
+   * @param inputVal { number } - integer note number (based on midi numbers)
+   *
+   * Updates the notes internal state to played and correct/incorrect.
+   *
+   * Advances to the next note and redraws and generates a new score if
+   * the current score has been completed.
+   */
   compareNote (inputVal) {
     // Apply Transposition
     let noteVal = inputVal + this.config.transposition
@@ -93,11 +103,35 @@ class MainApp {
         this.currentBarIndex++
         this.currentNoteIndex = 0
       }
-      this.draw() // draw every note
+      // Just update the draw for the current note
+      this.updateNote(currentNote)
     } else {
       // We have played all bars and 1 extra note, time to reset
       this.generateMusic()
       this.draw()
+    }
+  }
+
+  /**
+   * Alter the display for the given note to match correct/incorrect status
+   *
+   * @param note { MusicNote } - note to redraw and update
+   */
+  updateNote (note) {
+    let noteElement = this.svgTag.getElementById(note.divID)
+    let noteStyle = note.correct ? this.config.correctStyle : this.config.incorrectStyle
+
+    let noteSegments = noteElement.getElementsByTagName('path')
+
+    let stem = noteSegments[0]
+    let noteHead = noteSegments[1]
+    let accidental = noteSegments[2]
+
+    stem.setAttribute('stroke', noteStyle.strokeStyle)
+    noteHead.setAttribute('fill', noteStyle.fillStyle)
+
+    if (accidental) {
+      accidental.setAttribute('fill', noteStyle.fillStyle)
     }
   }
 }

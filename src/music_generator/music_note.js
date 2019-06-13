@@ -97,7 +97,7 @@ class MusicNote {
 
     // Side effect - store element data in class
     this.vexElement = vexOut
-    this.divID = vexOut.attrs.id
+    this.divID = 'vf-' + vexOut.attrs.id
   }
 
   /**
