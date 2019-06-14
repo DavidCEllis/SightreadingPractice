@@ -20,7 +20,7 @@ class AppConfig {
     this.barCount = 16
 
     // Visual settings config
-    this.rendererWidth = 1400
+    this.rendererWidth = 1250
     this.rendererHeight = 600
     this.barsPerLine = 4
     this.hstart = 10

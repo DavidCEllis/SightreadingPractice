@@ -9,7 +9,8 @@ import { MIDIListener } from './note_detection/midi_input'
 import { AUDIOListener } from './note_detection/audio_input'
 import { keyList } from './music_theory/keys'
 
-import './styles/style.css'
+import './scss/main.scss'
+import 'bootstrap'
 
 // Get the element ID for the div to render the score
 const div = document.getElementById('srt-render')

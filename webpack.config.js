@@ -28,6 +28,28 @@ module.exports = {
           'css-loader'
         ],
         exclude: /node_modules/
+      },
+      {
+        test: /\.scss$/,
+        use: [{
+          loader: MiniCssExtractPlugin.loader,
+          options: {
+            hmr: process.env.NOTE_ENV === 'development'
+          }
+        }, {
+          loader: 'css-loader', // translates CSS into CommonJS modules
+        }, {
+          loader: 'postcss-loader', // Run postcss actions
+          options: {
+            plugins: function () { // postcss plugins, can be exported to postcss.config.js
+              return [
+                require('autoprefixer')
+              ]
+            }
+          }
+        }, {
+          loader: 'sass-loader' // compiles Sass to CSS
+        }]
       }
     ]
   },
