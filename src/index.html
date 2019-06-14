@@ -38,70 +38,69 @@
   <div class="row">
     <div class="col">
       <form id="srt-notedetect">
-        <fieldset>
-          <legend>Note Detection Settings</legend>
-          <p>
-            <input type="radio" name="input-mode" id="srt-input-midi" value="midi">
-            <label for="srt-input-midi">MIDI</label>
-          </p>
-          <p>
-            <input type="radio" name="input-mode" id="srt-input-audio" value="audio">
-            <label for="srt-input-audio">Audio input (early testing)</label>
-          </p>
-          <p>
-            <label for="srt-transposition">Transposition (semitones):</label>
-            <input id="srt-transposition" type="number" name="transpose" min="-36" max="36"
-                   value="0"
-                   step="1">
-          </p>
-          <p>
-            <label for="srt-noisefloor">Noise Floor:</label>
-            <input id="srt-noisefloor" type="number" name="noisefloor" min="0" max="10000" step="1">
-          </p>
-          <p>
-            <label for="srt-minamplitude">Detection Threshold:</label>
-            <input id="srt-minamplitude" type="number" name="minamplitude" min="0" max="10000"
-                   step="1">
-          </p>
-          <p>
-            <label for="srt-confidencelevel">Model Confidence:</label>
-            <input id="srt-confidencelevel" type="number" name="confidence" min="0" max="100"
-                   step="0.5"></p>
-          <p>
-            <input id="srt-applydetection" type="button" value="Apply">
-          </p>
-        </fieldset>
+        <legend>Note Detection Settings</legend>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="input-mode" id="srt-input-midi" value="midi">
+          <label for="srt-input-midi">MIDI</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="input-mode" id="srt-input-audio" value="audio">
+          <label for="srt-input-audio">Audio input (early testing)</label>
+        </div>
+        <br/>
+        <div class="form-group">
+          <label for="srt-transposition">Transposition (semitones):</label>
+          <input class="form-control" id="srt-transposition" type="number" name="transpose"
+                 min="-36" max="36" value="0" step="1">
+        </div>
+        <div class="form-group">
+          <label for="srt-noisefloor">Noise Floor:</label>
+          <input class="form-control" id="srt-noisefloor" type="number" name="noisefloor"
+                 min="0" max="10000" step="1">
+        </div>
+        <div class="form-group">
+          <label for="srt-minamplitude">Detection Threshold:</label>
+          <input class="form-control" id="srt-minamplitude" type="number" name="minamplitude"
+                 min="0" max="10000" step="1">
+        </div>
+        <div class="form-group">
+          <label for="srt-confidencelevel">Model Confidence:</label>
+          <input class="form-control" id="srt-confidencelevel" type="number" name="confidence"
+                 min="0" max="100" step="0.5">
+        </div>
+        <div class="form-group">
+          <input class="btn btn-primary" id="srt-applydetection" type="button" value="Apply">
+        </div>
       </form>
     </div>
     <div class="col">
       <form id="srt-musicgen">
-        <fieldset>
-          <legend>Music Generator Settings</legend>
-          <p>
-            <label for="srt-clef">Clef:</label>
-            <select id="srt-clef"></select>
-          </p>
-          <p>
-            <label for="srt-key-list">Key:</label>
-            <select id="srt-key-list"></select>
-          </p>
-          <p>
-            <label for="srt-accidentals">Accidental Chance:</label>
-            <input id="srt-accidentals" type="number" name="accidentals" min="0" max="1" value="0.1"
-                   step="0.01">
-          </p>
-          <p>
-            <label for="srt-lowestnote">Lowest Note:</label>
-            <select id="srt-lowestnote"></select>
-          </p>
-          <p>
-            <label for="srt-highestnote">Highest Note:</label>
-            <select id="srt-highestnote"></select>
-          </p>
-          <p>
-            <input id="srt-regenerate" type="button" value="Regenerate Music">
-          </p>
-        </fieldset>
+        <legend>Music Generator Settings</legend>
+        <div class="form-group">
+          <label for="srt-clef">Clef:</label>
+          <select class="form-control" id="srt-clef"></select>
+        </div>
+        <div class="form-group">
+          <label for="srt-key-list">Key:</label>
+          <select class="form-control" id="srt-key-list"></select>
+        </div>
+        <div class="form-group">
+          <label for="srt-accidentals">Accidental Chance:</label>
+          <input class="form-control" id="srt-accidentals" type="number" name="accidentals"
+                 min="0" max="1" value="0.1" step="0.01">
+        </div>
+        <div class="form-group">
+          <label for="srt-lowestnote">Lowest Note:</label>
+          <select class="form-control" id="srt-lowestnote"></select>
+        </div>
+        <div class="form-group">
+          <label for="srt-highestnote">Highest Note:</label>
+          <select class="form-control" id="srt-highestnote"></select>
+        </div>
+        <div class="form-group">
+          <input class="btn btn-primary" id="srt-regenerate" type="button" value="Regenerate Music">
+        </div>
+
       </form>
     </div>
   </div>
