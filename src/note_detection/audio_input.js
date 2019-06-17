@@ -189,7 +189,7 @@ class AUDIOStats {
    */
   setup () {
     this.div.hidden = false
-    this.div.style = 'border: 2px solid black; width: 300px;'
+    // this.div.style = 'border: 2px solid black; width: 300px;'
     this.render()
   }
 
@@ -215,14 +215,25 @@ class AUDIOStats {
   render () {
     // language=HTML
     this.div.innerHTML = `
-    <pre>
-    Last Note: ${this.lastValidNote}
-    Last Note Confidence: ${(this.lastConfidence * 100).toFixed(2)}%
-    Last Note Level: ${(this.lastLevel * 10000).toFixed(2)}
-    
+    <div class="col">
     Quietest Level: ${(this.quietestLevel * 10000).toFixed(2)}
-    Loudest Level: ${(this.loudestLevel * 10000).toFixed(2)}
-    </pre>
+    </div>
+    <div class="col">
+      <div class="row">
+        Last Note Level: ${(this.lastLevel * 10000).toFixed(2)}
+      </div>
+      <div class="row">
+        Loudest Level: ${(this.loudestLevel * 10000).toFixed(2)}
+      </div>
+    </div>
+    <div class="col">
+      <div class="row">
+        Last Note Confidence: ${(this.lastConfidence * 100).toFixed(2)}%
+      </div>
+      <div class="row">
+        Last Note: ${this.lastValidNote}  
+      </div>
+    </div>
     `.trim()
   }
 }

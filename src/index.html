@@ -40,33 +40,40 @@
       <form id="srt-notedetect">
         <legend>Note Detection Settings</legend>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="input-mode" id="srt-input-midi" value="midi">
+          <input class="form-check-input" type="radio" name="input-mode" id="srt-input-midi"
+                 value="midi">
           <label for="srt-input-midi">MIDI</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="input-mode" id="srt-input-audio" value="audio">
+          <input class="form-check-input" type="radio" name="input-mode" id="srt-input-audio"
+                 value="audio">
           <label for="srt-input-audio">Audio input (early testing)</label>
         </div>
         <br/>
         <div class="form-group">
-          <label for="srt-transposition">Transposition (semitones):</label>
+          <label for="srt-transposition">Transposition (semitones)</label>
           <input class="form-control" id="srt-transposition" type="number" name="transpose"
                  min="-36" max="36" value="0" step="1">
         </div>
-        <div class="form-group">
-          <label for="srt-noisefloor">Noise Floor:</label>
-          <input class="form-control" id="srt-noisefloor" type="number" name="noisefloor"
-                 min="0" max="10000" step="1">
-        </div>
-        <div class="form-group">
-          <label for="srt-minamplitude">Detection Threshold:</label>
-          <input class="form-control" id="srt-minamplitude" type="number" name="minamplitude"
-                 min="0" max="10000" step="1">
-        </div>
-        <div class="form-group">
-          <label for="srt-confidencelevel">Model Confidence:</label>
-          <input class="form-control" id="srt-confidencelevel" type="number" name="confidence"
-                 min="0" max="100" step="0.5">
+        <div id="srt-audio-settings">
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="srt-noisefloor">Noise Floor</label>
+              <input class="form-control" id="srt-noisefloor" type="number" name="noisefloor"
+                     min="0" max="10000" step="1">
+            </div>
+            <div class="form-group col">
+              <label for="srt-minamplitude">Detection Threshold</label>
+              <input class="form-control" id="srt-minamplitude" type="number" name="minamplitude"
+                     min="0" max="10000" step="1">
+            </div>
+            <div class="form-group col">
+              <label for="srt-confidencelevel">Model Minimum Confidence</label>
+              <input class="form-control" id="srt-confidencelevel" type="number" name="confidence"
+                     min="0" max="100" step="0.5">
+            </div>
+          </div>
+          <div class="row" id="srt-audiostats"></div>
         </div>
         <div class="form-group">
           <input class="btn btn-primary" id="srt-applydetection" type="button" value="Apply">
@@ -100,18 +107,16 @@
         <div class="form-group">
           <input class="btn btn-primary" id="srt-regenerate" type="button" value="Regenerate Music">
         </div>
-
       </form>
     </div>
   </div>
   <noscript>Javascript is required for this application.</noscript>
-  <div class="row" id="srt-audiostats"></div>
   <div class="row" id="srt-render"></div>
   <div class="row" id="controls">
-    <div class="btn-group" role="group">
-      <button class="btn btn-secondary" id="correct-note">Simulate correct note</button>
-      <button class="btn btn-secondary" id="wrong-note">Simulate incorrect note</button>
-    </div>
+    <p>
+      <button class="btn btn-primary" id="correct-note">Simulate correct note</button>
+      <button class="btn btn-primary" id="wrong-note">Simulate incorrect note</button>
+    </p>
   </div>
 </div>
 <br/>
