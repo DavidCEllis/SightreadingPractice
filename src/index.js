@@ -37,6 +37,7 @@ const highestNoteSelect = document.getElementById('srt-highestnote')
 // Detection Settings IDs
 const detectMidi = document.getElementById('srt-input-midi')
 const detectAudio = document.getElementById('srt-input-audio')
+const audioSettings = document.getElementById('srt-audio-settings')
 const noteTransposition = document.getElementById('srt-transposition')
 const noiseFloor = document.getElementById('srt-noisefloor')
 const minAmplitude = document.getElementById('srt-minamplitude')
@@ -46,11 +47,15 @@ const confidenceLevel = document.getElementById('srt-confidencelevel')
 if (app.config.detectionMode === 'MIDI') {
   detectMidi.checked = true
   detectAudio.checked = false
+  audioSettings.hidden = true
 } else {
   detectMidi.checked = false
   detectAudio.checked = true
+  audioSettings.hidden = false
 }
 noteTransposition.value = app.config.transposition
+
+// Audio only settings
 noiseFloor.value = app.config.audioNoiseFloor * 10000
 minAmplitude.value = app.config.audioMinAmplitude * 10000
 confidenceLevel.value = app.config.minConfidence * 100
@@ -104,6 +109,7 @@ accidentalField.value = app.config.accidentalFreq
 // Functions to enable and disable audio or midi pitch detection
 function enableDetection () {
   if (app.config.detectionMode === 'MIDI') {
+    audioSettings.hidden = true
     if (audioListener.isActive) {
       audioListener.disable()
     }
@@ -111,6 +117,7 @@ function enableDetection () {
       midiListener.enable(app)
     }
   } else if (app.config.detectionMode === 'AUDIO') {
+    audioSettings.hidden = false
     if (midiListener.isActive) {
       midiListener.disable()
     }

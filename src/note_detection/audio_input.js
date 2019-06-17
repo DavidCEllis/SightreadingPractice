@@ -216,23 +216,21 @@ class AUDIOStats {
     // language=HTML
     this.div.innerHTML = `
     <div class="col">
-    Quietest Level: ${(this.quietestLevel * 10000).toFixed(2)}
+      <p class="text-left">Quietest Level: ${(this.quietestLevel * 10000).toFixed(2)}</p>
     </div>
     <div class="col">
-      <div class="row">
+      <p class="text-left">
         Last Note Level: ${(this.lastLevel * 10000).toFixed(2)}
-      </div>
-      <div class="row">
+        <br>
         Loudest Level: ${(this.loudestLevel * 10000).toFixed(2)}
-      </div>
+      </p>
     </div>
     <div class="col">
-      <div class="row">
+      <p class="text-left">
         Last Note Confidence: ${(this.lastConfidence * 100).toFixed(2)}%
-      </div>
-      <div class="row">
-        Last Note: ${this.lastValidNote}  
-      </div>
+        <br>
+        Last Note: ${this.lastValidNote}
+      </p>  
     </div>
     `.trim()
   }
