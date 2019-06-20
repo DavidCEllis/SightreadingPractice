@@ -41,6 +41,7 @@
     "@babel/register": "^7.4.4",
     "@babel/runtime": "^7.4.4",
     "@types/chai": "^4.1.7",
+    "autoprefixer": "^9.6.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-istanbul": "^5.1.4",
     "babel-runtime": "^6.26.0",
@@ -55,7 +56,10 @@
     "mini-css-extract-plugin": "^0.6.0",
     "mocha": "*",
     "module-to-cdn": "^3.1.2",
+    "node-sass": "^4.12.0",
     "nyc": "^14.1.1",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
     "sinon": "^7.3.2",
     "style-loader": "^0.23.1",
     "webpack": "^4.31.0",
@@ -63,8 +67,12 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "bootstrap": "^4.3.1",
+    "bootswatch": "^4.3.1",
+    "jquery": "^3.4.1",
     "ml5": "^0.2.3",
     "p5": "^0.8.0",
+    "popper.js": "^1.15.0",
     "vexflow": "^1.2.89",
     "webmidi": "^2.3.3"
   }
