@@ -15,7 +15,20 @@ import 'bootstrap'
 // Get the element ID for the div to render the score
 const div = document.getElementById('srt-render')
 
-let seed = Date.now() // Use timestamp as basic RNG seed
+// Equalize height of labels
+{
+  let configLabels = document.getElementsByClassName('tall-label')
+  let maxHeight = 0
+  for (let i = 0; i < configLabels.length; i++) {
+    maxHeight = Math.max(configLabels[i].clientHeight, maxHeight)
+  }
+  for (let i = 0; i < configLabels.length; i++) {
+    configLabels[i].style.height = `${maxHeight}px`
+  }
+}
+
+const seed = Date.now() // Use timestamp as basic RNG seed
+
 let settings = JSON.parse(localStorage.getItem('appConfig'))
 if (settings === null) {
   settings = {}
