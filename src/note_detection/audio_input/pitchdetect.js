@@ -6,7 +6,7 @@ const modelFolder = './static/model'
 /**
  * Load the tensorflow model and get the frequency detection processor
  */
-async function getProcessor (callback) {
+async function getPitchDetector (callback) {
   let tfModel = await tf.loadLayersModel(modelFolder)
   const cent_mapping = tf.add(
     tf.linspace(0, 7180, 360),
@@ -17,7 +17,7 @@ async function getProcessor (callback) {
    * Take an audio input event and return the frequency and confidence of the model
    * @param event
    */
-  function processBuffer (event) {
+  function pitchDetect (event) {
     // **Modified code from Crepe repository (see LICENCE)**
     let resampled = resample(event)
     tf.tidy(() => {
@@ -51,7 +51,7 @@ async function getProcessor (callback) {
       callback({ frequency: result, confidence: confidence })
     })
   }
-  return processBuffer
+  return pitchDetect
 }
 
-export { getProcessor }
+export { getPitchDetector }
