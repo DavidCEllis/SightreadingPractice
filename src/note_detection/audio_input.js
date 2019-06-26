@@ -115,11 +115,19 @@ class AUDIOListener {
       let audioMinAmplitude = appConfig.audioMinAmplitude
       let micLevel = this.mic.getLevel(appConfig.amplitudeSmoothing)
 
-      // Update statistics for level
-      if (this.stats !== null) {
-        this.stats.loudestLevel = Math.max(this.stats.loudestLevel, micLevel)
-        this.stats.quietestLevel = Math.min(this.stats.quietestLevel, micLevel)
+      // Fake 'stats' object if none exists
+      if (!this.stats) {
+        this.stats = {}
+        this.stats.state = {}
+        this.stats.render = function () {} // Dummy function that does nothing
+        this.stats.equal = function (other) { return true } // Fake stats never render
       }
+
+      // Update statistics for level
+      let lastStats = this.stats.state
+      this.stats.loudestLevel = Math.max(this.stats.loudestLevel, micLevel)
+      this.stats.quietestLevel = Math.min(this.stats.quietestLevel, micLevel)
+
 
       if (freq && micLevel > audioMinAmplitude) {
         let pitch = freqToMidi(freq, appConfig.pitchDetune)
@@ -145,7 +153,7 @@ class AUDIOListener {
       } else if (micLevel < audioNoiseFloor) {
         this.pitchConsumed = false // If the input is lower than the minimum threshold, reset
       }
-      if (this.stats !== null) {
+      if (!this.stats.equal(lastStats)) {
         this.stats.render()
       }
       this.getPitch()
@@ -182,6 +190,20 @@ class AUDIOStats {
     this.lastLevel = -1
     this.quietestLevel = 1.0 // 1 is the maximum
     this.loudestLevel = 0.0 // 0 is the minimum
+  }
+
+  get state () {
+    return {
+      lastValidNote: this.lastValidNote,
+      lastConfidence: this.lastConfidence,
+      lastLevel: this.lastLevel,
+      quietestLevel: this.quietestLevel,
+      loudestLevel: this.loudestLevel
+    }
+  }
+
+  equal (other) {
+    return JSON.stringify(this.state) === JSON.stringify(other.state)
   }
 
   /**
