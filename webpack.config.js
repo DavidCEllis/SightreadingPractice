@@ -64,7 +64,19 @@ module.exports = {
   ],
   mode: 'production',
   output: {
-    filename: 'static/main.bundle.js',
+    filename: 'static/[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist')
+  },
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
+    }
   }
 }
