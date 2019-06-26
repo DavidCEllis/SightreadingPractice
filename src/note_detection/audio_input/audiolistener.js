@@ -6,7 +6,7 @@
  */
 
 import { keyList } from '../../music_theory/keys'
-import AUDIOStats from './audiostats'
+import AudioStatsDisplay from './statsdisplay'
 import freqToMidi from './freqtomidi'
 
 
@@ -16,6 +16,7 @@ class AUDIOListener {
     this.pitchConsumed = false
 
     this.app = null
+    this.config = null
     this.stats = null
 
     this.refresh = null
@@ -28,12 +29,15 @@ class AUDIOListener {
 
   enable (app, statsdiv = null) {
     this.app = app
+    this.config = this.app.config
     if (statsdiv) {
-      this.stats = new AUDIOStats(statsdiv)
+      this.stats = new AudioStatsDisplay(statsdiv)
       this.stats.setup()
     }
 
     this.refresh = true
+
+
 
   }
 
@@ -43,30 +47,15 @@ class AUDIOListener {
 
   }
 
+  comparePitch (pitchResult) {
+    if (pitchResult.confidence > this.config.minConfidence) {
+      let midiFreq = freqToMidi(pitchResult.frequency, this.config.pitchDetune)
+
+    }
+  }
+
   get isActive () {
     return false
   }
 
-  /**
-   * Callback function to update the pitch detection in the app provided
-   * @param err - Callback error
-   * @param freq {number} - Frequency detected by model in Hz
-   */
-  updatePitch (err, freq) {
-
-  }
-
-  /**
-   * getPitch
-   *
-   * Kick off the pitch detection and get called again in the callback
-   */
-  getPitch () {
-
-  }
-
-  beginDetection () {
-
-    this.getPitch()
-  }
 }

@@ -1,7 +1,41 @@
+/**
+ * Machine learning pitch detection function using the CREPE pitch detection
+ * machine learning model with tensorflow
+ */
+// If code handles tensorflow/resampling it's from CREPE (see LICENCE)
+// if it's a nightmare trying to deal with webaudio it's probably my fault (DCE)
+
 import * as tf from '@tensorflow/tfjs'
-import resample from './resample'
 
 const modelFolder = './static/model'
+
+const MODEL_SAMPLERATE = 16000
+const BUFFER_SIZE = 1024
+
+
+/**
+ * Resample an audio input buffer linearly (simplified)
+ * @param buffer
+ * @returns {Float32Array}
+ */
+function resample (buffer) {
+  const interpolate = (buffer.sampleRate % MODEL_SAMPLERATE !== 0)
+  const multiplier = buffer.sampleRate / MODEL_SAMPLERATE
+  const original = buffer.getChannelData(0)
+  const subsamples = new Float32Array(BUFFER_SIZE)
+  for (let i = 0; i < BUFFER_SIZE; i++) {
+    if (!interpolate) {
+      subsamples[i] = original[i * multiplier]
+    } else {
+      // simplistic, linear resampling
+      let left = Math.floor(i * multiplier)
+      let right = left + 1
+      let p = i * multiplier - left
+      subsamples[i] = (1 - p) * original[left] + p * original[right]
+    }
+  }
+  return subsamples
+}
 
 /**
  * Load the tensorflow model and get the frequency detection processor
@@ -18,7 +52,6 @@ async function getPitchDetector (callback) {
    * @param event
    */
   function pitchDetect (event) {
-    // **Modified code from Crepe repository (see LICENCE)**
     let resampled = resample(event)
     tf.tidy(() => {
       // run the prediction on the model
@@ -51,6 +84,7 @@ async function getPitchDetector (callback) {
       callback({ frequency: result, confidence: confidence })
     })
   }
+
   return pitchDetect
 }
 

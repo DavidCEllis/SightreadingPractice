@@ -1,3 +1,7 @@
+/**
+ * Code to handle different audio input specifications (to some extent)
+ */
+
 // Polyfill for navigator.mediaDevices.getUserMedia
 // Make mediaDevices if it doesn't exist
 if (navigator.mediaDevices === undefined) {
@@ -18,8 +22,7 @@ if (navigator.mediaDevices.getUserMedia === undefined) {
   }
 }
 
-async function getAudioInput(statusFunc) {
-  statusFunc('Initialising audio input...')
+async function getAudioInput() {
   let media = await navigator.mediaDevices.getUserMedia({audio: true})
 
   // noinspection JSUnresolvedVariable
@@ -27,4 +30,8 @@ async function getAudioInput(statusFunc) {
   let audioContext = new AudioContext()
 
   let mic = audioContext.createMediaStreamSource(media)
+
+  return { mic: mic, audioContext: audioContext}
 }
+
+export default getAudioInput

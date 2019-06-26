@@ -1,4 +1,4 @@
-export default class AUDIOStats {
+export default class AudioStatsDisplay {
   constructor (div) {
     this.div = div
     this.lastValidNote = 'N/A'
@@ -6,6 +6,16 @@ export default class AUDIOStats {
     this.lastLevel = -1
     this.quietestLevel = 1.0 // 1 is the maximum
     this.loudestLevel = 0.0 // 0 is the minimum
+  }
+
+  get state () {
+    return {
+      lastValidNote: this.lastValidNote,
+      lastConfidence: this.lastConfidence,
+      lastLevel: this.lastLevel,
+      quietestLevel: this.quietestLevel,
+      loudestLevel: this.loudestLevel
+    }
   }
 
   /**
