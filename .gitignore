@@ -1,5 +1,6 @@
 node_modules
 dist
+model
 reading
 .idea
 .nyc_output
