@@ -32,7 +32,7 @@ function extendedModuleToCdn (moduleName, version, options = null) {
     // console.log('Found: ' + moduleName)
     return CDNLinks[moduleName]
   } else {
-    console.log('Not Found: ' + moduleName)
+    // console.log('Not Found: ' + moduleName)
     let result = moduleToCdn(moduleName, version, options)
     if (result) {
       // console.log(result)
