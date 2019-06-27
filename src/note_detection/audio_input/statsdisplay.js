@@ -18,6 +18,10 @@ export default class AudioStatsDisplay {
     }
   }
 
+  equal (other) {
+    return JSON.stringify(this.state) === JSON.stringify(other.state)
+  }
+
   /**
    * Create statistics layout in div and reveal div
    */
