@@ -6,6 +6,8 @@ const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
+const TerserJSPlugin = require('terser-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 module.exports = {
   entry: ['./src/index.js'],
@@ -74,6 +76,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   optimization: {
+    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
     runtimeChunk: 'single',
     splitChunks: {
       cacheGroups: {
