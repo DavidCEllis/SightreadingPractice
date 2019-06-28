@@ -6,7 +6,7 @@ No music generation or recognition logic should appear here.
 
 import MainApp from './main'
 import { MIDIListener } from './note_detection/midi_input'
-import { AUDIOListener } from './note_detection/audio_input'
+import { AudioListener } from './note_detection/audio_input/audiolistener'
 import { keyList } from './music_theory/keys'
 
 import './scss/main.scss'
@@ -36,7 +36,7 @@ if (settings === null) {
 const app = new MainApp(div, seed, settings)
 
 const midiListener = new MIDIListener()
-const audioListener = new AUDIOListener()
+const audioListener = new AudioListener()
 
 const audioStats = document.getElementById('srt-audiostats')
 

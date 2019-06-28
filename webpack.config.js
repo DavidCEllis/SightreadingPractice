@@ -4,9 +4,13 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
+const TerserJSPlugin = require('terser-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 module.exports = {
-  entry: './src/index.js',
+  entry: ['./src/index.js'],
   module: {
     rules: [
       {
@@ -54,6 +58,10 @@ module.exports = {
     ]
   },
   plugins: [
+    new CleanWebpackPlugin(),
+    new CopyPlugin([
+      { from: './model', to: './static/model'}
+    ]),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/index.html',
@@ -64,7 +72,20 @@ module.exports = {
   ],
   mode: 'production',
   output: {
-    filename: 'static/main.bundle.js',
+    filename: 'static/[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist')
+  },
+  optimization: {
+    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
+    }
   }
 }
