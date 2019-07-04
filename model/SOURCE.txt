@@ -1,0 +1,3 @@
+This is the 'tiny' model from https://github.com/marl/crepe/tree/models
+
+Converted with tensorflowjs
