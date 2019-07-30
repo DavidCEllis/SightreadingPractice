@@ -36,13 +36,13 @@ class AppConfig {
     this.audioMinAmplitude = settings.audioMinAmplitude || 0.010 // Minimum amplitude of a note to trigger detection
     this.amplitudeSmoothing = typeof settings.amplitudeSmoothing !== 'undefined' ? settings.amplitudeSmoothing : .8
     this.pitchDetune = settings.pitchDetune || 20 // Detune +/- in cents detected as a pitch
-    this.minConfidence = settings.minConfidence || 0.75 // Actually has to be > 0.5 anyway
+    this.minConfidence = settings.minConfidence || 0.75 // ML Model confidence
   }
 
   // Rendering details
   get rendererWidth () {
     if (this.div !== null) {
-      return this.div.offsetWidth
+      return this.div.clientWidth
     } else {
       return 1250
     }
