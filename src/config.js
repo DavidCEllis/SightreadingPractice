@@ -2,7 +2,9 @@ import { keyList } from './music_theory/keys'
 import { CodingError, ValidationError } from './errors'
 
 class AppConfig {
-  constructor (settings = {}) { // {} evaluated at call time - this is not python!
+  constructor ({ div = null, settings = {} }) { // {} evaluated at call time - this is not python!
+    this.div = div  // Need div to work out sizes
+
     // Default Config Settings
     // Musical settings config
     this.keyName = settings.keyName || 'C'
@@ -16,22 +18,17 @@ class AppConfig {
 
     this.transposition = settings.transposition || 0 // transposition up from actual pitch
 
-    // General settings config
-    this.barCount = 16
-
     // Visual settings config
-    this.rendererWidth = 1250
     this.rendererHeight = 600
-    this.barsPerLine = 4
     this.hstart = 10
     this.vstart = 40
-    this.hoffset = 300
+    this.barwidth = 300
     this.voffset = 125
 
     this.correctColor = settings.correctColor || 'blue' // Colour for correctly played notes
     this.incorrectColor = settings.incorrectColor || 'tomato' // Colour for incorrectly played notes
 
-    //
+    // Default detection mode as midi
     this.detectionMode = 'MIDI' // settings.detectionMode || 'MIDI'
 
     // Audio Settings
@@ -40,6 +37,23 @@ class AppConfig {
     this.amplitudeSmoothing = typeof settings.amplitudeSmoothing !== 'undefined' ? settings.amplitudeSmoothing : .8
     this.pitchDetune = settings.pitchDetune || 20 // Detune +/- in cents detected as a pitch
     this.minConfidence = settings.minConfidence || 0.75 // Actually has to be > 0.5 anyway
+  }
+
+  // Rendering details
+  get rendererWidth () {
+    if (this.div !== null) {
+      return this.div.offsetWidth
+    } else {
+      return 1250
+    }
+  }
+
+  get barsPerLine () {
+    return Math.min(Math.floor((this.rendererWidth - this.hstart) / this.barwidth), 4)
+  }
+
+  get barCount () {
+    return this.barsPerLine * 4
   }
 
   get settings () {
@@ -87,21 +101,6 @@ class AppConfig {
 
   get key () {
     return this._key
-  }
-
-  /**
-   * @param barCount {number} - number of bars of music to generate
-   */
-  set barCount (barCount) {
-    if (!Number.isInteger(barCount) || barCount < 0) {
-      throw new ValidationError('Bar count must be a positive integer.')
-    } else {
-      this._barCount = barCount
-    }
-  }
-
-  get barCount () {
-    return this._barCount
   }
 
   /**

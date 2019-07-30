@@ -1,7 +1,7 @@
 import 'jsdom-global/register'
 
 import { expect } from 'chai'
-import { describe, it } from 'mocha'
+import { describe, it, beforeEach } from 'mocha'
 import sinon from 'sinon'
 
 import MainApp from '../src/main'

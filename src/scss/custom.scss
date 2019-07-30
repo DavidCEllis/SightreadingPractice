@@ -1,5 +1,7 @@
-.container{
-  min-width: 1250px;
+@media (min-width: 1300px) {
+  .container {
+    min-width: 1250px;
+  }
 }
 
 .jumbotron{

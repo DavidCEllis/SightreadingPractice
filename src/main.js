@@ -11,7 +11,7 @@ class MainApp {
     this.div = div
     this.seed = seed
 
-    this.config = new AppConfig(settings)
+    this.config = new AppConfig({div: div, settings: settings})
 
     this.renderer = new VF.Renderer(this.div, VF.Renderer.Backends.SVG)
 
@@ -56,11 +56,11 @@ class MainApp {
     // Generate the staves and their positions
     for (let i = 0; i < this.bars.length; i++) {
       // Work out horizontal and vertical positioning for bars
-      let hpos = this.config.hstart + (i % this.config.barsPerLine) * this.config.hoffset
+      let hpos = this.config.hstart + (i % this.config.barsPerLine) * this.config.barwidth
       let vpos = this.config.vstart + Math.floor(i / this.config.barsPerLine) * this.config.voffset
 
       // Generate stave for bar
-      this.bars[i].makeStave(hpos, vpos, this.config.hoffset)
+      this.bars[i].makeStave(hpos, vpos, this.config.barwidth)
 
       // Display clef on each new line, time signature on first line
       if ((i % this.config.barsPerLine) === 0) {
