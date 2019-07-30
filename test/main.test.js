@@ -19,6 +19,9 @@ describe('MainApp', function () {
     dom = new JSDOM('<!DOCTYPE html><div id="apptest"></div>')
     document = dom.window.document
     testdiv = document.getElementById('apptest')
+
+    // Sinon magic to pretend our DIV has width
+    sinon.stub(testdiv, 'clientWidth').get(function () { return 1250 })
   })
   describe('constructor()', function () {
     it('Has default config settings', function () {
