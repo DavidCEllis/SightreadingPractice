@@ -1,8 +1,8 @@
-import { Flow } from 'vexflow'
+import Vex from 'vexflow'
 
 import { MusicNote } from './music_note'
 
-const VF = Flow
+const VF = Vex.Flow
 
 class MusicBar {
   constructor (config) {

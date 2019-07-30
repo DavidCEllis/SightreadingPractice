@@ -4,9 +4,9 @@
  * Used to handle and store information about a single note
  */
 
-import { Flow } from 'vexflow'
+import Vex from 'vexflow'
 
-const VF = Flow
+const VF = Vex.Flow
 
 class MusicNote {
   /**
