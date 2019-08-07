@@ -10,20 +10,20 @@ if (navigator.mediaDevices === undefined) {
 }
 
 if (navigator.mediaDevices.getUserMedia === undefined) {
-  navigator.mediaDevices.getUserMedia = function(constraints) {
+  navigator.mediaDevices.getUserMedia = function (constraints) {
     // noinspection JSUnresolvedVariable
     let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia
     if (!getUserMedia) {
-      return Promise.reject(new Error("getUserMedia is not implemented in this browser"))
+      return Promise.reject(new Error('getUserMedia is not implemented in this browser'))
     }
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       getUserMedia.call(navigator, constraints, resolve, reject)
     })
   }
 }
 
-async function getAudioInput() {
-  let media = await navigator.mediaDevices.getUserMedia({audio: true})
+async function getAudioInput () {
+  let media = await navigator.mediaDevices.getUserMedia({ audio: true })
 
   // noinspection JSUnresolvedVariable
   let AudioContext = window.AudioContext || window.webkitAudioContext
@@ -31,7 +31,7 @@ async function getAudioInput() {
 
   let mic = audioContext.createMediaStreamSource(media)
 
-  return { mic: mic, audioContext: audioContext}
+  return { media: media, mic: mic, audioContext: audioContext }
 }
 
 export default getAudioInput
