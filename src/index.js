@@ -15,15 +15,11 @@ import 'bootstrap'
 // Get the element ID for the div to render the score
 const div = document.getElementById('srt-render')
 
-// Equalize height of labels
+// Equalize height of labels - kind of hackish
 {
   let configLabels = document.getElementsByClassName('tall-label')
-  let maxHeight = 0
   for (let i = 0; i < configLabels.length; i++) {
-    maxHeight = Math.max(configLabels[i].clientHeight, maxHeight)
-  }
-  for (let i = 0; i < configLabels.length; i++) {
-    configLabels[i].style.height = `${maxHeight}px`
+    configLabels[i].style.height = '2.5em'
   }
 }
 
@@ -34,6 +30,23 @@ if (settings === null) {
   settings = {}
 }
 const app = new MainApp(div, seed, settings)
+
+// Update buttons
+function updateDetails () {
+  let audioSelect = document.getElementById('srt-audio-select')
+  let midiSelect = document.getElementById('srt-midi-select')
+  if (app.config.detectionMode === 'MIDI') {
+    audioSelect.classList.remove('btn-primary')
+    audioSelect.classList.add('btn-outline-primary')
+    midiSelect.classList.remove('btn-outline-primary')
+    midiSelect.classList.add('btn-primary')
+  } else {
+    audioSelect.classList.remove('btn-outline-primary')
+    audioSelect.classList.add('btn-primary')
+    midiSelect.classList.remove('btn-primary')
+    midiSelect.classList.add('btn-outline-primary')
+  }
+}
 
 const midiListener = new MIDIListener()
 const audioListener = new AudioListener()
@@ -140,6 +153,7 @@ function enableDetection () {
       audioListener.stats.reset()
     }
   }
+  updateDetails()
 }
 
 function disableDetection () {
@@ -148,6 +162,7 @@ function disableDetection () {
   } else if (audioListener.isActive) {
     audioListener.disable()
   }
+  updateDetails()
 }
 
 // Handle music generation settings
