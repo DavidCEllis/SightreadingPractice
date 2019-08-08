@@ -15,42 +15,22 @@ import 'bootstrap'
 // Get the element ID for the div to render the score
 const div = document.getElementById('srt-render')
 
-// Equalize height of labels - kind of hackish
-{
-  let configLabels = document.getElementsByClassName('tall-label')
-  for (let i = 0; i < configLabels.length; i++) {
-    configLabels[i].style.height = '2.5em'
-  }
-}
-
 const seed = Date.now() // Use timestamp as basic RNG seed
 
+// Create settings
 let settings = JSON.parse(localStorage.getItem('appConfig'))
 if (settings === null) {
   settings = {}
 }
+
+// Create app for general use
 const app = new MainApp(div, seed, settings)
 
-// Update buttons
-function updateDetails () {
-  let audioSelect = document.getElementById('srt-audio-select')
-  let midiSelect = document.getElementById('srt-midi-select')
-  if (app.config.detectionMode === 'MIDI') {
-    audioSelect.classList.remove('btn-primary')
-    audioSelect.classList.add('btn-outline-primary')
-    midiSelect.classList.remove('btn-outline-primary')
-    midiSelect.classList.add('btn-primary')
-  } else {
-    audioSelect.classList.remove('btn-outline-primary')
-    audioSelect.classList.add('btn-primary')
-    midiSelect.classList.remove('btn-primary')
-    midiSelect.classList.add('btn-outline-primary')
-  }
-}
-
+// Get the two listeners
 const midiListener = new MIDIListener()
 const audioListener = new AudioListener()
 
+// Place for audio statistics
 const audioStats = document.getElementById('srt-audiostats')
 
 // Generation settings IDs
@@ -61,24 +41,18 @@ const lowestNoteSelect = document.getElementById('srt-lowestnote')
 const highestNoteSelect = document.getElementById('srt-highestnote')
 
 // Detection Settings IDs
-const detectMidi = document.getElementById('srt-input-midi')
-const detectAudio = document.getElementById('srt-input-audio')
-const audioSettings = document.getElementById('srt-audio-settings')
 const noteTransposition = document.getElementById('srt-transposition')
+
+const audioSettings = document.getElementsByClassName('srt-audio-settings')
 const noiseFloor = document.getElementById('srt-noisefloor')
 const minAmplitude = document.getElementById('srt-minamplitude')
 const confidenceLevel = document.getElementById('srt-confidencelevel')
 
-// Note Detection Settings Box
-if (app.config.detectionMode === 'MIDI') {
-  detectMidi.checked = true
-  detectAudio.checked = false
-  audioSettings.hidden = true
-} else {
-  detectMidi.checked = false
-  detectAudio.checked = true
-  audioSettings.hidden = false
-}
+// Show or hide audio settings based on mode
+audioSettings.forEach((element) => {
+  element.disabled = (app.config.detectionMode === 'MIDI')
+})
+
 noteTransposition.value = app.config.transposition
 
 // Audio only settings
@@ -132,10 +106,12 @@ accidentalField.value = app.config.accidentalFreq
   highestNoteSelect.value = app.config.highestNote
 }
 
+const activateButton = document.getElementById('srt-activate')
+let detectionEnabled = false
+
 // Functions to enable and disable audio or midi pitch detection
 function enableDetection () {
   if (app.config.detectionMode === 'MIDI') {
-    audioSettings.hidden = true
     if (audioListener.isActive) {
       audioListener.disable()
     }
@@ -143,7 +119,6 @@ function enableDetection () {
       midiListener.enable(app)
     }
   } else if (app.config.detectionMode === 'AUDIO') {
-    audioSettings.hidden = false
     if (midiListener.isActive) {
       midiListener.disable()
     }
@@ -153,17 +128,38 @@ function enableDetection () {
       audioListener.stats.reset()
     }
   }
-  updateDetails()
+  activateButton.innerText = 'Deactivate'
+  activateButton.classList.remove('btn-outline-success')
+  activateButton.classList.add('btn-success')
+  detectionEnabled = true
 }
 
 function disableDetection () {
+  // Turn off listener
   if (midiListener.isActive) {
     midiListener.disable()
   } else if (audioListener.isActive) {
     audioListener.disable()
   }
-  updateDetails()
+
+  // Update button
+  activateButton.innerText = 'Activate'
+  activateButton.classList.remove('btn-success')
+  activateButton.classList.add('btn-outline-success')
+
+  // Store state
+  detectionEnabled = false
 }
+
+function toggleDetection () {
+  if (detectionEnabled) {
+    disableDetection()
+  } else {
+    enableDetection()
+  }
+}
+
+activateButton.onclick = toggleDetection
 
 // Handle music generation settings
 const regenButton = document.getElementById('srt-regenerate')
@@ -188,19 +184,50 @@ regenButton.onclick = function () {
 const noteDetectionApply = document.getElementById('srt-applydetection')
 
 noteDetectionApply.onclick = function () {
-  app.config.detectionMode = detectMidi.checked ? 'MIDI' : 'AUDIO'
   app.config.transposition = parseInt(noteTransposition.value)
   app.config.audioNoiseFloor = parseInt(noiseFloor.value) / 10000
   app.config.audioMinAmplitude = parseInt(minAmplitude.value) / 10000
   app.config.minConfidence = parseInt(confidenceLevel.value) / 100
 
-  enableDetection()
   // Store config
   localStorage.setItem('appConfig', JSON.stringify(app.config.settings))
 }
 
-// Enable detection and let user settings define the mode
-enableDetection()
+const audioButton = document.getElementById('srt-audio-select')
+const midiButton = document.getElementById('srt-midi-select')
+
+// Handle audio and midi buttons
+// Update buttons for midi or audio
+function updateButtonDisplay () {
+  if (app.config.detectionMode === 'MIDI') {
+    audioButton.classList.remove('btn-primary')
+    audioButton.classList.add('btn-outline-primary')
+    midiButton.classList.remove('btn-outline-primary')
+    midiButton.classList.add('btn-primary')
+  } else {
+    audioButton.classList.remove('btn-outline-primary')
+    audioButton.classList.add('btn-primary')
+    midiButton.classList.remove('btn-primary')
+    midiButton.classList.add('btn-outline-primary')
+  }
+  if (detectionEnabled) { enableDetection() }
+}
+
+audioButton.onclick = function () {
+  app.config.detectionMode = 'AUDIO'
+  audioSettings.forEach((element) => {
+    element.disabled = false
+  })
+  updateButtonDisplay()
+}
+
+midiButton.onclick = function () {
+  app.config.detectionMode = 'MIDI'
+  audioSettings.forEach((element) => {
+    element.disabled = true
+  })
+  updateButtonDisplay()
+}
 
 app.generateMusic()
 app.draw()
@@ -210,11 +237,15 @@ app.draw()
  * Disable the audio/midi input if the page is not visible (you're not looking at the music then!)
  * Re-enable when you tab back
  */
+let visibilityDisable = false
+
 function handleVisibilityChange () {
-  if (document.hidden) {
+  if (document.hidden && detectionEnabled) {
     disableDetection()
-  } else {
+    visibilityDisable = true
+  } else if (visibilityDisable) {
     enableDetection()
+    visibilityDisable = false
   }
 }
 
