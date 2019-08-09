@@ -1,7 +1,7 @@
 import 'jsdom-global/register'  // Not testing vexflow functions but need a window so it doesn't fail
 
 import { expect } from 'chai'
-import { describe } from 'mocha'
+import { describe, it } from 'mocha'
 
 import { AppConfig } from '../../src/config'
 import { MusicGenerator } from '../../src/music_generator/music_gen'
@@ -10,7 +10,7 @@ import { MusicGenerator } from '../../src/music_generator/music_gen'
 describe('MusicGenerator', function () {
   describe('musicGen()', function () {
     it('Should generate only notes in a key if p(accidental) = 0', function () {
-      let config = new AppConfig({'accidentalFreq': 0, 'keyName': 'C'})
+      let config = new AppConfig({ settings: { 'accidentalFreq': 0, 'keyName': 'C' } })
       let mg = new MusicGenerator(1, config)
       let bars = mg.musicGen()
 
@@ -20,8 +20,8 @@ describe('MusicGenerator', function () {
         }
       }
     })
-    it ('Should generate only accidentals if p(accidental) = 1', function () {
-      let config = new AppConfig({'accidentalFreq': 1, 'keyName': 'C'})
+    it('Should generate only accidentals if p(accidental) = 1', function () {
+      let config = new AppConfig({ settings: { 'accidentalFreq': 1, 'keyName': 'C' } })
       let mg = new MusicGenerator(1, config)
       let bars = mg.musicGen()
 

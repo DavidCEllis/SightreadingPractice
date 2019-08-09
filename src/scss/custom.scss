@@ -1,4 +1,14 @@
-.container{
-  min-width: 1250px;
+@media (min-width: 1300px) {
+  .container {
+    min-width: 1250px;
+  }
 }
 
+.jumbotron{
+  padding: 1.5em 1.5em;
+}
+
+.row{
+  margin-left: auto;
+  margin-right: auto;
+}

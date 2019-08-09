@@ -11,7 +11,6 @@ import freqToMidi from './freqtomidi'
 import getAudioInput from './getstream'
 import { getPitchDetector, setupAudioProcess } from './ml_pitchdetect'
 
-
 class AudioListener {
   constructor () {
     this.currentPitch = null
@@ -27,6 +26,7 @@ class AudioListener {
 
     this.context = null
     this.mic = null
+    this.media = null
     this.scriptNode = null
 
     this.baseKey = keyList['C']
@@ -55,6 +55,7 @@ class AudioListener {
       let input = await getAudioInput()
       this.context = input.audioContext
       this.mic = input.mic
+      this.media = input.media
 
       this.scriptNode = setupAudioProcess(this.context, this.mic, this.detector)
 
@@ -70,6 +71,19 @@ class AudioListener {
   async disable () {
     this.refresh = false
 
+    // Disconnect everything
+    this.mic.disconnect()
+    this.scriptNode.disconnect()
+
+    // Stop all media stream tracks and remove them
+    this.media.getAudioTracks().forEach(
+      (element) => {
+        element.stop()
+        this.media.removeTrack(element)
+      }
+    )
+
+    // Close the context and remove it
     await this.context.close()
     this.context = null
 
@@ -118,8 +132,7 @@ class AudioListener {
         this.stats.lastConfidence = confidence
         this.stats.lastLevel = amplitude
       }
-    }
-    else if (amplitude < noiseFloor) {
+    } else if (amplitude < noiseFloor) {
       this.pitchConsumed = false
     }
     // Render stats if they've changed and only 1x per second
