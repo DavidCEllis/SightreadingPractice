@@ -41,6 +41,9 @@
   <br/>
   <div class="row" id="srt-details">
     <div class="col">
+      <div class="alert alert-secondary" id="srt-activate-text">
+        <h2>Press <strong>Activate</strong> to start detection</h2>
+      </div>
       <h3>
         Input Mode:
         <span class="btn-group">
@@ -49,6 +52,7 @@
                   class="btn btn-outline-primary">Audio</button>
         </span>
         <button id="srt-activate" type="button" class="btn btn-outline-success">Activate</button>
+        <button id="srt-regenerate" type="button" class="btn btn-primary">Regenerate Music</button>
         <button id="srt-showconfig" type="button" class="btn btn-info" data-toggle="collapse"
                 data-target="#srt-config">Show Config
         </button>
@@ -85,10 +89,6 @@
               <label for="srt-highestnote">Highest Note:</label>
               <select class="form-control" id="srt-highestnote"></select>
             </div>
-          </div>
-          <div class="form-group">
-            <input class="btn btn-primary" id="srt-regenerate" type="button"
-                   value="Regenerate Music">
           </div>
         </fieldset>
       </div>
@@ -127,8 +127,8 @@
 
           <div class="form-row" id="srt-audiostats"></div>
 
-          <div class="form-group">
-            <input class="btn btn-primary" id="srt-applydetection" type="button" value="Apply">
+          <div class="form-group float-right">
+            <input class="btn btn-primary" id="srt-applyconfig" type="button" value="Apply">
           </div>
         </fieldset>
       </div>
@@ -138,7 +138,7 @@
   <div class="row border" id="srt-render"></div>
   <br/>
 
-  <div class="row" id="srt-testcontrols">
+  <div class="row" id="srt-testcontrols" style="display: none">
     <div class="col">
       <button class="btn btn-primary" id="correct-note">Simulate correct note</button>
       <button class="btn btn-primary" id="wrong-note">Simulate incorrect note</button>

@@ -111,6 +111,7 @@ let detectionEnabled = false
 
 // Functions to enable and disable audio or midi pitch detection
 function enableDetection () {
+  let activateText = document.getElementById('srt-activate-text').style.display = 'none'
   if (app.config.detectionMode === 'MIDI') {
     if (audioListener.isActive) {
       audioListener.disable()
@@ -165,6 +166,14 @@ activateButton.onclick = toggleDetection
 const regenButton = document.getElementById('srt-regenerate')
 
 regenButton.onclick = function () {
+  app.generateMusic()
+  app.draw()
+}
+
+// Handle note detection settings
+const applyConfigButton = document.getElementById('srt-applyconfig')
+
+applyConfigButton.onclick = function () {
   app.config.clef = clefSelect.value
   app.config.keyName = keySelect.value
   app.config.accidentalFreq = parseFloat(accidentalField.value)
@@ -173,17 +182,6 @@ regenButton.onclick = function () {
 
   highestNoteSelect.value = app.config.highestNote
 
-  // Store config
-  localStorage.setItem('appConfig', JSON.stringify(app.config.settings))
-
-  app.generateMusic()
-  app.draw()
-}
-
-// Handle note detection settings
-const noteDetectionApply = document.getElementById('srt-applydetection')
-
-noteDetectionApply.onclick = function () {
   app.config.transposition = parseInt(noteTransposition.value)
   app.config.audioNoiseFloor = parseInt(noiseFloor.value) / 10000
   app.config.audioMinAmplitude = parseInt(minAmplitude.value) / 10000
