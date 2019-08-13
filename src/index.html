@@ -125,6 +125,16 @@
                      min="0" max="100" step="0.5">
             </div>
           </div>
+          <div class="form-row">
+            <div class="form-group col-sm">
+              <label for="srt-correct-color">Correct Note:</label>
+              <input id="srt-correct-color" class="form-control" type="color" value="#0000FF">
+            </div>
+            <div class="form-group col-sm">
+              <label for="srt-incorrect-color">Incorrect Note:</label>
+              <input id="srt-incorrect-color" class="form-control" type="color" value="#FF6347">
+            </div>
+          </div>
 
           <div class="form-row" id="srt-audiostats"></div>
 
@@ -139,7 +149,7 @@
   <div class="row border" id="srt-render"></div>
   <br/>
 
-  <div class="row" id="srt-testcontrols" style="display: none">
+  <div class="row" id="srt-testcontrols" style="display: inline">
     <div class="col">
       <button class="btn btn-primary" id="correct-note">Simulate correct note</button>
       <button class="btn btn-primary" id="wrong-note">Simulate incorrect note</button>

@@ -15,6 +15,9 @@ const noiseFloor = document.getElementById('srt-noisefloor')
 const minAmplitude = document.getElementById('srt-minamplitude')
 const confidenceLevel = document.getElementById('srt-confidencelevel')
 
+const correctColor = document.getElementById('srt-correct-color')
+const incorrectColor = document.getElementById('srt-incorrect-color')
+
 function setupClefs (app) {
   let clefOptions = ['treble', 'bass', 'alto', 'tenor']
   for (let clef of clefOptions) {
@@ -54,6 +57,11 @@ function setupNotes (app) {
   highestNoteSelect.value = app.config.highestNote
 }
 
+function setupColors (app) {
+  correctColor.value = app.config.correctColor
+  incorrectColor.value = app.config.incorrectColor
+}
+
 function enableButton (app) {
   const applyConfigButton = document.getElementById('srt-applyconfig')
 
@@ -70,6 +78,9 @@ function enableButton (app) {
     app.config.audioNoiseFloor = parseInt(noiseFloor.value) / 10000
     app.config.audioMinAmplitude = parseInt(minAmplitude.value) / 10000
     app.config.minConfidence = parseInt(confidenceLevel.value) / 100
+
+    app.config.correctColor = correctColor.value
+    app.config.incorrectColor = incorrectColor.value
 
     // Store config
     localStorage.setItem('appConfig', JSON.stringify(app.config.settings))
@@ -93,7 +104,10 @@ function configInit (app) {
   setupClefs(app)
   setupKeys(app)
   setupNotes(app)
+  setupColors(app)
+
   accidentalField.value = app.config.accidentalFreq
+
   enableButton(app)
 }
 

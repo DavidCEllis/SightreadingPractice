@@ -25,8 +25,8 @@ class AppConfig {
     this.barwidth = 300
     this.voffset = 125
 
-    this.correctColor = settings.correctColor || 'blue' // Colour for correctly played notes
-    this.incorrectColor = settings.incorrectColor || 'tomato' // Colour for incorrectly played notes
+    this.correctColor = settings.correctColor || '#0000FF' // Colour for correctly played notes
+    this.incorrectColor = settings.incorrectColor || '#FF6347' // Colour for incorrectly played notes
 
     // Default detection mode as midi
     this.detectionMode = 'MIDI' // settings.detectionMode || 'MIDI'
