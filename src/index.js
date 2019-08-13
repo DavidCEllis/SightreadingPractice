@@ -106,25 +106,50 @@ accidentalField.value = app.config.accidentalFreq
   highestNoteSelect.value = app.config.highestNote
 }
 
+// Error Message Box
+let errorContents = ''
+let errorDiv = document.getElementById('srt-error-dialog')
+
+function ErrorDialog (contents) {
+  errorContents = (errorContents === '') ? contents : errorContents + '<br/>' + contents
+  errorDiv.innerHTML = `
+  <div class="alert alert-warning" role="alert">
+    ${errorContents}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  `
+}
+
 const activateButton = document.getElementById('srt-activate')
 let detectionEnabled = false
 
 // Functions to enable and disable audio or midi pitch detection
 function enableDetection () {
-  let activateText = document.getElementById('srt-activate-text').style.display = 'none'
+  // Remove the element telling you to activate the detection
+  document.getElementById('srt-activate-text').style.display = 'none'
+
   if (app.config.detectionMode === 'MIDI') {
     if (audioListener.isActive) {
-      audioListener.disable()
+      audioListener.disable().catch((e) => { ErrorDialog(e.message) })
     }
     if (!midiListener.isActive) {
-      midiListener.enable(app)
+      try {
+        midiListener.enable(app)
+      } catch (e) {
+        ErrorDialog(e.message)
+        return // Don't enable detection
+      }
     }
   } else if (app.config.detectionMode === 'AUDIO') {
     if (midiListener.isActive) {
       midiListener.disable()
     }
     if (!audioListener.isActive) {
-      audioListener.enable(app, audioStats)
+      audioListener.enable(app, audioStats).catch((e) => {
+        ErrorDialog(e.message)
+      })
     } else {
       audioListener.stats.reset()
     }
@@ -140,7 +165,7 @@ function disableDetection () {
   if (midiListener.isActive) {
     midiListener.disable()
   } else if (audioListener.isActive) {
-    audioListener.disable()
+    audioListener.disable().catch((e) => { ErrorDialog(e.message) })
   }
 
   // Update button

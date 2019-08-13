@@ -10,14 +10,14 @@ const CDNLinks = {
   'popper.js': {
     name: 'popper.js',
     var: 'popper.js',
-    url: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js',
-    version: '1.14.7'
+    url: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js',
+    version: '1.15.0'
   },
   '@tensorflow/tfjs': {
     name: '@tensorflow/tfjs',
     var: 'tf',
-    url: 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.2.1/dist/tf.min.js',
-    version: '1.2.1'
+    url: 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.2.7/dist/tf.min.js',
+    version: '1.2.7'
   },
   'vexflow': {
     name: 'VexFlow',
