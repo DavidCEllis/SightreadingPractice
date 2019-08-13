@@ -25,8 +25,14 @@ class AppConfig {
     this.barwidth = 300
     this.voffset = 125
 
-    this.correctColor = settings.correctColor || '#0000FF' // Colour for correctly played notes
-    this.incorrectColor = settings.incorrectColor || '#FF6347' // Colour for incorrectly played notes
+    // Slight hack for preexisting settings of 'blue' and 'tomato' on old release
+    if (settings.correctColor[0] === '#' && settings.incorrectColor === '#') {
+      this.correctColor = settings.correctColor || '#0000FF' // Colour for correctly played notes
+      this.incorrectColor = settings.incorrectColor || '#FF6347' // Colour for incorrectly played notes
+    } else {
+      this.correctColor = '#0000FF'
+      this.incorrectColor = '#FF6347'
+    }
 
     // Default detection mode as midi
     this.detectionMode = 'MIDI' // settings.detectionMode || 'MIDI'
