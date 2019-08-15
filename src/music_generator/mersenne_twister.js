@@ -89,10 +89,11 @@ class MersenneTwister {
     this.index = 0
   }
 
+  /**
+   * Return next integer value from PRNG
+   * @returns {number} random integer value
+   */
   randomInt () {
-    /**
-     * Return next integer value from PRNG
-     */
 
     // Checks for value
     /* istanbul ignore if */
@@ -113,23 +114,23 @@ class MersenneTwister {
     return output
   }
 
+  /**
+   * Return a value in [0, 1)
+   * @returns {number} random float between 0 and 1 (does not include 1)
+   */
   randomReal () {
-    /**
-     * Return a value in [0, 1)
-     * @returns random float between 0 and 1 (does not include 1)
-     */
     return this.randomInt() * (1.0 / (2.0 ** 32))
   }
 
+  /**
+   * Produce a random integer value between low and high
+   *
+   * Excluding the high value.
+   * @param {number} low - lowest integer value in random range.
+   * @param {number} high - highest integer value in random range.
+   * @returns {number} random integer between low and high
+   */
   randomBetween (low, high) {
-    /**
-     * Produce a random integer value between low and high
-     *
-     * Excluding the high value.
-     * @param low - lowest integer value in random range.
-     * @param high - highest integer value in random range.
-     * @returns random integer between low and high
-     */
     let result
     if (low === high) {
       throw new ValueError(
@@ -141,12 +142,12 @@ class MersenneTwister {
     return result
   }
 
+  /**
+   * Select a random item from an array
+   * @param {Array} options - A list of options for random selection.
+   * @returns {*} random object from options.
+   */
   randomFrom (options) {
-    /**
-     * Select a random item from an array
-     * @param {Array} options - A list of options for random selection.
-     * @returns random object from options.
-     */
     if (options.length === 0) {
       throw new ValueError('Array provided must have at least one item.')
     }
