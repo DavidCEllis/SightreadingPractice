@@ -54,20 +54,19 @@ export default class AudioStatsDisplay {
     // language=HTML
     this.div.innerHTML = `
     <div class="col">
-      <p class="text-left">Quietest Level: ${(this.quietestLevel * 10000).toFixed(2)}</p>
-    </div>
-    <div class="col">
       <p class="text-left">
-        Last Note Level: ${(this.lastLevel * 10000).toFixed(2)}
-        <br>
+        Quietest Level: ${(this.quietestLevel * 10000).toFixed(2)}
+        <br/>
         Loudest Level: ${(this.loudestLevel * 10000).toFixed(2)}
+        <br/>
+        Last Note Level: ${(this.lastLevel * 10000).toFixed(2)}
       </p>
     </div>
     <div class="col">
       <p class="text-left">
-        Last Note Confidence: ${(this.lastConfidence * 100).toFixed(2)}%
-        <br>
         Last Note: ${this.lastValidNote}
+        <br/>
+        Confidence: ${(this.lastConfidence * 100).toFixed(2)}%
       </p>  
     </div>
     `.trim()

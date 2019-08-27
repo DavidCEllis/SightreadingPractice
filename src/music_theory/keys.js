@@ -26,19 +26,20 @@ class MusicKey {
     this.midiValues = this.getMidiValues()
   }
 
+  /**
+   * Get the most likely name for a note based on the key it is from
+   * (For example you are more likely to get D# than Eb in A major)
+   *
+   * @param midiNote - midi integer value of note
+   * @returns {Object} noteRepresentation - the details of the note represented in this key
+   *
+   * {string} noteRepresentation.name - the name of the note
+   * {boolean} noteRepresentation.inKey - is the note in this key
+   * {string} noteRepresentation.noteLetter - Note letter in this key w/o accidental
+   * {string} noteRepresentation.accidental - Accidental Character (#/b/n)
+   *
+   */
   getRepresentation (midiNote) {
-    /**
-     * Get the most likely name for a note based on the key it is from
-     * (For example you are more likely to get D# than Eb in A major)
-     *
-     * @param midiNote - midi integer value of note
-     * @returns - {
-     *   name: <Name of Note in Key>,
-     *   inKey: true if note in key, false if accidental
-     *   noteLetter: <Letter of note without accidental>
-     *   accidental: <type of accidental to apply>
-     * }
-     */
     let name = ''
     let inKey = null
     let noteNames = NOTEMAP[midiNote % 12]
@@ -58,13 +59,15 @@ class MusicKey {
     }
     let noteLetter = name.charAt(0)
     let accidental = (name.substr(1) || 'n') // If there is no substring use 'n' for natural
+
     return { 'name': name, 'inKey': inKey, 'noteLetter': noteLetter, 'accidental': accidental }
   }
 
+  /**
+   * Obtain the midi note values for all accidentals and 'naturals' for a key.
+   * @returns {Object} accidentalsNaturals
+   */
   getMidiValues () {
-    /**
-     * Obtain the midi note values for all accidentals and 'naturals' for a key.
-     */
     let midiNaturals = []
     let midiAccidentals = []
     for (let i = MIDIMIN; i < MIDIMAX; i++) {

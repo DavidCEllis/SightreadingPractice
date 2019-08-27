@@ -1,4 +1,5 @@
 import WebMidi from 'webmidi'
+import { UnsupportedError } from '../errors'
 
 /**
  * Midi listener
@@ -16,6 +17,7 @@ class MIDIListener {
     WebMidi.enable(function (err) {
       if (err) {
         console.log('WebMidi could not be enabled.', err)
+        throw new UnsupportedError('WebMidi is not supported in this browser.')
       } else {
         console.log('WebMidi enabled!')
         console.log('List of Inputs')

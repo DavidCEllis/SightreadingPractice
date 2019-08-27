@@ -1,5 +1,16 @@
 // File for all error types defined
 
+class UnsupportedError extends Error {
+  constructor(message) {
+    super(message)
+    this.name = 'UnsupportedError'
+    this.message = message
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, UnsupportedError)
+    }
+  }
+}
+
 class ValueError extends Error {
   constructor (message) {
     super(message)
@@ -44,4 +55,4 @@ class CodingError extends Error {
   }
 }
 
-export { CodingError, InitializationError, ValidationError, ValueError }
+export { CodingError, InitializationError, UnsupportedError, ValidationError, ValueError }

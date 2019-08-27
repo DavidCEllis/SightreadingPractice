@@ -33,8 +33,8 @@ describe('MainApp', function () {
         'accidentalFreq': 0.1,
         'transposition': 0,
         'detectionMode': 'MIDI', // This is always midi for now
-        'correctColor': 'blue',
-        'incorrectColor': 'tomato',
+        'correctColor': '#0000FF',
+        'incorrectColor': '#FF6347',
         'audioNoiseFloor': 0.005,
         'audioMinAmplitude': 0.01,
         'minConfidence': 0.75
