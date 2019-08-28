@@ -22,6 +22,11 @@ if (navigator.mediaDevices.getUserMedia === undefined) {
   }
 }
 
+/**
+ * Obtain the UserMedia along with audiocontext and a streamsource
+ *
+ * @returns {Promise<{audioContext: *, mic: *, media: *}>}
+ */
 async function getAudioInput () {
   let media = await navigator.mediaDevices.getUserMedia({ audio: true })
 

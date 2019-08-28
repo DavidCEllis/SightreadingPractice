@@ -20,7 +20,7 @@ The project is made up of 3 main components.
 #. Note detection modes
   - MIDI input using webmidi.js
   - Audio input using CREPE with Tensorflow
-#. User interface code
+#. User interface code that handles where things should be displayed and config options
 
 
 Indices and tables
