@@ -50,8 +50,11 @@ primary_domain = 'js'
 root_for_relative_js_paths = str(Path('../src').resolve())
 
 # Get recursive list of all relative folders
-pathlist = sorted({str(item.parent) for item in Path(root_for_relative_js_paths).glob('**/*.js')})
-js_source_path = pathlist
+js_source_path = sorted(
+    {str(item.parent) for item in Path(root_for_relative_js_paths).glob('**/*.js')}
+)
+
+print(js_source_path)
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

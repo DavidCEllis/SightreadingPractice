@@ -6,8 +6,10 @@ const OCTAVE = 12 // Notes in an octave
  * Convert an input frequency to a valid pitch based on 12TET A440
  * return -1 for an invalid/no pitch
  *
- * @param freq
- * @param detune - detect frequencies within +/-detune cents as the actual note
+ * @param {number} freq - input frequency
+ * @param {number} detune - detect frequencies within +/-detune cents as the actual note
+ *
+ * @returns {number} midi note value nearest to input pitch
  */
 function freqToMidi (freq, detune = 20) {
   let midiFloat = OCTAVE * Math.log2(freq / PITCH_STANDARD) + MIDI_A

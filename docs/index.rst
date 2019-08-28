@@ -10,17 +10,24 @@ Welcome to Sight Reading Practice's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   note_detection/audio_input
+
 This is a sight reading practice tool that generates random sheet music and
 detects inputs to advance the position in the score.
 
 The project is made up of 3 main components.
 
-#. A music generator which handles creation of bars and notes and has the code for the PRNG
-  #. Using VexFlow to display the music created.
-#. Note detection modes
+1. A music generator which handles creation of bars and notes and has the code for the PRNG
+
+  - Using VexFlow to display the music created.
+
+2. Note detection modes
+
   - MIDI input using webmidi.js
+
   - Audio input using CREPE with Tensorflow
-#. User interface code that handles where things should be displayed and config options
+
+3. User interface code that handles where things should be displayed and config options
 
 
 Indices and tables

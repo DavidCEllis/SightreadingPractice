@@ -1,8 +1,8 @@
 /**
  * Simple average RMS calculation for a set of samples
  *
- * @param input
- * @returns {number}
+ * @param input - audio array
+ * @returns {number} RMS amplitude of audio input
  */
 
 function getAmplitude (input) {

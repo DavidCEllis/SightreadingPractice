@@ -36,10 +36,21 @@ function resample (buffer, resampled) {
   }
 }
 
+class PitchDetails {
+  constructor (result, amplitude, confidence) {
+    this.result = result
+    this.amplitude = amplitude
+    this.confidence = confidence
+  }
+}
+
+
 /**
  * Load the tensorflow model and get the frequency detection processor
- * @param callback
- * @returns {Promise<pitchDetect>}
+ *
+ *
+ * @param callback - Function called by the pitch detector, should accept a PitchDetails object
+ * @returns {Promise<pitchDetect>} - Pitch detector function that uses the provided callback
  */
 async function getPitchDetector (callback) {
   let tfModel = await tf.loadLayersModel(modelFile)
@@ -51,7 +62,10 @@ async function getPitchDetector (callback) {
 
   /**
    * Take an audio input event and return the frequency and confidence of the model
-   * @param event
+   *
+   * To be used as a script processor
+   *
+   * @param event - audio event
    */
   function pitchDetect (event) {
     resample(event.inputBuffer, resampled)
@@ -85,7 +99,7 @@ async function getPitchDetector (callback) {
 
       let result = predicted_hz.toFixed(3)
 
-      callback({amplitude: amplitude, frequency: result, confidence: confidence })
+      callback(PitchDetails(result, amplitude, confidence))
     })
   }
 

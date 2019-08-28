@@ -18,6 +18,9 @@ import { getPitchDetector, setupAudioProcess } from './ml_pitchdetect'
  * Handles setup and teardown of audio listening and pitch detection for the app.
  */
 class AudioListener {
+  /**
+   * @private
+   */
   constructor () {
     this.currentPitch = null
     this.pitchConsumed = false
@@ -47,7 +50,6 @@ class AudioListener {
    *
    * @param app - sight reading practice application
    * @param statsdiv - html element where stats should be displayed
-   * @returns {Promise<void>}
    */
   async enable (app, statsdiv = null) {
     this.app = app
@@ -80,7 +82,6 @@ class AudioListener {
 
   /**
    * Disable listening for inputs via web audio
-   * @returns {Promise<void>}
    */
   async disable () {
     // Disconnect everything
@@ -121,7 +122,8 @@ class AudioListener {
    * This is the pitch comparison function to be used in a callback and updates
    * the app based on the input from the TensorFlow model.
    * @private
-   * @param pitchResult - {amplitude: <number>, frequency: <number>, confidence: <number>}
+   *
+   * @param pitchResult - pitchResult object with amplitude/confidence/frequency
    */
   comparePitch (pitchResult) {
     let appConfig = this.app.config
