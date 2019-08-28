@@ -1,3 +1,11 @@
+/**
+ * This module handles different musical keys and provides a class that takes lists of notes
+ * and provides the note representation given a midi note and midi values for notes and
+ * accidentals in a key.
+ *
+ * It then provides an object KeyList which contains a list of all recognised keys
+ */
+
 import { CodingError } from '../errors'
 
 const MIDIMIN = 0 // Minimum value of a midi note number
@@ -19,6 +27,13 @@ const NOTEMAP = [ // Map midi index to notes, # first, b second, double sharps o
 ]
 
 class MusicKey {
+  /**
+   * Create a key with a given name and list of notes and accidentals
+   *
+   * @param {string} name - Name of the key (eg: Em)
+   * @param {string[]} notes - Array of note names in the key (must be in NOTEMAP)
+   * @param {string[]} accidentals - Array of note names of accidentals (must also be in NOTEMAP)
+   */
   constructor (name, notes, accidentals) {
     this.name = name
     this.notes = notes
