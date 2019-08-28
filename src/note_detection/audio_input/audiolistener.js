@@ -105,6 +105,13 @@ class AudioListener {
   }
 
   // INTERNAL METHODS
+  /**
+   * Given a pitch number get the appropriate name/octave combination
+   * @private
+   *
+   * @param {number} pitch
+   * @returns {string}
+   */
   getPitchName (pitch) {
     // Get pitch name and octave number as a string
     return this.baseKey.getRepresentation(pitch).name + (Math.floor(pitch / 12) - 1)
@@ -113,7 +120,7 @@ class AudioListener {
   /**
    * This is the pitch comparison function to be used in a callback and updates
    * the app based on the input from the TensorFlow model.
-   *
+   * @private
    * @param pitchResult - {amplitude: <number>, frequency: <number>, confidence: <number>}
    */
   comparePitch (pitchResult) {
