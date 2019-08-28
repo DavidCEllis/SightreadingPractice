@@ -1,3 +1,7 @@
+/**
+ * Provide a listener that reads MIDI input to the app.
+ */
+
 import WebMidi from 'webmidi'
 import { UnsupportedError } from '../errors'
 
@@ -5,7 +9,7 @@ import { UnsupportedError } from '../errors'
  * Midi listener
  *
  * Class to setup and teardown midi listening for the app.
- * This handles the midi events and sends the notes as they are played to the app
+ * This handles the midi events and sends the notes as they are played to the app.
  */
 class MIDIListener {
   /**
