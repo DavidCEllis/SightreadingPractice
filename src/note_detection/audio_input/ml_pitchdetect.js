@@ -99,7 +99,7 @@ async function getPitchDetector (callback) {
 
       let result = predicted_hz.toFixed(3)
 
-      callback(PitchDetails(result, amplitude, confidence))
+      callback(new PitchDetails(result, amplitude, confidence))
     })
   }
 
