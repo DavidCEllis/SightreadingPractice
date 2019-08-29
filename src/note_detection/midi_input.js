@@ -18,24 +18,27 @@ class MIDIListener {
    * @param app - sight reading practice application
    */
   enable (app) {
-    WebMidi.enable(function (err) {
-      if (err) {
-        console.log('WebMidi could not be enabled.', err)
-        throw new UnsupportedError('WebMidi is not supported in this browser.')
-      } else {
-        console.log('WebMidi enabled!')
-        console.log('List of Inputs')
-        WebMidi.inputs.forEach(input => console.log(input.name))
+    return new Promise((resolve, reject) => {
+      WebMidi.enable(function (err) {
+        if (err) {
+          console.log('WebMidi could not be enabled.', err)
+          reject(new UnsupportedError('WebMidi is not supported in this browser.'))
+        } else {
+          console.log('WebMidi enabled!')
+          console.log('List of Inputs')
+          WebMidi.inputs.forEach(input => console.log(input.name))
 
-        // Listen for midi on messages from every midi device
-        console.log('Listening for events from all devices')
-        WebMidi.inputs.forEach(input => input.addListener('noteon', 'all',
-          function (e) {
-            // Compare the number of the midi note to the value of the next note in the app
-            app.compareNote(e.note.number)
-          }
-        ))
-      }
+          // Listen for midi on messages from every midi device
+          console.log('Listening for events from all devices')
+          WebMidi.inputs.forEach(input => input.addListener('noteon', 'all',
+            function (e) {
+              // Compare the number of the midi note to the value of the next note in the app
+              app.compareNote(e.note.number)
+            }
+          ))
+          resolve()
+        }
+      })
     })
   }
 
@@ -44,11 +47,18 @@ class MIDIListener {
    * Disable listening for inputs via MIDI
    */
   disable () {
-    // Clear listeners
-    WebMidi.inputs.forEach(input => input.removeListener('noteon', 'all'))
-    // Disable webmidi
-    WebMidi.disable()
-    console.log('WebMidi disabled')
+    return new Promise((resolve, reject) => {
+      try {
+        // Clear listeners
+        WebMidi.inputs.forEach(input => input.removeListener('noteon', 'all'))
+        // Disable webmidi
+        WebMidi.disable()
+        console.log('WebMidi disabled')
+        resolve()
+      } catch {
+        reject(new Error("Could not disable midi input"))
+      }
+    })
   }
 
   // noinspection JSMethodCanBeStatic

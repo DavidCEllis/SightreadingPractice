@@ -24,7 +24,7 @@ function enableDetection (app) {
     }
     if (!midiListener.isActive) {
       try {
-        midiListener.enable(app)
+        midiListener.enable(app).catch((e) => { errorDialog(e.message) })
       } catch (e) {
         errorDialog(e.message)
         return // Don't enable detection
@@ -32,7 +32,7 @@ function enableDetection (app) {
     }
   } else if (app.config.detectionMode === 'AUDIO') {
     if (midiListener.isActive) {
-      midiListener.disable()
+      midiListener.disable().catch((e) => { errorDialog(e.message) })
     }
     if (!audioListener.isActive) {
       audioListener.enable(app, audioStats).catch((e) => {
@@ -51,7 +51,7 @@ function enableDetection (app) {
 function disableDetection () {
   // Turn off listener
   if (midiListener.isActive) {
-    midiListener.disable()
+    midiListener.disable().catch((e) => { errorDialog(e.message) })
   } else if (audioListener.isActive) {
     audioListener.disable().catch((e) => { errorDialog(e.message) })
   }
