@@ -146,10 +146,14 @@
     </div>
   </div>
   <br/>
-  <div class="row border" id="srt-render"></div>
+
+  <div class="border" id="srt-base">
+    <div class="row" id="srt-render"></div>
+    <div class="alert alert-success" id="srt-status" hidden></div>
+  </div>
   <br/>
 
-  <div class="row" id="srt-testcontrols" style="display: none">
+  <div class="row" id="srt-testcontrols"> <!-- style="display: none"-->
     <div class="col">
       <button class="btn btn-primary" id="correct-note">Simulate correct note</button>
       <button class="btn btn-primary" id="wrong-note">Simulate incorrect note</button>

@@ -12,7 +12,7 @@ import './scss/main.scss'
 import 'bootstrap'
 
 // Get the element ID for the div to render the score
-const div = document.getElementById('srt-render')
+const basediv = document.getElementById('srt-base')
 
 const seed = Date.now() // Use timestamp as basic RNG seed
 
@@ -23,7 +23,7 @@ if (settings === null) {
 }
 
 // Create app for general use
-const app = new MainApp(div, seed, settings)
+const app = new MainApp(basediv, seed, settings)
 
 // Initialise all the ui components
 configInit(app)
@@ -52,8 +52,7 @@ function cheatNote (correct = true) {
     }
     app.compareNote(currentPitch)
   } else {
-    app.generateMusic()
-    app.draw()
+    app.compareNote(2)
   }
 }
 
