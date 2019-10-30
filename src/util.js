@@ -10,8 +10,8 @@ const CDNLinks = {
   'popper.js': {
     name: 'popper.js',
     var: 'popper.js',
-    url: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js',
-    version: '1.15.0'
+    url: 'https://unpkg.com/popper.js@1.16.0/dist/umd/popper.min.js',
+    version: '1.16.0'
   },
   '@tensorflow/tfjs': {
     name: '@tensorflow/tfjs',
