@@ -1,6 +1,6 @@
 {
   "name": "sightreadingtrainer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Sight reading training tool",
   "private": true,
   "scripts": {
