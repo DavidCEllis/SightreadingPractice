@@ -37,8 +37,8 @@ function resample (buffer, resampled) {
 }
 
 class PitchDetails {
-  constructor (result, amplitude, confidence) {
-    this.result = result
+  constructor (frequency, amplitude, confidence) {
+    this.frequency = frequency
     this.amplitude = amplitude
     this.confidence = confidence
   }
@@ -97,9 +97,9 @@ async function getPitchDetector (callback) {
       const predicted_cent = productSum / weightSum
       const predicted_hz = 10 * Math.pow(2, predicted_cent / 1200.0)
 
-      let result = predicted_hz.toFixed(3)
+      let frequency = predicted_hz.toFixed(3)
 
-      callback(new PitchDetails(result, amplitude, confidence))
+      callback(new PitchDetails(frequency, amplitude, confidence))
     })
   }
 
