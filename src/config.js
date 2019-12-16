@@ -55,7 +55,9 @@ class AppConfig {
   }
 
   get barsPerLine () {
-    return Math.min(Math.floor((this.rendererWidth - this.hstart) / this.barwidth), 4)
+    let bpl = Math.floor((this.rendererWidth - this.hstart) / this.barwidth)
+    bpl = Math.max(Math.min(bpl, 4), 1)  // At least 1 bar per line and at most 4
+    return bpl
   }
 
   get barCount () {
