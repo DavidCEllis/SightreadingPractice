@@ -4,20 +4,20 @@ const CDNLinks = {
   'bootstrap': {
     name: 'bootstrap',
     var: 'bootstrap',
-    url: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js',
-    version: '4.3.1'
+    url: 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js',
+    version: '4.4.1'
   },
   'popper.js': {
     name: 'popper.js',
     var: 'popper.js',
-    url: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js',
-    version: '1.15.0'
+    url: 'https://unpkg.com/popper.js@1.16.0/dist/umd/popper.min.js',
+    version: '1.16.0'
   },
   '@tensorflow/tfjs': {
     name: '@tensorflow/tfjs',
     var: 'tf',
-    url: 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.2.7/dist/tf.min.js',
-    version: '1.2.7'
+    url: 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.4.0/dist/tf.min.js',
+    version: '1.4.0'
   },
   'vexflow': {
     name: 'VexFlow',
@@ -35,7 +35,6 @@ function extendedModuleToCdn (moduleName, version, options = null) {
     // console.log('Not Found: ' + moduleName)
     let result = moduleToCdn(moduleName, version, options)
     if (result) {
-      // console.log(result)
       return result
     }
   }

@@ -13,49 +13,17 @@ const audioStats = document.getElementById('srt-audiostats')
 const activateButton = document.getElementById('srt-activate')
 let detectionEnabled = false
 
-// Functions to enable and disable audio or midi pitch detection
-function enableDetection (app) {
-  // Remove the element telling you to activate the detection
-  document.getElementById('srt-activate-text').style.display = 'none'
-
-  if (app.config.detectionMode === 'MIDI') {
-    if (audioListener.isActive) {
-      audioListener.disable().catch((e) => { errorDialog(e.message) })
-    }
-    if (!midiListener.isActive) {
-      try {
-        midiListener.enable(app)
-      } catch (e) {
-        errorDialog(e.message)
-        return // Don't enable detection
-      }
-    }
-  } else if (app.config.detectionMode === 'AUDIO') {
-    if (midiListener.isActive) {
-      midiListener.disable()
-    }
-    if (!audioListener.isActive) {
-      audioListener.enable(app, audioStats).catch((e) => {
-        errorDialog(e.message)
-      })
-    } else {
-      audioListener.stats.reset()
-    }
-  }
+function completeActivation () {
+  // Update button
   activateButton.innerText = 'Deactivate'
   activateButton.classList.remove('btn-outline-success')
   activateButton.classList.add('btn-success')
+
+  // Store state
   detectionEnabled = true
 }
 
-function disableDetection () {
-  // Turn off listener
-  if (midiListener.isActive) {
-    midiListener.disable()
-  } else if (audioListener.isActive) {
-    audioListener.disable().catch((e) => { errorDialog(e.message) })
-  }
-
+function completeDeactivation () {
   // Update button
   activateButton.innerText = 'Activate'
   activateButton.classList.remove('btn-success')
@@ -63,6 +31,49 @@ function disableDetection () {
 
   // Store state
   detectionEnabled = false
+}
+
+// Functions to enable and disable audio or midi pitch detection
+function enableDetection (app) {
+  // Remove the element telling you to activate the detection
+  document.getElementById('srt-activate-text').style.display = 'none'
+
+  if (app.config.detectionMode === 'MIDI') {
+    if (audioListener.isActive) {
+      audioListener.disable()
+        .catch((e) => { errorDialog(e.message) })
+    }
+    if (!midiListener.isActive) {
+      midiListener.enable(app)
+        .then(completeActivation)
+        .catch((e) => { errorDialog(e.message)})
+    }
+  } else if (app.config.detectionMode === 'AUDIO') {
+    if (midiListener.isActive) {
+      midiListener.disable()
+        .catch((e) => { errorDialog(e.message) })
+    }
+    if (!audioListener.isActive) {
+      audioListener.enable(app, audioStats)
+        .then(completeActivation)
+        .catch((e) => { errorDialog(e.message) })
+    } else {
+      audioListener.stats.reset()
+    }
+  }
+}
+
+function disableDetection () {
+  // Turn off listener
+  if (midiListener.isActive) {
+    midiListener.disable()
+      .then(completeDeactivation)
+      .catch((e) => { errorDialog(e.message) })
+  } else if (audioListener.isActive) {
+    audioListener.disable()
+      .then(completeDeactivation)
+      .catch((e) => { errorDialog(e.message) })
+  }
 }
 
 function toggleDetection (app) {

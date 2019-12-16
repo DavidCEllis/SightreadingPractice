@@ -60,7 +60,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new CopyPlugin([
-      { from: './src/note_detection/audio_input/model', to: './static/model'}
+      { from: './src/note_detection/audio_input/model', to: './static/model' }
     ]),
     new HtmlWebpackPlugin({
       filename: 'index.html',

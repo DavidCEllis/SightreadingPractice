@@ -24,3 +24,42 @@ from *crepe*
 
 **statsdisplay.js** contains the code that handles rendering the div
 to display audio statistics.
+
+Audio Listener
+--------------
+
+.. autoclass:: AudioListener
+    :members:
+
+
+Amplitude Meter
+---------------
+
+.. autofunction:: getAmplitude
+
+
+Freq to Midi
+------------
+
+.. autofunction:: freqToMidi
+
+
+Get Stream
+----------
+
+.. autofunction:: getAudioInput
+
+
+ML Pitch Detect
+---------------
+
+.. autofunction:: setupAudioProcess
+
+.. autofunction:: getPitchDetector
+
+
+Stats Display
+-------------
+
+.. autoclass:: AudioStatsDisplay
+    :members:

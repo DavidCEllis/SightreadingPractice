@@ -16,7 +16,13 @@ describe('MainApp', function () {
   let document
   let testdiv
   beforeEach(() => {
-    dom = new JSDOM('<!DOCTYPE html><div id="apptest"></div>')
+    let fakeHtml = `<!DOCTYPE html>
+      <div id="apptest">
+        <div class="row" id="srt-render"></div>
+        <div class="alert alert-success" id="srt-status" hidden></div>
+      </div>
+    `
+    dom = new JSDOM(fakeHtml)
     document = dom.window.document
     testdiv = document.getElementById('apptest')
 

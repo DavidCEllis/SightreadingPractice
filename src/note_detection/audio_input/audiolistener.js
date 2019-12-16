@@ -1,5 +1,6 @@
 /**
- * This file holds the main class that handles note detection for the audio input mode
+ * Provide a listener that reads audio input and uses pitch detection to provide
+ * notes to the app.
  *
  * Exposing the same functionality as the midi input with the addition of
  * audio input processing statistics.
@@ -11,7 +12,15 @@ import freqToMidi from './freqtomidi'
 import getAudioInput from './getstream'
 import { getPitchDetector, setupAudioProcess } from './ml_pitchdetect'
 
+/**
+ * Audio Listener
+ *
+ * Handles setup and teardown of audio listening and pitch detection for the app.
+ */
 class AudioListener {
+  /**
+   * @private
+   */
   constructor () {
     this.currentPitch = null
     this.pitchConsumed = false
@@ -21,7 +30,6 @@ class AudioListener {
     this.config = null
     this.stats = null
 
-    this.refresh = null
     this.isActive = false
 
     this.context = null
@@ -37,6 +45,12 @@ class AudioListener {
     this.detector = null
   }
 
+  /**
+   * Enable the web audio listener and setup the stats page.
+   *
+   * @param app - sight reading practice application
+   * @param statsdiv - html element where stats should be displayed
+   */
   async enable (app, statsdiv = null) {
     this.app = app
     this.config = this.app.config
@@ -47,8 +61,6 @@ class AudioListener {
       this.stats = new AudioStatsDisplay(statsdiv)
       this.stats.setup() // reveal stats page
     }
-
-    this.refresh = true
 
     // Get the audio context or resume if it already exists
     if (this.context === null) {
@@ -68,9 +80,10 @@ class AudioListener {
 
   }
 
+  /**
+   * Disable listening for inputs via web audio
+   */
   async disable () {
-    this.refresh = false
-
     // Disconnect everything
     this.mic.disconnect()
     this.scriptNode.disconnect()
@@ -92,10 +105,26 @@ class AudioListener {
     console.log('Audio Detection Disabled')
   }
 
+  // INTERNAL METHODS
+  /**
+   * Given a pitch number get the appropriate name/octave combination
+   * @private
+   *
+   * @param {number} pitch
+   * @returns {string}
+   */
   getPitchName (pitch) {
+    // Get pitch name and octave number as a string
     return this.baseKey.getRepresentation(pitch).name + (Math.floor(pitch / 12) - 1)
   }
 
+  /**
+   * This is the pitch comparison function to be used in a callback and updates
+   * the app based on the input from the TensorFlow model.
+   * @private
+   *
+   * @param pitchResult - pitchResult object with amplitude/confidence/frequency
+   */
   comparePitch (pitchResult) {
     let appConfig = this.app.config
 
@@ -124,7 +153,10 @@ class AudioListener {
 
       if (validPitch && newNote) {
         let pitchName = this.getPitchName(pitch)
+
+        // Actually compare notes and update the app!
         this.app.compareNote(pitch)
+
         this.currentPitch = pitch
         this.pitchConsumed = true
 

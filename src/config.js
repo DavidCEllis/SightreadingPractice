@@ -12,9 +12,9 @@ class AppConfig {
     this.timeSignature = settings.timeSignature || '4/4'
     this.durations = settings.durations || ['q']
     this.highestNote = settings.highestNote || 81
-    this.lowestNote = typeof settings.lowestNote !== 'undefined' ? settings.lowestNote : 57 // Can be 0
+    this.lowestNote = typeof(settings.lowestNote) !== 'undefined' ? settings.lowestNote : 57 // Can be 0
     this.maxInterval = settings.maxInterval || 12
-    this.accidentalFreq = typeof settings.accidentalFreq !== 'undefined' ? settings.accidentalFreq : 0.1
+    this.accidentalFreq = typeof(settings.accidentalFreq) !== 'undefined' ? settings.accidentalFreq : 0.1
 
     this.transposition = settings.transposition || 0 // transposition up from actual pitch
 
@@ -55,7 +55,9 @@ class AppConfig {
   }
 
   get barsPerLine () {
-    return Math.min(Math.floor((this.rendererWidth - this.hstart) / this.barwidth), 4)
+    let bpl = Math.floor((this.rendererWidth - this.hstart) / this.barwidth)
+    bpl = Math.max(Math.min(bpl, 4), 1)  // At least 1 bar per line and at most 4
+    return bpl
   }
 
   get barCount () {

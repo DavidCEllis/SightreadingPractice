@@ -1,4 +1,9 @@
-export default class AudioStatsDisplay {
+class AudioStatsDisplay {
+  /**
+   * Create an audio stats display in a given HTML Element
+   *
+   * @param div - HTML Element
+   */
   constructor (div) {
     this.div = div
     this.lastValidNote = 'N/A'
@@ -48,7 +53,7 @@ export default class AudioStatsDisplay {
   }
 
   /**
-   * update statistics in div
+   * Update statistics in div
    */
   render () {
     // language=HTML
@@ -72,3 +77,6 @@ export default class AudioStatsDisplay {
     `.trim()
   }
 }
+
+
+export default AudioStatsDisplay

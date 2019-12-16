@@ -4,3 +4,4 @@ reading
 .idea
 .nyc_output
 coverage
+docs/_build

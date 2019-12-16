@@ -7,11 +7,13 @@ import { InitializationError } from './errors'
 const VF = Vex.Flow
 
 class MainApp {
-  constructor (div, seed = Date.now(), settings = {}) {
-    this.div = div
+  constructor (basediv, seed = Date.now(), settings = {}) {
+
+    this.div = basediv.querySelector("#srt-render")
+    this.statusdiv = basediv.querySelector("#srt-status")
     this.seed = seed
 
-    this.config = new AppConfig({div: div, settings: settings})
+    this.config = new AppConfig({div: this.div, settings: settings})
 
     this.renderer = new VF.Renderer(this.div, VF.Renderer.Backends.SVG)
 
@@ -21,9 +23,7 @@ class MainApp {
     this.svgTag = this.div.getElementsByTagName('svg')[0]
 
     // Details for the current state/notes
-    // this.staves = []
     this.bars = null
-    // this.vexNotes = null
 
     this.currentBarIndex = 0 // Index of currently played bar
     this.currentNoteIndex = 0 // Index of currently played note in bar
@@ -105,10 +105,14 @@ class MainApp {
       }
       // Just update the draw for the current note
       this.updateNote(currentNote)
+      if (this.currentBarIndex === this.bars.length) {
+        this.statusmsg("You have finished the page! Play another note to refresh the score.")
+      }
     } else {
       // We have played all bars and 1 extra note, time to reset
       this.generateMusic()
       this.draw()
+      this.statusmsg()
     }
   }
 
@@ -132,6 +136,16 @@ class MainApp {
 
     if (accidental) {
       accidental.setAttribute('fill', noteStyle.fillStyle)
+    }
+  }
+
+  statusmsg(message) {
+    if (message) {
+      this.statusdiv.innerText = message
+      this.statusdiv.hidden = false
+    } else {
+      this.statusdiv.innerText = ""
+      this.statusdiv.hidden = true
     }
   }
 }
