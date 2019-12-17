@@ -5,3 +5,5 @@ reading
 .nyc_output
 coverage
 docs/_build
+
+model-tiny.h5
