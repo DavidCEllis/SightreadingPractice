@@ -1,6 +1,6 @@
 {
   "name": "sightreadingtrainer",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Sight reading training tool",
   "private": true,
   "scripts": {
@@ -70,7 +70,7 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "@tensorflow/tfjs": "^1.7.4",
+    "@tensorflow/tfjs": "^3.0.0",
     "bootstrap": "^4.6.0",
     "bootswatch": "^4.6.0",
     "core-js": "^3.8.3",
