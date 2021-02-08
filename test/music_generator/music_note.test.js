@@ -63,5 +63,15 @@ describe('MusicNote', function () {
       expect(note.noteRange).to.equal(4)
       expect(note.keyPitch).to.equal('Cb/4')
     })
+    it('Should return G#4 for the note in the key of D', function () {
+      let config = new AppConfig({ settings: {keyName: "D"}})
+      let pitch = 68
+      let duration = 'q'
+      let note = new MusicNote(pitch, duration, config)
+
+      expect(note.noteName).to.equal('G#')
+      expect(note.noteRange).to.equal(4)
+      expect(note.keyPitch).to.equal('G#/4')
+    })
   })
 })
