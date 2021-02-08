@@ -123,7 +123,7 @@ const keyList = {
   'D': new MusicKey(
     'D',
     ['D', 'E', 'F#', 'G', 'A', 'B', 'C#'],
-    ['Eb', 'F', 'G', 'A#', 'C']
+    ['Eb', 'F', 'G#', 'A#', 'C']
   ),
   'Eb': new MusicKey(
     'Eb',
