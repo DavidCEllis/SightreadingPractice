@@ -1,8 +1,5 @@
-const extendedModuleToCdn = require('./src/util.js').extendedModuleToCdn
-
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
@@ -67,7 +64,6 @@ module.exports = {
       template: 'src/index.html',
       inject: 'body'
     }),
-    new DynamicCdnWebpackPlugin({ resolver: extendedModuleToCdn }),
     new MiniCssExtractPlugin()
   ],
   mode: 'production',
